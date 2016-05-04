@@ -1,0 +1,204 @@
+html,
+body {
+    height: 100%;
+    margin: 0 auto;
+}
+
+.scrollFix {
+    line-height: 1.35;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#main {
+    height: 100%;
+}
+
+h1.text-center {
+    font-family: 'Exo';
+    letter-spacing: 20px;
+}
+
+h1.click-car {
+    font-family: 'Exo';
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+h1.region-title {
+    font-family: 'Exo';
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+h3.landing-description {
+    font-family: 'Raleway';
+    letter-spacing: 8px;
+    font-size: 19px;
+    text-transform: uppercase;
+}
+
+h3.uber-selection {
+    font-family: 'Raleway';
+}
+
+.helpButton {
+    border-radius: 0px;
+}
+
+#instr {
+    text-align: center;
+}
+
+ul.list-group {
+    font-family: 'Raleway';
+    font-weight: 300;
+}
+
+p.app-description {
+    font-family: 'Raleway';
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.uberType {
+    -webkit-filter: drop-shadow(3px 3px 0 white) drop-shadow(-3px -3px 0 white);
+    filter: drop-shadow(1px 1px 0 white) drop-shadow(-1px -1px 0 white);
+}
+
+.hovered {
+    -webkit-filter: drop-shadow(3px 3px 0 #00AFFF) drop-shadow(-3px -3px 0 #00AFFF);
+    filter: drop-shadow(1px 1px 0 #00AFFF) drop-shadow(-1px -1px 0 #00AFFF);
+}
+
+#landing {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    color: white;
+    background-color: black;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing.jpg');
+    opacity: 1.6;
+}
+
+#landing-button {
+    color: #fff;
+    font-family: 'Roboto';
+    border-radius: 0px;
+    letter-spacing: 4px;
+    border-color: white;
+}
+
+#sidebar {
+    float: left;
+    height: 80%;
+    width: 33%;
+}
+
+.row {
+     padding-left: 67px;
+}
+
+.selector {
+    background-color: black;
+    color: white;
+}
+
+.selected {
+    -webkit-filter: drop-shadow(3px 3px 0 yellow) drop-shadow(-3px -3px 0 yellow);
+    filter: drop-shadow(1px 1px 0 yellow) drop-shadow(-1px -1px 0 yellow);
+}
+
+#map {
+    float: left;
+    height: 80%;
+    width: 67%;
+}
+
+.chart {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.chart rect {
+    fill: steelblue;
+}
+
+.polaroid {
+    position: relative;
+    width: 220px;
+}
+
+.polaroid img {
+    border: 10px solid #fff;
+    border-bottom: 45px solid #fff;
+    -webkit-box-shadow: 3px 3px 3px #777;
+    -moz-box-shadow: 3px 3px 3px #777;
+    box-shadow: 3px 3px 3px #777;
+}
+
+.polaroid p {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: 0px;
+    font: 400 18px/1 'Kaushan Script', cursive;
+    color: #888;
+}
+
+#info-box {
+    background-color: white;
+    border: 1px solid black;
+    bottom: 30px;
+    height: 20px;
+    width: auto;
+    padding: 10px;
+    position: absolute;
+    left: 30px;
+}
+
+.axis {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: inherit;
+    transition: all .5s;
+}
+
+.btn-primary.btn-outline {
+    color: #428bca;
+}
+
+.btn-success.btn-outline {
+    color: #5cb85c;
+}
+
+.btn-info.btn-outline {
+    color: #5bc0de;
+}
+
+.btn-warning.btn-outline {
+    color: #f0ad4e;
+}
+
+.btn-danger.btn-outline {
+    color: #d9534f;
+}
+
+.btn-primary.btn-outline:hover,
+.btn-success.btn-outline:hover,
+.btn-info.btn-outline:hover,
+.btn-warning.btn-outline:hover,
+.btn-danger.btn-outline:hover {
+    color: #fff;
+}
