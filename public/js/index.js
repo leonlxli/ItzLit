@@ -13,6 +13,10 @@ var tooltip;
 //function that begins at start
 $(document).ready(function() {
     //selectUber('UberX');
+    // $.get("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582", function(data) {
+    //     console.log(data);
+    // });
+    //http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582
     $("#all").addClass("selected");
 
     $('#rankings').children('button').remove();
