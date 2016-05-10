@@ -16,8 +16,13 @@ var request = require("request");
 //client id and client secret here, taken from .env (which you need to create)
 dotenv.load();
 
-request("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582", function(error, response, body) {
-    console.log(body)
+request("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=5.00&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582", function(error, response, body) {
+    console.log(typeof(body))
+        // console.log(body)
+    var i = body.indexOf('{')
+    var data = JSON.parse(body.substring(i, body.length - 1));
+    console.log(data)
+        // for(var i = 0; i<body.length;i++)
 });
 
 //connect to database
@@ -61,14 +66,12 @@ app.get('/', function(req, res) {
 app.get('/lights', router.myData.getLights);
 app.get('/crimes', router.myData.getCrimes);
 app.get('/currentCrimes', function(req, res) {
-        request("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582", function(error, response, body) {
-            if (!error) {
-                res.json(body)
-            } else {
-                res.json({
-                    error: "GG it doesn't work anymore"
-                })
-            }
+        request("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=10.00&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582", function(error, response, body) {
+                // console.log(body)
+            var i = body.indexOf('{')
+            var data = JSON.parse(body.substring(i, body.length - 1));
+            res.json(data)
+                // for(var i = 0; i<body.length;i++)
         });
     })
     // app.get('/invalid', function(req, res) {
