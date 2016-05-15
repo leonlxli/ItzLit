@@ -2,59 +2,33 @@ var map;
 var allData;
 var infoWindow;
 var tooltip;
+var currentCrimes;
+var lights;
+var crimes;
 
-/*d3.json("/getRankedData?uber=UberX", function(err, dat) {
-    allData = dat.SortedData;
-    // console.log(allData);
-    // console.log(dat.SortedData[0].data['scaled data']);
-    // console.log(dat);
-});*/
 
-//function that begins at start
 $(document).ready(function() {
     //selectUber('UberX');
-    // $.get("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582", function(data) {
-    //     console.log(data);
-    // });
-    //http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1462858455582
+
+    $.get("/currentCrimes", function(data) {
+        currentCrimes = data;
+    });
+    $.get("/lights", function(data) {
+        lights = data.lights;
+        var start = "3633 Nobel Dr, San Diego, CA 92122"
+        var end = "9500 Gilman Dr, La Jolla, CA 92093"
+        checkIfIn(start, end);
+    });
+    var CrimeData;
+    $.get("/crimes", function(data) {
+        crimes = data;
+
+    });
+
     $("#all").addClass("selected");
 
     $('#rankings').children('button').remove();
     $('#rankings').children('div').remove();
-    d3.json('/getRankedData?uber=UberX', function(err, dat) {
-        allData = dat.SortedData;
-        allData.sort(function(a, b) {
-            return b.rank - a.rank;
-        });
-        console.log(allData);
-        for (var i = 0; i < 10; i++) {
-
-            // TODO: make it a clickable link that triggers onclick event to pop up d3 graph, as if you clicking on map.
-            $('#rankings').append(
-                '<button class="ranking list-group-item" onclick="displayRaw(\'' + allData[i].Area + '\')">' + (i + 1) + '. ' + allData[i].Area + '</button>' +
-                '<div class="raw container" id="rawData' + i + '"></div>'
-            );
-
-        }
-
-        for (var i = 0; i < allData.length; i++) {
-            map.data.forEach(function(region) {
-                if (region['R']['NAME'] == allData[i].Area.toUpperCase()) {
-                    //map.data.overrideStyle(region, {fillColor: getRegionColor(i+1), fillOpacity: 0.5});
-                    // map.data.setStyle(function(feature){
-                    //   //var color = getRegionColor(i+1);
-                    //   return ({ fillColor: getRegionColor(i+1),
-                    //               fillOpacity: 0.5,
-                    //               strokeWeight: 2  });
-                    // });
-                    map.data.overrideStyle(region, {
-                        fillColor: getRegionColor(i + 1),
-                        fillOpacity: 0.5
-                    });
-                }
-            });
-        }
-    });
 });
 
 //for highlighting selected uber
@@ -91,34 +65,6 @@ function selectUber(uber) {
 
     $('#rankings').children('button').remove();
     $('#rankings').children('div').remove();
-    d3.json('/getRankedData?uber=' + uber, function(err, dat) {
-        allData = dat.SortedData;
-        allData.sort(function(a, b) {
-            return b.rank - a.rank;
-        });
-        console.log(allData);
-        for (var i = 0; i < 10; i++) {
-
-            // TODO: make it a clickable link that triggers onclick event to pop up d3 graph, as if you clicking on map.
-            $('#rankings').append(
-                '<button class="ranking list-group-item" onclick="displayRaw(\'' + allData[i].Area + '\')">' + (i + 1) + '. ' + allData[i].Area + '</button>' +
-                '<div class="raw container" id="rawData' + i + '"></div>'
-            );
-
-        }
-
-        for (var i = 0; i < allData.length; i++) {
-            map.data.forEach(function(region) {
-                console.log(region);
-                if (region['H']['NAME'] == allData[i].Area.toUpperCase()) {
-                    map.data.overrideStyle(region, {
-                        fillColor: getRegionColor(i + 1),
-                        fillOpacity: 0.5
-                    });
-                }
-            });
-        }
-    });
 }
 
 function displayRaw(area) {
@@ -399,10 +345,67 @@ function buildGraph(myData) {
     return chart;
 }
 
+function checkIfIn(start, end) {
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    directionsService.route({
+        origin: start,
+        destination: end,
+        provideRouteAlternatives: true,
+        travelMode: google.maps.TravelMode.DRIVING
+    }, function(response, status) {
+        console.log(response.routes[0].overview_polyline);
+        var decodedPath = google.maps.geometry.encoding.decodePath(response.routes[0].overview_polyline);
+        var pol = new google.maps.Polyline({
+            locations: decodedPath,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        // var legs = response.routes[0].legs;
+        // for (i = 0; i < legs.length; i++) {
+        //     var steps = legs[i].steps;
+        //     for (j = 0; j < steps.length; j++) {
+        //         var nextSegment = steps[j].path;
+        //         for (k = 0; k < nextSegment.length; k++) {
+        //             polyline.getPath().push(nextSegment[k]);
+        //             bounds.extend(nextSegment[k]);
+        //         }
+        //     }
+        // }
+        // var bounds = response.routes[0].overview_path;
+
+        console.log(lights)
+        var check = function() {
+            if (lights) {
+                var numLights = 0
+                for (var i in lights) {
+                    // var myPosition = new google.maps.LatLng(46.0, -125.9);
+                    var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
+                    if (google.maps.geometry.poly.isLocationOnEdge(location, pol)) {
+                        console.log("here")
+                        numLights++;
+                    }
+                }
+                console.log("numlights  " + numLights)
+                console.log(lights.length)
+            } else {
+                console.log("again")
+                setTimeout(check, 1000); // check again in a second
+            }
+        }
+        check();
+    });
+}
 
 window.initMap = function() {
-
+    console.log("hi")
     var minZoomLevel = 9;
+    // $.get('/directions',{start: start, end: end}, function(data) {
+    //     console.log(data)
+    // })
+
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: minZoomLevel,
