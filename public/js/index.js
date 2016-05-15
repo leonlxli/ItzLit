@@ -3,8 +3,10 @@ var allData;
 var infoWindow;
 var tooltip;
 var currentCrimes;
-var lights;
+var lights = [];
+var lightsDone = false;
 var crimes;
+var crimeDone = false;
 
 
 $(document).ready(function() {
@@ -12,9 +14,11 @@ $(document).ready(function() {
 
     $.get("/currentCrimes", function(data) {
         currentCrimes = data;
+        crimeDone = true;
     });
     $.get("/lights", function(data) {
         lights = data.lights;
+        lightsDone = true
         var start = "3633 Nobel Dr, San Diego, CA 92122"
         var end = "9500 Gilman Dr, La Jolla, CA 92093"
         checkIfIn(start, end);
@@ -52,158 +56,8 @@ $('.uberType').mouseenter(function() {
     }
 });
 
-function selectUber(uber) {
-
-    infoWindow.close();
-    /*map.data.forEach(function(region) {
-        map.data.overrideStyle(region, {
-            fillColor: 'black'
-        });
-    });*/
-
-    $('#uberTypeSelected').text("for " + uber + ":");
-
-    $('#rankings').children('button').remove();
-    $('#rankings').children('div').remove();
-}
-
-function displayRaw(area) {
-    $('.raw').children('p').remove();
-    $('.raw').children('br').remove();
-
-    infoWindow.close();
-    infoWindow = new google.maps.InfoWindow({
-        content: '<div class="scrollFix"></div>'
-    });
-    cityName = area;
-    for (i = 0; i < allData.length; i++) {
-        //console.log(cityName);
-        //buildGraph(cityName, infoWindow);
-        if (cityName.toUpperCase() == allData[i].Area.toUpperCase()) {
-            console.log(allData[i]);
-            // Render Data for bar graphs
-            // console.log(allData[i].data['scaled data']);
-            var bars = buildGraph(allData[i]);
-
-        }
-    }
-    var html = "<p>" + cityName + "</p>";
-    var d3 = $('#d3').html();
-    // console.log(d3);
-    var lat;
-    var lng;
-    var latlng;
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({
-        'address': cityName + ', san diego us'
-    }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            lat = results[0].geometry.location.lat();
-            lng = results[0].geometry.location.lng();
-            console.log(lat);
-            console.log(lng);
-            latlng = new google.maps.LatLng(lat, lng);
-            infoWindow.setPosition(latlng);
-        } else {
-            console.log("ERROR");
-        }
-    });
-
-    console.log(lat);
-    console.log(lng);
-
-    console.log(latlng);
-
-    var rawData;
-
-    for (var i = 0; i < 10; i++) {
-        if (allData[i].Area == area) {
-            var raw = allData[i].data;
-            // console.log(raw);
-            /* $('#rawData' + i.toString()).append(
-              '<br />' +
-              '<p><strong> Population: </strong>' + raw['population'] + '</p>' +
-              '<p><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
-              '<p><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
-              '<p><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
-              '<p><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
-              '<p><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
-              '<p><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>'
-            );*/
-            rawData =
-                '<div class="row">' +
-                '<br />' +
-                '<p class="col-md-6"><strong> Population: </strong>' + raw['population'] + '</p>' +
-                '<p class="col-md-6"><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
-                '<p class="col-md-6"><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
-                '<p class="col-md-6"><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
-                '<p class="col-md-6"><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
-                '<p class="col-md-6"><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
-                '<p class="col-md-6"><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>' +
-                '</div>';
-        }
-    }
-
-    infoWindow.setContent('<div class="scrollFix">' + html + d3 + rawData + '</div>');
-    infoWindow.open(map);
-}
-
-function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-}
-
-function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
 
 
-function getRegionColor(scale) {
-    var R = 0;
-    var G = 0;
-    var B = 0;
-    if (scale <= 5) {
-        // R = 0;
-        G = 255;
-    }
-    // else if (scale <=20 && scale > 10) {
-    //     R = 20;
-    //     G = 180;
-    // }
-    // else if (scale <=30 && scale > 20) {
-    //     R = 50;
-    //     G = 100;
-    // }
-    // else if (scale <=41 && scale > 30) {
-    //     R = 255;
-    // }
-    else if (scale <= 10 && scale > 5) {
-        G = 210;
-    } else if (scale <= 15 && scale > 10) {
-        G = 170;
-    } else if (scale <= 20 && scale > 15) {
-        // R = 40;
-        G = 130;
-    } else if (scale <= 25 && scale > 20) {
-        // R = 90;
-        G = 90;
-    } else if (scale <= 30 && scale > 25) {
-        R = 130;
-        G = 50;
-    } else if (scale <= 35 && scale > 30) {
-        R = 170;
-        G = 10;
-    } else if (scale <= 40 && scale > 35) {
-        R = 210;
-    } else if (scale <= 42 && scale > 40) {
-        R = 255;
-    }
-
-    // var R = Math.floor((255 * (100/scale))/ 100);
-    // var G = Math.floor((255 * (100 - (100/scale))) / 100);
-    // var B = 0;
-    return rgbToHex(R, G, B);
-}
 
 $('#d3').hide();
 //var data = [4, 8, 15, 16, 23, 42];
@@ -321,32 +175,27 @@ function buildGraph(myData) {
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text("Rankings Compared to Other Regions");
-
-
-
-    // chart.selectAll("text")
-    //    .data(obj, 12)
-    //    .enter()
-    //    .append("text")
-    //    .text(function(d) {
-    //    return d.value;
-    //    })
-    //    .attr("text-anchor", "middle")
-    //    .attr("x", function(d, i) {
-    //    return xScale(i) + xScale.rangeBand() / 2;
-    //    })
-    //    .attr("y", function(d) {
-    //    return h - yScale(d.value) + 14;
-    //    })
-    //    .attr("font-family", "sans-serif")
-    //    .attr("font-size", "11px")
-    //    .attr("fill", "white");
-
     return chart;
 }
 
 function checkIfIn(start, end) {
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+
+    // var directionsDisplay = new google.maps.DirectionsRenderer({
+    //         map: map
+    //     }),
+    //     markerA = new google.maps.Marker({
+    //         position: start,
+    //         title: "start",
+    //         label: "A",
+    //         map: map
+    //     }),
+    //     markerB = new google.maps.Marker({
+    //         position: end,
+    //         title: "destination",
+    //         label: "B",
+    //         map: map
+    //     });
+
     var directionsService = new google.maps.DirectionsService;
     directionsService.route({
         origin: start,
@@ -354,39 +203,41 @@ function checkIfIn(start, end) {
         provideRouteAlternatives: true,
         travelMode: google.maps.TravelMode.DRIVING
     }, function(response, status) {
-        console.log(response.routes[0].overview_polyline);
-        var decodedPath = google.maps.geometry.encoding.decodePath(response.routes[0].overview_polyline);
-        var pol = new google.maps.Polyline({
-            locations: decodedPath,
-            strokeColor: "#FF0000",
-            strokeOpacity: 1.0,
-            strokeWeight: 2
+        for (var i = 0, len = response.routes.length; i < len; i++) {
+            new google.maps.DirectionsRenderer({
+                map: map,
+                directions: response,
+                routeIndex: i
+            });
+        }
+        var bounds = new google.maps.LatLngBounds();
+        var bounds = response.routes[0].overview_path;
+        console.log(bounds)
+        var newBounds = []
+        for (var i in bounds) {
+            var point = {}
+            point.lat = bounds[i].lat()
+            point.lng = bounds[i].lng()
+            newBounds.push(point)
+        }
+        console.log("newBounds")
+        console.log(newBounds)
+        var polyline = new google.maps.Polyline({
+            path: newBounds,
+            strokeColor: '#FF0000',
         });
-
-        // var legs = response.routes[0].legs;
-        // for (i = 0; i < legs.length; i++) {
-        //     var steps = legs[i].steps;
-        //     for (j = 0; j < steps.length; j++) {
-        //         var nextSegment = steps[j].path;
-        //         for (k = 0; k < nextSegment.length; k++) {
-        //             polyline.getPath().push(nextSegment[k]);
-        //             bounds.extend(nextSegment[k]);
-        //         }
-        //     }
-        // }
-        // var bounds = response.routes[0].overview_path;
-
-        console.log(lights)
         var check = function() {
-            if (lights) {
+            if (lightsDone&&crimeDone) {
                 var numLights = 0
                 for (var i in lights) {
-                    // var myPosition = new google.maps.LatLng(46.0, -125.9);
                     var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
-                    if (google.maps.geometry.poly.isLocationOnEdge(location, pol)) {
+                    if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
                         console.log("here")
                         numLights++;
                     }
+                }
+                for(var i in currentCrimes){
+                    console.log(currentCrimes[i])
                 }
                 console.log("numlights  " + numLights)
                 console.log(lights.length)
@@ -396,13 +247,14 @@ function checkIfIn(start, end) {
             }
         }
         check();
+        polyline.setMap(map);
     });
 }
 
 window.initMap = function() {
     console.log("hi")
-    var minZoomLevel = 9;
-    // $.get('/directions',{start: start, end: end}, function(data) {
+    var minZoomLevel = 13;
+    // $.get('/directions', function(data) {
     //     console.log(data)
     // })
 
@@ -486,7 +338,6 @@ window.initMap = function() {
                 lat: 32.8787,
                 lng: -117.0400
             });
-            map.setZoom(minZoomLevel);
         });
 
     }
@@ -521,12 +372,8 @@ window.initMap = function() {
     // });
 
     // Limit the zoom level
-    google.maps.event.addListener(map, 'zoom_changed', function() {
-        if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
-    });
 
     var cityName;
-    map.data.loadGeoJson('./map/sdcounty.json');
 
     infoWindow = new google.maps.InfoWindow({
 
