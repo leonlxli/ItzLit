@@ -214,9 +214,18 @@ function CreateDirections(start, end, method, callback) {
         });
     });
     var methodOfTravel;
-    if (method == "drivng") {
+    if (method == "driving") {
         methodOfTravel = google.maps.TravelMode.DRIVING
     } else if (method == "walking") {
+        methodOfTravel = google.maps.TravelMode.WALKING
+    }
+    else if (method=="transit"){
+        methodOfTravel = google.maps.TravelMode.TRANSIT
+    }
+    else if (method=="bike"){
+        methodOfTravel = google.maps.TravelMode.BICYCLING
+    }
+    else{
         methodOfTravel = google.maps.TravelMode.WALKING
     }
     var directionsService = new google.maps.DirectionsService;
@@ -275,7 +284,9 @@ function CreateDirections(start, end, method, callback) {
                         route: response.routes[route],
                         crimes: numCrimes,
                         lights: lightPercent,
-                        lightPercentText: lightText
+                        lightPercentText: lightText,
+                        distance: response.routes[route].legs[0].distance.text,
+                        time: response.routes[route].legs[0].duration.text
                     })
                 }
                 callback(routeInfo, null);
