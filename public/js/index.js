@@ -3,25 +3,31 @@ var allData;
 var infoWindow;
 var tooltip;
 var currentCrimes;
+var SDCrimes;
 var lights = [];
 var lightsDone = false;
 var crimes;
+var crimeCoordinates = []
 var crimeDone = false;
 
 
 $(document).ready(function() {
     //selectUber('UberX');
 
-    $.get("/currentCrimes", function(data) {
-        currentCrimes = data;
+    $.get("/currentCrimes", {
+        lat: 32.7157,
+        lng: -117.1611,
+        distance: 8.00
+    }, function(data) {
+        SDCrimes = data;
+        for (var i in currentCrimes.crimes) {
+            crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
+        }
         crimeDone = true;
     });
     $.get("/lights", function(data) {
         lights = data.lights;
         lightsDone = true
-        var start = "3633 Nobel Dr, San Diego, CA 92122"
-        var end = "9500 Gilman Dr, La Jolla, CA 92093"
-        checkIfIn(start, end);
     });
     var CrimeData;
     $.get("/crimes", function(data) {
@@ -33,6 +39,17 @@ $(document).ready(function() {
 
     $('#rankings').children('button').remove();
     $('#rankings').children('div').remove();
+
+    setTimeout(function() {
+
+        // Something you want delayed.
+        var start = "3633 Nobel Dr, San Diego, CA 92122"
+        var end = "9500 Gilman Dr, La Jolla, CA 92093"
+        var res = CreateDirections(start, end, function(res, err){
+            console.log(res)
+        });
+    }, 1000);
+    console.log()
 });
 
 //for highlighting selected uber
@@ -178,23 +195,24 @@ function buildGraph(myData) {
     return chart;
 }
 
-function checkIfIn(start, end) {
-
-    // var directionsDisplay = new google.maps.DirectionsRenderer({
-    //         map: map
-    //     }),
-    //     markerA = new google.maps.Marker({
-    //         position: start,
-    //         title: "start",
-    //         label: "A",
-    //         map: map
-    //     }),
-    //     markerB = new google.maps.Marker({
-    //         position: end,
-    //         title: "destination",
-    //         label: "B",
-    //         map: map
-    //     });
+function CreateDirections(start, end, callback) {
+    var geocoder = new google.maps.Geocoder();
+    var startcoord;
+    geocoder.geocode({
+        address: start
+    }, function(results, status) {
+        $.get("/currentCrimes", {
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng(),
+            distance: 1.00
+        }, function(data) {
+            currentCrimes = data;
+            for (var i in currentCrimes.crimes) {
+                crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
+            }
+            crimeDone = true;
+        });
+    });
 
     var directionsService = new google.maps.DirectionsService;
     directionsService.route({
@@ -210,44 +228,58 @@ function checkIfIn(start, end) {
                 routeIndex: i
             });
         }
-        var bounds = new google.maps.LatLngBounds();
-        var bounds = response.routes[0].overview_path;
-        console.log(bounds)
-        var newBounds = []
-        for (var i in bounds) {
-            var point = {}
-            point.lat = bounds[i].lat()
-            point.lng = bounds[i].lng()
-            newBounds.push(point)
-        }
-        console.log("newBounds")
-        console.log(newBounds)
-        var polyline = new google.maps.Polyline({
-            path: newBounds,
-            strokeColor: '#FF0000',
-        });
+        var routeInfo = []
+        console.log(response.routes)
+
+
         var check = function() {
-            if (lightsDone&&crimeDone) {
-                var numLights = 0
-                for (var i in lights) {
-                    var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
-                    if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                        console.log("here")
-                        numLights++;
+            if (lightsDone && crimeDone) {
+                for (var route in response.routes) {
+                    // console.log(response.routes[route])
+                    var bounds = response.routes[route].overview_path;
+                    var newBounds = []
+                    for (var i in bounds) {
+                        var point = {}
+                        point.lat = bounds[i].lat()
+                        point.lng = bounds[i].lng()
+                        newBounds.push(point)
                     }
+                    var polyline = new google.maps.Polyline({
+                        path: newBounds
+                    });
+                    polyline.setMap(map);
+                    var numLights = 0
+                    var numCrimes = 0;
+                    for (var i in lights) {
+                        var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
+                        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
+                            // console.log("here")
+                            numLights++;
+                        }
+                    }
+                    for (var i in crimeCoordinates) {
+                        var location = new google.maps.LatLng(Number(crimeCoordinates[i][0]), Number(crimeCoordinates[i][1]))
+                        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+                            // console.log("here")
+                            numCrimes++;
+                        }
+                    }
+                    var lightPercent = ((numLights * 40) / response.routes[route].legs[0].distance.value) * 100
+                    var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+                    routeInfo.push({
+                        route: response.routes[route],
+                        crimes: numCrimes,
+                        lights: lightPercent,
+                        lightPercentText: lightText
+                    })
                 }
-                for(var i in currentCrimes){
-                    console.log(currentCrimes[i])
-                }
-                console.log("numlights  " + numLights)
-                console.log(lights.length)
+                callback(routeInfo,null);
             } else {
                 console.log("again")
                 setTimeout(check, 1000); // check again in a second
             }
         }
         check();
-        polyline.setMap(map);
     });
 }
 
