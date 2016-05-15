@@ -45,7 +45,7 @@ $(document).ready(function() {
         // Something you want delayed.
         var start = "3633 Nobel Dr, San Diego, CA 92122"
         var end = "9500 Gilman Dr, La Jolla, CA 92093"
-        var res = CreateDirections(start, end, function(res, err){
+        var res = CreateDirections(start, end, "walking", function(res, err) {
             console.log(res)
         });
     }, 1000);
@@ -195,7 +195,7 @@ function buildGraph(myData) {
     return chart;
 }
 
-function CreateDirections(start, end, callback) {
+function CreateDirections(start, end, method, callback) {
     var geocoder = new google.maps.Geocoder();
     var startcoord;
     geocoder.geocode({
@@ -213,13 +213,18 @@ function CreateDirections(start, end, callback) {
             crimeDone = true;
         });
     });
-
+    var methodOfTravel;
+    if (method == "drivng") {
+        methodOfTravel = google.maps.TravelMode.DRIVING
+    } else if (method == "walking") {
+        methodOfTravel = google.maps.TravelMode.WALKING
+    }
     var directionsService = new google.maps.DirectionsService;
     directionsService.route({
         origin: start,
         destination: end,
         provideRouteAlternatives: true,
-        travelMode: google.maps.TravelMode.DRIVING
+        travelMode: methodOfTravel
     }, function(response, status) {
         for (var i = 0, len = response.routes.length; i < len; i++) {
             new google.maps.DirectionsRenderer({
@@ -273,7 +278,7 @@ function CreateDirections(start, end, callback) {
                         lightPercentText: lightText
                     })
                 }
-                callback(routeInfo,null);
+                callback(routeInfo, null);
             } else {
                 console.log("again")
                 setTimeout(check, 1000); // check again in a second
