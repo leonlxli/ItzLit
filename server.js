@@ -64,6 +64,15 @@ app.set('port', process.env.PORT || 3000);
 app.get('/', function(req, res) {
     res.render('index');
 });
+app.get('/login', function(req, res) {
+    res.render('login');
+});
+app.get('/maps', function(req, res) {
+    res.render('maps');
+});
+app.get('/forum', function(req, res) {
+    res.render('forum');
+});
 app.get('/lights', router.myData.getLights);
 app.get('/crimes', router.myData.getCrimes);
 app.get('/directions', router.myData.getDirections);
