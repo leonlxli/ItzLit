@@ -8,25 +8,6 @@
 </head>
 
 <body>
-    <!-- Facebook -->
-    <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '1101835213214577',
-        xfbml      : true,
-        version    : 'v2.6'
-      });
-    };
-
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
-   </script>
-   <!-- end Facebook -->
 
     <div id="landing" class="text-center">
         <div class="container" style="padding-top: 200px">
@@ -46,6 +27,13 @@
                 <a href="/login">
                     <button id="landing-button" class="btn-lg btn-outline btn-submit text-uppercase">GET STARTED</button>
                 </a>
+                <br>
+                <a href="/auth/facebook" class="page-scroll">
+                  <button id="facebook-button" class="btn-lg btn-outline btn-submit text-uppercase">
+                    <i class="fa fa-facebook"></i>
+                  Facebook</button>
+                </a>
+
             </div>
         </div>
     </div>
