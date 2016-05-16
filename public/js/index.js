@@ -45,7 +45,7 @@ $(document).ready(function() {
         // Something you want delayed.
         var start = "3633 Nobel Dr, San Diego, CA 92122"
         var end = "9500 Gilman Dr, La Jolla, CA 92093"
-        var res = CreateDirections(start, end, "walking", function(res, err) {
+        var res = CreateDirections(start, end, "transit", function(res, err) {
             console.log(res)
         });
     }, 1000);
@@ -261,7 +261,6 @@ function CreateDirections(start, end, method, callback) {
                     var polyline = new google.maps.Polyline({
                         path: newBounds
                     });
-                    polyline.setMap(map);
                     var numLights = 0
                     var numCrimes = 0;
                     for (var i in lights) {
