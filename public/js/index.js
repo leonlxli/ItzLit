@@ -286,7 +286,8 @@ function CreateDirections(start, end, method, callback) {
                         lights: lightPercent,
                         lightPercentText: lightText,
                         distance: response.routes[route].legs[0].distance.text,
-                        time: response.routes[route].legs[0].duration.text
+                        time: response.routes[route].legs[0].duration.text,
+                        poyline: polyline
                     })
                 }
                 callback(routeInfo, null);
