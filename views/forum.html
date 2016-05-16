@@ -12,7 +12,7 @@
         <div class="container" style="padding-top: 200px">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <h1 class="text-center" style="font-size:125px">ITZ LIT</h1>
+                    <h1 class="text-center" style="font-size:125px">FORUM</h1>
                     <h3 class="landing-description">Minimize your worries by maximizing your safety on your commutes after dark.</h3>
                     <hr width="60%">
                     <p class="app-description">Find the safest and most lit road home.</p>
@@ -23,45 +23,42 @@
             <div class="col-sm-4 col-sm-offset-4">
                 <br>
                 <br>
-                <a href="/login">
+                <a href="#selectButtons" class="page-scroll">
                     <button id="landing-button" class="btn-lg btn-outline btn-submit text-uppercase">GET STARTED</button>
                 </a>
             </div>
         </div>
     </div>
-
-    <!--
     <div id="d3">
         <svg class="chart">
         </svg>
     </div>
     <div id="main">
-        <div id="destinations" class="row" style="padding-top: 10%;">
-          <div class="col-md-6 col-md-offset-3">
-            <h1>Enter your starting and ending destinations.</h1>
-          </div>
-          <div class="col-md-6 col-md-offset-3">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Starting Destination" />
+        <div id="selectButtons">
+            <div class="selector" value="all">
+                <center>
+                    <br>
+                    <h1 class="click-car">Click on a car to select your type of uber:</h1>
+                    <br>
+                    <img onclick="selectUber('UberX')" src="/images/uberx.png" width="200" height="76" selected="true" class="uberType selected">
+                    <img onclick="selectUber('UberXL')" src="/images/uberxl.png" width="200" height="76" selected="false" class="uberType">
+                    <img onclick="selectUber('Uber Espanol')" src="/images/espanol.png" width="200" height="76" selected="false" class="uberType">
+                    <img onclick="selectUber('Uber Select')" src="/images/select.png" width="200" height="76" selected="false" class="uberType">
+                    <img onclick="selectUber('Uber Black')" src="/images/black.png" width="200" height="76" selected="false" class="uberType">
+                    <img onclick="selectUber('Uber SUV')" src="/images/suv.png" width="200" height="76" selected="false" class="uberType">
+                    <br>
+                </center>
+                <br>
             </div>
-          </div>
-          <div class="col-md-6 col-md-offset-3">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Ending Destination" />
-            </div>
-          </div>
-          <div class="col-md-6 col-md-offset-3">
-            <div class="btn-group" role="group" aria-label="...">
-              <button type="button" class="btn btn-default">Go</button>
-            </div>
-          </div>
         </div>
         <div id="sidebar">
             <div>
                 <center>
                     <h1 class="region-title">Top 10 Regions <a href="#myModal" data-toggle="modal"><i class="fa fa-info-circle" aria-hidden="true"></i></a> </h1>
+                    <!-- Modal -->
                     <div id="myModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
+                            <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -86,10 +83,11 @@
             </div>
             <br>
             <ul id="rankings" class="list-group"></ul>
+            <!--div id="rawData"></div-->
         </div>
         <div id="map"></div>
     </div>
--->
+    <!--div id="info-box">?</div-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeAnNaWn4NxU_2lyPMot7FQlMikqHdPuQ
