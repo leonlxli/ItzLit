@@ -10,8 +10,12 @@ body {
     white-space: nowrap;
 }
 
-#main {
+#main, #destinations {
     height: 100%;
+}
+
+#destinations {
+  background-color: black;
 }
 
 h1.text-center {
