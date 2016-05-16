@@ -103,6 +103,7 @@ passport.use(new FacebookStrategy({
                 newUser.save();
                 return done(null, profile);
             } else {
+              console.log(user);
                 process.nextTick(function() {
                     user.facebookID = profile.id;
                     user.token = accessToken;
@@ -144,7 +145,7 @@ app.get('/auth/facebook',
 
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-        successRedirect: '/',
+        successRedirect: '/destinations',
         failureRedirect: '/'
     }),
     function(req, res) {
@@ -156,9 +157,7 @@ app.get('/auth/facebook/callback',
 app.get('/', function(req, res) {
     res.render('index');
 });
-app.get('/login', function(req, res) {
-    res.render('login');
-});
+
 app.get('/maps', function(req, res) {
     res.render('maps');
 });
