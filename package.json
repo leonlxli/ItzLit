@@ -10,6 +10,7 @@
     "express": "^4.13.4",
     "express-handlebars": "^1.2.2",
     "express-session": "^1.10.4",
+    "googlemaps": "^1.6.0",
     "jsonfile": "^2.3.0",
     "pg": "^4.5.3",
     "request": "^2.72.0"
