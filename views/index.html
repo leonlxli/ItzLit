@@ -8,6 +8,26 @@
 </head>
 
 <body>
+    <!-- Facebook -->
+    <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1101835213214577',
+        xfbml      : true,
+        version    : 'v2.6'
+      });
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+   </script>
+   <!-- end Facebook -->
+
     <div id="landing" class="text-center">
         <div class="container" style="padding-top: 200px">
             <div class="row">
