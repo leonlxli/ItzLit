@@ -16,7 +16,6 @@ exports.getLights = function(req, res) {
         var point = data.data[dat]
         lightslatLng.push([point.lat, point.lon])
     }
-    console.log(lightslatLng.length)
     res.json({
         lights: lightslatLng
     });
@@ -28,10 +27,7 @@ exports.getCurrentCrimes = function(req, res) {
     request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
         var i = body.indexOf('{')
         var data = JSON.parse(body.substring(i, body.length - 1));
-        console.log("done loading current crimes")
-        console.log(data)
-        console.log(req.query.lat + "," + req.query.lng)
-
+        // localStorage.setItem('currentCrimes', JSON.stringify(obj));
         res.json(data)
     });
 }
@@ -40,8 +36,6 @@ var mockRequest = function(options, callback) {
     var res = {
         statusCode: 200
     };
-    console.log(options)
-    console.log(callback)
     var data = JSON.stringify([]);
     return callback(null, res, data);
 };

@@ -9,22 +9,45 @@ var dotenv = require('dotenv');
 var pg = require('pg');
 var app = express();
 var jsonfile = require('jsonfile');
-
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var models = require("./models");
+var mongoose = require('mongoose');
+const MongoStore = require("connect-mongo")(session);
 
 
 //client id and client secret here, taken from .env (which you need to create)
+
 dotenv.load();
 var d = new Date();
 var n = d.getTime();
-// console.log(n)
-// request("http://api.spotcrime.com/crimes.json?lat=32.713006&lon=-117.160776&radius=5.00&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
-//     console.log(typeof(body))
-//         // console.log(body)
-//     var i = body.indexOf('{')
-//     var data = JSON.parse(body.substring(i, body.length - 1));
-//     console.log(data)
-//         // for(var i = 0; i<body.length;i++)
-// });
+
+var parser = {
+    body: require("body-parser"),
+    cookie: require("cookie-parser")
+};
+
+var db = mongoose.connection;
+console.log(process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/cogs121');
+
+db.on('error', console.error.bind(console, 'Mongo DB Connection Error:'));
+db.once('open', function(callback) {
+    console.log("Database connected successfully.");
+});
+
+
+// session middleware
+var session_middleware = session({
+    key: "session",
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: true,
+    resave: true,
+    store: new MongoStore({
+        mongooseConnection: db
+    })
+});
+app.use(session_middleware);
 
 //connect to database
 var conString = process.env.DATABASE_CONNECTION_URL;
@@ -47,6 +70,52 @@ app.use(session({
     resave: true
 }));
 
+// passport middleware
+app.use(parser.body.json());
+app.use(require('method-override')());
+app.use(session_middleware);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// facebook
+passport.use(new FacebookStrategy({
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_SECRET,
+        callbackURL: "/auth/facebook/callback",
+    },
+    function(accessToken, refreshToken, profile, done) {
+        // What goes here? Refer to step 4.
+        models.User.findOne({
+            facebookID: profile.id
+        }, function(err, user) {
+            // (1) Check if there is an error. If so, return done(err);
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                // (2) since the user is not found, create new user.
+                // Refer to Assignment 0 to how create a new instance of a model
+                var newUser = new models.User({
+                    "facebookID": profile.id,
+                    "token": accessToken,
+                    "name": profile.displayName
+                });
+                newUser.save();
+                return done(null, profile);
+            } else {
+                process.nextTick(function() {
+                    user.facebookID = profile.id;
+                    user.token = accessToken;
+                    user.name = profile.displayName;
+                    user.save();
+                    return done(null, profile);
+                });
+            }
+        });
+    }));
+
+
+
 var router = {
     // uberData: require("./routes/uberData"),
     myData: require("./routes/myData")
@@ -60,7 +129,30 @@ const query = "select charge_description, activity_date, block_address, communit
 //set environment ports and start application
 app.set('port', process.env.PORT || 3000);
 
+/* Passport serialization here */
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
 //routes
+// routes for oauth using Passport
+app.get('/auth/facebook',
+    passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/'
+    }),
+    function(req, res) {
+        console.log("success")
+            // Successful authentication, redirect home.
+        res.redirect('/');
+    });
+
 app.get('/', function(req, res) {
     res.render('index');
 });
@@ -81,11 +173,6 @@ app.get('/crimes', router.myData.getCrimes);
 app.get('/directions', router.myData.getDirections);
 
 app.get('/currentCrimes', router.myData.getCurrentCrimes);
-
-
-app.all('*', function(req, res) {
-    res.redirect('/invalid');
-});
 
 
 
