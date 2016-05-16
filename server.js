@@ -9,8 +9,10 @@ var dotenv = require('dotenv');
 var pg = require('pg');
 var app = express();
 var jsonfile = require('jsonfile');
-
-
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var models = require("./models");
+var mongoose = require('mongoose');
 
 //client id and client secret here, taken from .env (which you need to create)
 dotenv.load();
@@ -47,6 +49,53 @@ app.use(session({
     resave: true
 }));
 
+// passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// facebook
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: "/auth/facebook/callback",
+  },
+  function(accessToken, refreshToken, profile, done) {
+
+      console.log(profile.displayName);
+      // What goes here? Refer to step 4.
+      models.User.findOne({ "facebookID": profile.id }, function(err, user) {
+      // (1) Check if there is an error. If so, return done(err);
+      console.log("ENTERING HERE")
+      if(err) {
+          return done(err);
+      }
+      if(!user) {
+          // (2) since the user is not found, create new user.
+          // Refer to Assignment 0 to how create a new instance of a model
+          console.log("here1")
+          var newUser = new models.User({
+              "facebookID": profile.id,
+              "token": accesstoken,
+              "name": profile.displayName
+          });
+          newUser.save();
+          return done(null, profile);
+      } else {
+        console.log("here2")
+          // (3) since the user is found, update user’s information
+          process.nextTick(function() {
+              user.facebookID = profile.id;
+              user.token = token;
+              user.name = profile.displayName;
+              user.save();
+              return done(null, profile);
+          });
+      }
+    });
+  }));
+
+
+
 var router = {
     // uberData: require("./routes/uberData"),
     myData: require("./routes/myData")
@@ -60,7 +109,28 @@ const query = "select charge_description, activity_date, block_address, communit
 //set environment ports and start application
 app.set('port', process.env.PORT || 3000);
 
+/* Passport serialization here */
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
 //routes
+// routes for oauth using Passport
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
 app.get('/', function(req, res) {
     res.render('index');
 });

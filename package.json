@@ -12,6 +12,9 @@
     "express-session": "^1.10.4",
     "googlemaps": "^1.6.0",
     "jsonfile": "^2.3.0",
+    "mongoose": "^4.4.17",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.0",
     "pg": "^4.5.3",
     "request": "^2.72.0"
   }
