@@ -73,6 +73,9 @@ app.get('/maps', function(req, res) {
 app.get('/forum', function(req, res) {
     res.render('forum');
 });
+app.get('/destinations', function(req, res) {
+    res.render('destinations');
+});
 app.get('/lights', router.myData.getLights);
 app.get('/crimes', router.myData.getCrimes);
 app.get('/directions', router.myData.getDirections);
