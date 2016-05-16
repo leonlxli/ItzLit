@@ -84,20 +84,17 @@ passport.use(new FacebookStrategy({
         callbackURL: "/auth/facebook/callback",
     },
     function(accessToken, refreshToken, profile, done) {
-        console.log(profile);
         // What goes here? Refer to step 4.
         models.User.findOne({
             facebookID: profile.id
         }, function(err, user) {
             // (1) Check if there is an error. If so, return done(err);
-            console.log("ENTERING HERE")
             if (err) {
                 return done(err);
             }
             if (!user) {
                 // (2) since the user is not found, create new user.
                 // Refer to Assignment 0 to how create a new instance of a model
-                console.log("here1")
                 var newUser = new models.User({
                     "facebookID": profile.id,
                     "token": accessToken,
@@ -106,7 +103,6 @@ passport.use(new FacebookStrategy({
                 newUser.save();
                 return done(null, profile);
             } else {
-                console.log("here2")
                 process.nextTick(function() {
                     user.facebookID = profile.id;
                     user.token = accessToken;
