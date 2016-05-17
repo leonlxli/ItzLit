@@ -19,10 +19,6 @@ function getPoints(){
     return latlangLights;
 }
 
-function toggleHeatmap() {
-  heatmap.setMap(heatmap.getMap() ? null : map);
-}
-
 function changeGradient() {
   var gradient = [
     'rgba(0, 255, 255, 0)',
@@ -387,7 +383,7 @@ window.initMap = function() {
     });
 
 
-    function CenterControl(controlDiv, map) {
+    function ToggleControl(controlDiv, map) {
 
         // Set CSS for the control border.
         var controlUI = document.createElement('div');
@@ -400,7 +396,7 @@ window.initMap = function() {
         controlUI.style.marginLeft = '20px';
         controlUI.style.marginTop = '20px';
         controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to recenter the map';
+        controlUI.title = 'Click to toggle the heatmap';
         controlDiv.appendChild(controlUI);
 
         // Set CSS for the control interior.
@@ -411,27 +407,24 @@ window.initMap = function() {
         controlText.style.lineHeight = '38px';
         controlText.style.paddingLeft = '5px';
         controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Center Map';
+        controlText.innerHTML = 'Toggle Heatmap';
         controlUI.appendChild(controlText);
 
         // Setup the click event listeners: simply set the map to Chicago.
         controlUI.addEventListener('click', function() {
-            map.setCenter({
-                lat: 32.8787,
-                lng: -117.0400
-            });
+            heatmap.setMap(heatmap.getMap() ? null : map);
         });
 
     }
 
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
-    var meter = new Image();
-    meter.src = '../images/meter.png';
+    var ToggleControlDiv = document.createElement('div');
+    var ToggleControl = new ToggleControl(ToggleControlDiv, map);
+    // var meter = new Image();
+    // meter.src = '../images/meter.png';
 
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
+    ToggleControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
+    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
     // console.log(map.controls[google.maps.ControlPosition.BOTTOM_LEFT]);
 
 
