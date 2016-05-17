@@ -9,6 +9,44 @@ var lightsDone = false;
 var crimes;
 var crimeCoordinates = []
 var crimeDone = false;
+var heatmap;
+
+function getPoints(){
+    var latlangLights = []
+    for(i in lights){
+         latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
+    }
+    return latlangLights;
+}
+
+function changeGradient() {
+  var gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(0, 0, 223, 1)',
+    'rgba(0, 0, 191, 1)',
+    'rgba(0, 0, 159, 1)',
+    'rgba(0, 0, 127, 1)',
+    'rgba(63, 0, 91, 1)',
+    'rgba(127, 0, 63, 1)',
+    'rgba(191, 0, 31, 1)',
+    'rgba(255, 0, 0, 1)'
+  ]
+  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
+
+function changeRadius() {
+  heatmap.set('radius', heatmap.get('radius') ? null : 20);
+}
+
+function changeOpacity() {
+  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+}
+
 
 
 $(document).ready(function() {
@@ -25,8 +63,13 @@ $(document).ready(function() {
         }
         crimeDone = true;
     });
+
     $.get("/lights", function(data) {
         lights = data.lights;
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         lightsDone = true
     });
     var CrimeData;
@@ -40,16 +83,6 @@ $(document).ready(function() {
     $('#rankings').children('button').remove();
     $('#rankings').children('div').remove();
 
-    /*setTimeout(function() {
-
-        // Something you want delayed.
-        var start = "3633 Nobel Dr, San Diego, CA 92122"
-        var end = "9500 Gilman Dr, La Jolla, CA 92093"
-        var res = CreateDirections(start, end, "transit", function(res, err) {
-            console.log(res)
-        });
-    }, 1000);
-    console.log()*/
 });
 
 //for highlighting selected uber
@@ -218,14 +251,11 @@ function CreateDirections(start, end, method, callback) {
         methodOfTravel = google.maps.TravelMode.DRIVING
     } else if (method == "walking") {
         methodOfTravel = google.maps.TravelMode.WALKING
-    }
-    else if (method=="transit"){
+    } else if (method == "transit") {
         methodOfTravel = google.maps.TravelMode.TRANSIT
-    }
-    else if (method=="bike"){
+    } else if (method == "bike") {
         methodOfTravel = google.maps.TravelMode.BICYCLING
-    }
-    else{
+    } else {
         methodOfTravel = google.maps.TravelMode.WALKING
     }
     var directionsService = new google.maps.DirectionsService;
@@ -312,7 +342,7 @@ window.initMap = function() {
         center: new google.maps.LatLng(32.8787, -117.0400),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
-        zoomControl: false,
+        zoomControl: true,
         mapTypeControl: false,
         scrollwheel: false
     });
@@ -327,33 +357,22 @@ window.initMap = function() {
     });
 
 
-    var styleArray = [{
-        featureType: "all",
-        stylers: [{
-            saturation: -80
-        }]
-    }, {
-        featureType: "road.arterial",
-        elementType: "geometry",
-        stylers: [{
-            hue: "#00ffee"
-        }, {
-            saturation: 50
-        }]
-    }, {
-        featureType: "poi.business",
-        elementType: "labels",
-        stylers: [{
-            visibility: "off"
-        }]
-    }];
+    var styleArray = [{"stylers":[{"hue":"#ff1a00"},
+        {"invert_lightness":true},
+        {"saturation":-100},
+        {"lightness":33},
+        {"gamma":0.5}]},
+        {"featureType":"water",
+        "elementType":"geometry",
+        "stylers":[{"color":"#2D333C"}]}
+    ]
 
     map.setOptions({
         styles: styleArray
     });
 
 
-    function CenterControl(controlDiv, map) {
+    function ToggleControl(controlDiv, map) {
 
         // Set CSS for the control border.
         var controlUI = document.createElement('div');
@@ -366,7 +385,7 @@ window.initMap = function() {
         controlUI.style.marginLeft = '20px';
         controlUI.style.marginTop = '20px';
         controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to recenter the map';
+        controlUI.title = 'Click to toggle the heatmap';
         controlDiv.appendChild(controlUI);
 
         // Set CSS for the control interior.
@@ -377,27 +396,24 @@ window.initMap = function() {
         controlText.style.lineHeight = '38px';
         controlText.style.paddingLeft = '5px';
         controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Center Map';
+        controlText.innerHTML = 'Toggle Heatmap';
         controlUI.appendChild(controlText);
 
         // Setup the click event listeners: simply set the map to Chicago.
         controlUI.addEventListener('click', function() {
-            map.setCenter({
-                lat: 32.8787,
-                lng: -117.0400
-            });
+            heatmap.setMap(heatmap.getMap() ? null : map);
         });
 
     }
 
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
-    var meter = new Image();
-    meter.src = '../images/meter.png';
+    var ToggleControlDiv = document.createElement('div');
+    var ToggleControl = new ToggleControl(ToggleControlDiv, map);
+    // var meter = new Image();
+    // meter.src = '../images/meter.png';
 
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
+    ToggleControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
+    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
     // console.log(map.controls[google.maps.ControlPosition.BOTTOM_LEFT]);
 
 
@@ -421,97 +437,97 @@ window.initMap = function() {
 
     // Limit the zoom level
 
-    var cityName;
-
-    infoWindow = new google.maps.InfoWindow({
-
-    });
+    // var cityName;
+    //
+    // infoWindow = new google.maps.InfoWindow({
+    //
+    // });
     // Creates the infoWindow object
 
-    google.maps.event.addListener(map, 'click', function(event) {
-        infoWindow.close();
-        infoWindow = new google.maps.InfoWindow({
-            content: '<div class="scrollFix"></div>'
-        });
-        var html = "<center><p>Please click on an outlined<br>region for data!</p></center>";
-        infoWindow.setContent(html);
-        var latlng = event.latLng;
-        //console.log(latlng);
-        infoWindow.setPosition(latlng);
-        infoWindow.open(map);
-    });
-
-    map.data.addListener('click', function(event) {
-        infoWindow.close();
-        infoWindow = new google.maps.InfoWindow({
-            content: '<div class="scrollFix"></div>'
-        });
-
-        var rawData;
-        cityName = event.feature.getProperty('NAME');
-        for (i = 0; i < allData.length; i++) {
-            if (cityName.toUpperCase() == allData[i].Area.toUpperCase()) {
-                // Render Data for bar graphs
-                // console.log(allData[i].data['scaled data']);
-                var bars = buildGraph(allData[i], infoWindow);
-                var raw = allData[i].data;
-
-                rawData =
-                    '<div class="row">' +
-                    '<br />' +
-                    '<p class="col-md-6"><strong> Population: </strong>' + raw['population'] + '</p>' +
-                    '<p class="col-md-6"><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
-                    '<p class="col-md-6"><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
-                    '<p class="col-md-6"><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
-                    '<p class="col-md-6"><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
-                    '<p class="col-md-6"><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
-                    '<p class="col-md-6"><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>' +
-                    '</div>';
-            }
-        }
-        var html = "<p>" + cityName + "</p>";
-        var d3 = $('#d3').html();
-        // console.log(d3);
-        infoWindow.setContent('<div class="scrollFix">' + html + d3 + rawData + '</div>');
-        //buildGraph(html, infoWindow);
-    })
-
-    // Opens infoWindow on click
-    map.data.addListener("click", function(event) {
-        infoWindow.close();
-        var latlng = event.latLng;
-        if (tooltip) {
-            tooltip.close();
-        }
-        infoWindow.setPosition(latlng);
-        infoWindow.open(map);
-        map.setCenter(infoWindow.getPosition());
-
-    });
-
-    // Closes window when mouseOut
-    map.data.addListener("mouseout", function(event) {
-        // infoWindow.close();
-        if (tooltip) tooltip.close();
-        map.data.overrideStyle(event.feature, {
-            strokeWeight: 2
-        });
-    });
-
-    map.data.addListener('mouseover', function(event) {
-        tooltip = new google.maps.InfoWindow({
-            pixelOffset: new google.maps.Size(0, -10)
-        });
-        tooltip.setPosition(event.latLng);
-        tooltip.setContent('<p>' + event.feature.getProperty('NAME') + '</p><p> Click for more Information</p>');
-        tooltip.open(map);
-        map.data.overrideStyle(event.feature, {
-            strokeWeight: 6
-        });
-    });
-    map.data.addListener('mousemove', function(event) {
-        tooltip.setPosition(event.latLng);
-    });
+//     google.maps.event.addListener(map, 'click', function(event) {
+//         infoWindow.close();
+//         infoWindow = new google.maps.InfoWindow({
+//             content: '<div class="scrollFix"></div>'
+//         });
+//         var html = "<center><p>Please click on an outlined<br>region for data!</p></center>";
+//         infoWindow.setContent(html);
+//         var latlng = event.latLng;
+//         //console.log(latlng);
+//         infoWindow.setPosition(latlng);
+//         infoWindow.open(map);
+//     });
+//
+//     map.data.addListener('click', function(event) {
+//         infoWindow.close();
+//         infoWindow = new google.maps.InfoWindow({
+//             content: '<div class="scrollFix"></div>'
+//         });
+//
+//         var rawData;
+//         cityName = event.feature.getProperty('NAME');
+//         for (i = 0; i < allData.length; i++) {
+//             if (cityName.toUpperCase() == allData[i].Area.toUpperCase()) {
+//                 // Render Data for bar graphs
+//                 // console.log(allData[i].data['scaled data']);
+//                 var bars = buildGraph(allData[i], infoWindow);
+//                 var raw = allData[i].data;
+//
+//                 rawData =
+//                     '<div class="row">' +
+//                     '<br />' +
+//                     '<p class="col-md-6"><strong> Population: </strong>' + raw['population'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>' +
+//                     '</div>';
+//             }
+//         }
+//         var html = "<p>" + cityName + "</p>";
+//         var d3 = $('#d3').html();
+//         // console.log(d3);
+//         infoWindow.setContent('<div class="scrollFix">' + html + d3 + rawData + '</div>');
+//         //buildGraph(html, infoWindow);
+//     })
+//
+//     // Opens infoWindow on click
+//     map.data.addListener("click", function(event) {
+//         infoWindow.close();
+//         var latlng = event.latLng;
+//         if (tooltip) {
+//             tooltip.close();
+//         }
+//         infoWindow.setPosition(latlng);
+//         infoWindow.open(map);
+//         map.setCenter(infoWindow.getPosition());
+//
+//     });
+//
+//     // Closes window when mouseOut
+//     map.data.addListener("mouseout", function(event) {
+//         // infoWindow.close();
+//         if (tooltip) tooltip.close();
+//         map.data.overrideStyle(event.feature, {
+//             strokeWeight: 2
+//         });
+//     });
+//
+//     map.data.addListener('mouseover', function(event) {
+//         tooltip = new google.maps.InfoWindow({
+//             pixelOffset: new google.maps.Size(0, -10)
+//         });
+//         tooltip.setPosition(event.latLng);
+//         tooltip.setContent('<p>' + event.feature.getProperty('NAME') + '</p><p> Click for more Information</p>');
+//         tooltip.open(map);
+//         map.data.overrideStyle(event.feature, {
+//             strokeWeight: 6
+//         });
+//     });
+//     map.data.addListener('mousemove', function(event) {
+//         tooltip.setPosition(event.latLng);
+//     });
 }
 
 
@@ -530,9 +546,9 @@ $("img.uberType").click(function() {
 });
 
 $('#destinations-form').submit(function(e) {
-  console.log('fuk ');
-  e.preventDefault();
-  var starting = $('#starting').val();
-  var ending = $('#ending').val();
-  window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
+    console.log('fuk ');
+    e.preventDefault();
+    var starting = $('#starting').val();
+    var ending = $('#ending').val();
+    window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
 });
