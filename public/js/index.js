@@ -552,3 +552,53 @@ $('#destinations-form').submit(function(e) {
     var ending = $('#ending').val();
     window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
 });
+
+//Getting starting location
+$("#currLocation").click(function () {
+    //rotation();
+    console.log("Getting location");
+    getLocation();
+    return false;
+});
+
+var rotation = function () {
+    $("#currLocation").rotate({
+        angle: 0,
+        animateTo: 360,
+        callback: rotation
+    });
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+    } else {
+        alert('It seems like Geolocation, which is required for this page, is not enabled in your browser.');
+    }
+}
+
+function successFunction(position) {
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    
+    alert('Your latitude is :' + lat + ' and longitude is ' + long);
+    
+    /*
+    $.getJSON("/location", {
+        lat: lat,
+        lon: long,
+        format: "json"
+    }, function (data) {
+        console.log(data);
+        $("#starting").val(data.location[0].formattedAddress);
+
+        //$("#location-button").stopRotate(); // stop rotation
+        //$("#location-button").css("transform", ""); // clear rotation
+        //$("#location-button").css("-webkit-transform", "");
+    });
+    */
+}
+
+function errorFunction(position) {
+    alert("Couldn't get your location!");
+}
