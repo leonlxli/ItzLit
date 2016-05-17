@@ -342,7 +342,7 @@ window.initMap = function() {
         center: new google.maps.LatLng(32.8787, -117.0400),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
-        zoomControl: false,
+        zoomControl: true,
         mapTypeControl: false,
         scrollwheel: false
     });
@@ -357,26 +357,15 @@ window.initMap = function() {
     });
 
 
-    var styleArray = [{
-        featureType: "all",
-        stylers: [{
-            saturation: -80
-        }]
-    }, {
-        featureType: "road.arterial",
-        elementType: "geometry",
-        stylers: [{
-            hue: "#00ffee"
-        }, {
-            saturation: 50
-        }]
-    }, {
-        featureType: "poi.business",
-        elementType: "labels",
-        stylers: [{
-            visibility: "off"
-        }]
-    }];
+    var styleArray = [{"stylers":[{"hue":"#ff1a00"},
+        {"invert_lightness":true},
+        {"saturation":-100},
+        {"lightness":33},
+        {"gamma":0.5}]},
+        {"featureType":"water",
+        "elementType":"geometry",
+        "stylers":[{"color":"#2D333C"}]}
+    ]
 
     map.setOptions({
         styles: styleArray
@@ -448,97 +437,97 @@ window.initMap = function() {
 
     // Limit the zoom level
 
-    var cityName;
-
-    infoWindow = new google.maps.InfoWindow({
-
-    });
+    // var cityName;
+    //
+    // infoWindow = new google.maps.InfoWindow({
+    //
+    // });
     // Creates the infoWindow object
 
-    google.maps.event.addListener(map, 'click', function(event) {
-        infoWindow.close();
-        infoWindow = new google.maps.InfoWindow({
-            content: '<div class="scrollFix"></div>'
-        });
-        var html = "<center><p>Please click on an outlined<br>region for data!</p></center>";
-        infoWindow.setContent(html);
-        var latlng = event.latLng;
-        //console.log(latlng);
-        infoWindow.setPosition(latlng);
-        infoWindow.open(map);
-    });
-
-    map.data.addListener('click', function(event) {
-        infoWindow.close();
-        infoWindow = new google.maps.InfoWindow({
-            content: '<div class="scrollFix"></div>'
-        });
-
-        var rawData;
-        cityName = event.feature.getProperty('NAME');
-        for (i = 0; i < allData.length; i++) {
-            if (cityName.toUpperCase() == allData[i].Area.toUpperCase()) {
-                // Render Data for bar graphs
-                // console.log(allData[i].data['scaled data']);
-                var bars = buildGraph(allData[i], infoWindow);
-                var raw = allData[i].data;
-
-                rawData =
-                    '<div class="row">' +
-                    '<br />' +
-                    '<p class="col-md-6"><strong> Population: </strong>' + raw['population'] + '</p>' +
-                    '<p class="col-md-6"><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
-                    '<p class="col-md-6"><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
-                    '<p class="col-md-6"><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
-                    '<p class="col-md-6"><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
-                    '<p class="col-md-6"><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
-                    '<p class="col-md-6"><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>' +
-                    '</div>';
-            }
-        }
-        var html = "<p>" + cityName + "</p>";
-        var d3 = $('#d3').html();
-        // console.log(d3);
-        infoWindow.setContent('<div class="scrollFix">' + html + d3 + rawData + '</div>');
-        //buildGraph(html, infoWindow);
-    })
-
-    // Opens infoWindow on click
-    map.data.addListener("click", function(event) {
-        infoWindow.close();
-        var latlng = event.latLng;
-        if (tooltip) {
-            tooltip.close();
-        }
-        infoWindow.setPosition(latlng);
-        infoWindow.open(map);
-        map.setCenter(infoWindow.getPosition());
-
-    });
-
-    // Closes window when mouseOut
-    map.data.addListener("mouseout", function(event) {
-        // infoWindow.close();
-        if (tooltip) tooltip.close();
-        map.data.overrideStyle(event.feature, {
-            strokeWeight: 2
-        });
-    });
-
-    map.data.addListener('mouseover', function(event) {
-        tooltip = new google.maps.InfoWindow({
-            pixelOffset: new google.maps.Size(0, -10)
-        });
-        tooltip.setPosition(event.latLng);
-        tooltip.setContent('<p>' + event.feature.getProperty('NAME') + '</p><p> Click for more Information</p>');
-        tooltip.open(map);
-        map.data.overrideStyle(event.feature, {
-            strokeWeight: 6
-        });
-    });
-    map.data.addListener('mousemove', function(event) {
-        tooltip.setPosition(event.latLng);
-    });
+//     google.maps.event.addListener(map, 'click', function(event) {
+//         infoWindow.close();
+//         infoWindow = new google.maps.InfoWindow({
+//             content: '<div class="scrollFix"></div>'
+//         });
+//         var html = "<center><p>Please click on an outlined<br>region for data!</p></center>";
+//         infoWindow.setContent(html);
+//         var latlng = event.latLng;
+//         //console.log(latlng);
+//         infoWindow.setPosition(latlng);
+//         infoWindow.open(map);
+//     });
+//
+//     map.data.addListener('click', function(event) {
+//         infoWindow.close();
+//         infoWindow = new google.maps.InfoWindow({
+//             content: '<div class="scrollFix"></div>'
+//         });
+//
+//         var rawData;
+//         cityName = event.feature.getProperty('NAME');
+//         for (i = 0; i < allData.length; i++) {
+//             if (cityName.toUpperCase() == allData[i].Area.toUpperCase()) {
+//                 // Render Data for bar graphs
+//                 // console.log(allData[i].data['scaled data']);
+//                 var bars = buildGraph(allData[i], infoWindow);
+//                 var raw = allData[i].data;
+//
+//                 rawData =
+//                     '<div class="row">' +
+//                     '<br />' +
+//                     '<p class="col-md-6"><strong> Population: </strong>' + raw['population'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
+//                     '<p class="col-md-6"><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>' +
+//                     '</div>';
+//             }
+//         }
+//         var html = "<p>" + cityName + "</p>";
+//         var d3 = $('#d3').html();
+//         // console.log(d3);
+//         infoWindow.setContent('<div class="scrollFix">' + html + d3 + rawData + '</div>');
+//         //buildGraph(html, infoWindow);
+//     })
+//
+//     // Opens infoWindow on click
+//     map.data.addListener("click", function(event) {
+//         infoWindow.close();
+//         var latlng = event.latLng;
+//         if (tooltip) {
+//             tooltip.close();
+//         }
+//         infoWindow.setPosition(latlng);
+//         infoWindow.open(map);
+//         map.setCenter(infoWindow.getPosition());
+//
+//     });
+//
+//     // Closes window when mouseOut
+//     map.data.addListener("mouseout", function(event) {
+//         // infoWindow.close();
+//         if (tooltip) tooltip.close();
+//         map.data.overrideStyle(event.feature, {
+//             strokeWeight: 2
+//         });
+//     });
+//
+//     map.data.addListener('mouseover', function(event) {
+//         tooltip = new google.maps.InfoWindow({
+//             pixelOffset: new google.maps.Size(0, -10)
+//         });
+//         tooltip.setPosition(event.latLng);
+//         tooltip.setContent('<p>' + event.feature.getProperty('NAME') + '</p><p> Click for more Information</p>');
+//         tooltip.open(map);
+//         map.data.overrideStyle(event.feature, {
+//             strokeWeight: 6
+//         });
+//     });
+//     map.data.addListener('mousemove', function(event) {
+//         tooltip.setPosition(event.latLng);
+//     });
 }
 
 
