@@ -9,6 +9,48 @@ var lightsDone = false;
 var crimes;
 var crimeCoordinates = []
 var crimeDone = false;
+var heatmap;
+
+function getPoints(){
+    var latlangLights = []
+    for(i in lights){
+         latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
+    }
+    return latlangLights;
+}
+
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+function changeGradient() {
+  var gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(0, 0, 223, 1)',
+    'rgba(0, 0, 191, 1)',
+    'rgba(0, 0, 159, 1)',
+    'rgba(0, 0, 127, 1)',
+    'rgba(63, 0, 91, 1)',
+    'rgba(127, 0, 63, 1)',
+    'rgba(191, 0, 31, 1)',
+    'rgba(255, 0, 0, 1)'
+  ]
+  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
+
+function changeRadius() {
+  heatmap.set('radius', heatmap.get('radius') ? null : 20);
+}
+
+function changeOpacity() {
+  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+}
+
 
 
 $(document).ready(function() {
@@ -25,8 +67,13 @@ $(document).ready(function() {
         }
         crimeDone = true;
     });
+
     $.get("/lights", function(data) {
         lights = data.lights;
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+        });
         lightsDone = true
     });
     var CrimeData;
@@ -40,16 +87,6 @@ $(document).ready(function() {
     $('#rankings').children('button').remove();
     $('#rankings').children('div').remove();
 
-    /*setTimeout(function() {
-
-        // Something you want delayed.
-        var start = "3633 Nobel Dr, San Diego, CA 92122"
-        var end = "9500 Gilman Dr, La Jolla, CA 92093"
-        var res = CreateDirections(start, end, "transit", function(res, err) {
-            console.log(res)
-        });
-    }, 1000);
-    console.log()*/
 });
 
 //for highlighting selected uber
@@ -218,14 +255,11 @@ function CreateDirections(start, end, method, callback) {
         methodOfTravel = google.maps.TravelMode.DRIVING
     } else if (method == "walking") {
         methodOfTravel = google.maps.TravelMode.WALKING
-    }
-    else if (method=="transit"){
+    } else if (method == "transit") {
         methodOfTravel = google.maps.TravelMode.TRANSIT
-    }
-    else if (method=="bike"){
+    } else if (method == "bike") {
         methodOfTravel = google.maps.TravelMode.BICYCLING
-    }
-    else{
+    } else {
         methodOfTravel = google.maps.TravelMode.WALKING
     }
     var directionsService = new google.maps.DirectionsService;
@@ -530,9 +564,9 @@ $("img.uberType").click(function() {
 });
 
 $('#destinations-form').submit(function(e) {
-  console.log('fuk ');
-  e.preventDefault();
-  var starting = $('#starting').val();
-  var ending = $('#ending').val();
-  window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
+    console.log('fuk ');
+    e.preventDefault();
+    var starting = $('#starting').val();
+    var ending = $('#ending').val();
+    window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
 });
