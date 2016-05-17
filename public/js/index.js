@@ -40,7 +40,7 @@ $(document).ready(function() {
     $('#rankings').children('button').remove();
     $('#rankings').children('div').remove();
 
-    setTimeout(function() {
+    /*setTimeout(function() {
 
         // Something you want delayed.
         var start = "3633 Nobel Dr, San Diego, CA 92122"
@@ -49,7 +49,7 @@ $(document).ready(function() {
             console.log(res)
         });
     }, 1000);
-    console.log()
+    console.log()*/
 });
 
 //for highlighting selected uber
@@ -527,4 +527,12 @@ $("img.uberType").click(function() {
             scrollTop: $("#sidebar").offset().top
         },
         'slow');
+});
+
+$('#destinations-form').submit(function(e) {
+  console.log('fuk ');
+  e.preventDefault();
+  var starting = $('#starting').val();
+  var ending = $('#ending').val();
+  window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
 });

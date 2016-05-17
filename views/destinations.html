@@ -15,16 +15,16 @@
         </div>
       </div>
       <div class="row">
-        <form action="/directions" method="get" class="col-md-6 col-md-offset-3">
+        <form id="destinations-form" class="col-md-6 col-md-offset-3">
           <fieldset class="form-group">
             <label for="starting">Starting</label>
-            <input type="text" name="starting" class="form-control" id="starting" placeholder="">
+            <input type="text" class="form-control" id="starting" placeholder="">
           </fieldset>
           <fieldset class="form-group">
             <label for="ending">Ending</label>
-            <input type="text" name="ending" class="form-control" id="ending" placeholder="">
+            <input type="text" class="form-control" id="ending" placeholder="">
           </fieldset>
-          <button type="submit" class="btn btn-default">Go</button>
+          <input type="submit" class="btn btn-default" value="Go">
         </form>
       </div>
 
@@ -50,5 +50,7 @@
         </div-->
     </div>
 </body>
-
 </html>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="/js/index.js"></script>
