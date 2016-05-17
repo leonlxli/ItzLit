@@ -555,19 +555,10 @@ $('#destinations-form').submit(function(e) {
 
 //Getting starting location
 $("#currLocation").click(function () {
-    //rotation();
     console.log("Getting location");
     getLocation();
     return false;
 });
-
-var rotation = function () {
-    $("#currLocation").rotate({
-        angle: 0,
-        animateTo: 360,
-        callback: rotation
-    });
-}
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -578,30 +569,37 @@ function getLocation() {
 }
 
 function successFunction(position) {
-    var lat = position.coords.latitude;
+    var lati = position.coords.latitude;
     var long = position.coords.longitude;
-    
-    alert('Your latitude is :' + lat + ' and longitude is ' + long);
-    
-    $("#starting").text(lat + ", " + long);
-    $("#starting").val(lat + ", " + long);
+    //alert('Your latitude is :' + lati + ' and longitude is ' + long);
+    var latlng = lati + " , " + long;
+    geoLocate(latlng);
+}
 
-    /*
-    $.getJSON("/location", {
-        lat: lat,
-        lon: long,
-        format: "json"
-    }, function (data) {
-        console.log(data);
-        $("#starting").val(data.location[0].formattedAddress);
+function geoLocate(LATLNG) {
+    var input = LATLNG;
+    var latlngStr = input.split(',', 2);
+    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+    
+    var geocoder = new google.maps.Geocoder();
 
-        //$("#location-button").stopRotate(); // stop rotation
-        //$("#location-button").css("transform", ""); // clear rotation
-        //$("#location-button").css("-webkit-transform", "");
+    geocoder.geocode({'location': latlng}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            //infowindow.setContent(results[1].formatted_address);
+            $("#starting").text(results[1].formatted_address);
+            $("#starting").val(results[1].formatted_address);
+            console.log("Got location");
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
     });
-    */
 }
 
 function errorFunction(position) {
     alert("Couldn't get your location!");
 }
+
