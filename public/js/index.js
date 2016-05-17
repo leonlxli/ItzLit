@@ -10,6 +10,8 @@ var crimes;
 var crimeCoordinates = []
 var crimeDone = false;
 var heatmap;
+var originalCenter;
+var originalZoom;
 
 function getPoints(){
     var latlangLights = []
@@ -39,19 +41,8 @@ function changeGradient() {
   heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
-function changeRadius() {
-  heatmap.set('radius', heatmap.get('radius') ? null : 20);
-}
-
-function changeOpacity() {
-  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-}
-
-
-
 $(document).ready(function() {
     //selectUber('UberX');
-
     $.get("/currentCrimes", {
         lat: 32.7157,
         lng: -117.1611,
@@ -70,6 +61,7 @@ $(document).ready(function() {
             data: getPoints(),
             map: map
         });
+
         lightsDone = true
     });
     var CrimeData;
@@ -259,6 +251,7 @@ function CreateDirections(start, end, method, callback) {
         methodOfTravel = google.maps.TravelMode.WALKING
     }
     var directionsService = new google.maps.DirectionsService;
+
     directionsService.route({
         origin: start,
         destination: end,
@@ -275,11 +268,16 @@ function CreateDirections(start, end, method, callback) {
         var routeInfo = []
         console.log(response.routes)
 
-
         var check = function() {
+            if(originalCenter == null || originalZoom == null)
+            {
+                originalCenter = map.getCenter();
+                originalZoom = map.getZoom();
+            }
             if (lightsDone && crimeDone) {
                 for (var route in response.routes) {
                     // console.log(response.routes[route])
+
                     var bounds = response.routes[route].overview_path;
                     var newBounds = []
                     for (var i in bounds) {
@@ -291,6 +289,8 @@ function CreateDirections(start, end, method, callback) {
                     var polyline = new google.maps.Polyline({
                         path: newBounds
                     });
+
+
                     var numLights = 0
                     var numCrimes = 0;
                     for (var i in lights) {
@@ -339,13 +339,14 @@ window.initMap = function() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: minZoomLevel,
-        center: new google.maps.LatLng(32.8787, -117.0400),
+        // center: new google.maps.LatLng(32.8787, -117.0400),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
         zoomControl: true,
         mapTypeControl: false,
         scrollwheel: false
     });
+
 
     map.data.setStyle(function(feature) {
         var color = feature.getProperty('color');
@@ -370,6 +371,7 @@ window.initMap = function() {
     map.setOptions({
         styles: styleArray
     });
+
 
 
     function ToggleControl(controlDiv, map) {
@@ -406,6 +408,45 @@ window.initMap = function() {
 
     }
 
+    function CenterControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '2px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.marginLeft = '20px';
+        controlUI.style.marginTop = '20px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '13px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+            map.setCenter(originalCenter);
+            map.setZoom(originalZoom);
+                // map.setZoom(minZoomLevel);
+        });
+
+    }
+
+    var centerControlDiv = document.createElement('div');
+    var centerControl = new CenterControl(centerControlDiv, map);
+
     var ToggleControlDiv = document.createElement('div');
     var ToggleControl = new ToggleControl(ToggleControlDiv, map);
     // var meter = new Image();
@@ -413,6 +454,8 @@ window.initMap = function() {
 
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+
     // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
     // console.log(map.controls[google.maps.ControlPosition.BOTTOM_LEFT]);
 
