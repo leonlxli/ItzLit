@@ -99,8 +99,6 @@ $('.uberType').mouseenter(function() {
 });
 
 
-
-
 $('#d3').hide();
 //var data = [4, 8, 15, 16, 23, 42];
 // Function to create the bar graph
@@ -336,7 +334,6 @@ window.initMap = function() {
     //     console.log(data)
     // })
 
-
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: minZoomLevel,
         // center: new google.maps.LatLng(32.8787, -117.0400),
@@ -347,7 +344,6 @@ window.initMap = function() {
         scrollwheel: false
     });
 
-
     map.data.setStyle(function(feature) {
         var color = feature.getProperty('color');
         return ({
@@ -356,7 +352,6 @@ window.initMap = function() {
             strokeWeight: 2
         });
     });
-
 
     var styleArray = [{"stylers":[{"hue":"#ff1a00"},
         {"invert_lightness":true},
@@ -371,7 +366,6 @@ window.initMap = function() {
     map.setOptions({
         styles: styleArray
     });
-
 
 
     function ToggleControl(controlDiv, map) {
