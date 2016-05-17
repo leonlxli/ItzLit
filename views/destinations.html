@@ -17,14 +17,20 @@
       <div class="row">
         <form id="destinations-form" class="col-md-6 col-md-offset-3">
           <fieldset class="form-group">
-            <label for="starting">Starting</label>
-            <input type="text" class="form-control" id="starting" placeholder="">
+            <label for="starting">Starting Point</label>
+            <input type="text" class="form-control" id="starting" placeholder="Starting point address" required>
+            <br>
+            <button id="currLocation" type="button" class="btn btn-default">Use current location</button>
           </fieldset>
           <fieldset class="form-group">
-            <label for="ending">Ending</label>
-            <input type="text" class="form-control" id="ending" placeholder="">
+            <br>
+            <label for="ending">Ending Point</label>
+            <input type="text" class="form-control" id="ending" placeholder="Ending point address" required>
           </fieldset>
-          <input type="submit" class="btn btn-default" value="Go">
+          <center>
+            <br>
+          <input type="submit" class="btn-lg btn-outline btn-submit text-uppercase" value="ROUTE ME">
+          </center>
         </form>
       </div>
 
