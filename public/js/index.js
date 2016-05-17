@@ -583,6 +583,9 @@ function successFunction(position) {
     
     alert('Your latitude is :' + lat + ' and longitude is ' + long);
     
+    $("#starting").text(lat + ", " + long);
+    $("#starting").val(lat + ", " + long);
+
     /*
     $.getJSON("/location", {
         lat: lat,
