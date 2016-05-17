@@ -15,7 +15,8 @@ body {
 }
 
 #destinations {
-  background-color: black;
+  background-color: #191919;
+  color: white;
 }
 
 h1.text-center {
