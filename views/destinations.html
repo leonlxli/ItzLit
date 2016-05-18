@@ -27,18 +27,29 @@
             <label for="ending">Ending Point</label>
             <input type="text" class="form-control" id="ending" placeholder="Ending point address" required>
           </fieldset>
+
           <fieldset class="form-group">
             <br>
-            <label for="transport">Mode of Transpotation</label>
+            <label for="transport">Slect your mode of transpotation here:</label>
               <br>
-              <label class="radio-inline"><input type="radio" name="optradio"><img src="/images/driving.png" width="35" height="35"> Driving</label>
-              <label class="radio-inline"><input type="radio" name="optradio"><img src="/images/transit.png" width="35" height="35"> Transit</label>
-              <label class="radio-inline"><input type="radio" name="optradio"><img src="/images/walking.png" width="35" height="35"> Walking</label>
+              <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-dest outline active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> <img src="/images/driving.png" width="35" height="35">   Driving
+              </label>
+              <label class="btn btn-dest">
+                <input type="radio" name="options" id="option2" autocomplete="off"><img src="/images/transit.png" width="35" height="35">   Transit
+              </label>
+              <label class="btn btn-dest">
+                <input type="radio" name="options" id="option3" autocomplete="off"><img src="/images/walking.png" width="35" height="35">   Walking
+              </label>
+            </div>
           </fieldset>
+
           <center>
             <br>
           <input type="submit" class="btn-lg btn-outline btn-submit text-uppercase" value="ROUTE ME">
           </center>
+
         </form>
       </div>
 
