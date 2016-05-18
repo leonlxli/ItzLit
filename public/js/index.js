@@ -10,6 +10,8 @@ var crimes;
 var crimeCoordinates = []
 var crimeDone = false;
 var heatmap;
+var originalCenter;
+var originalZoom;
 
 function getPoints(){
     var latlangLights = []
@@ -39,19 +41,8 @@ function changeGradient() {
   heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
-function changeRadius() {
-  heatmap.set('radius', heatmap.get('radius') ? null : 20);
-}
-
-function changeOpacity() {
-  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-}
-
-
-
 $(document).ready(function() {
     //selectUber('UberX');
-
     $.get("/currentCrimes", {
         lat: 32.7157,
         lng: -117.1611,
@@ -70,6 +61,7 @@ $(document).ready(function() {
             data: getPoints(),
             map: map
         });
+
         lightsDone = true
     });
     var CrimeData;
@@ -105,8 +97,6 @@ $('.uberType').mouseenter(function() {
         }
     }
 });
-
-
 
 
 $('#d3').hide();
@@ -259,6 +249,7 @@ function CreateDirections(start, end, method, callback) {
         methodOfTravel = google.maps.TravelMode.WALKING
     }
     var directionsService = new google.maps.DirectionsService;
+
     directionsService.route({
         origin: start,
         destination: end,
@@ -275,11 +266,16 @@ function CreateDirections(start, end, method, callback) {
         var routeInfo = []
         console.log(response.routes)
 
-
         var check = function() {
+            if(originalCenter == null || originalZoom == null)
+            {
+                originalCenter = map.getCenter();
+                originalZoom = map.getZoom();
+            }
             if (lightsDone && crimeDone) {
                 for (var route in response.routes) {
                     // console.log(response.routes[route])
+
                     var bounds = response.routes[route].overview_path;
                     var newBounds = []
                     for (var i in bounds) {
@@ -291,6 +287,8 @@ function CreateDirections(start, end, method, callback) {
                     var polyline = new google.maps.Polyline({
                         path: newBounds
                     });
+
+
                     var numLights = 0
                     var numCrimes = 0;
                     for (var i in lights) {
@@ -336,10 +334,9 @@ window.initMap = function() {
     //     console.log(data)
     // })
 
-
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: minZoomLevel,
-        center: new google.maps.LatLng(32.8787, -117.0400),
+        // center: new google.maps.LatLng(32.8787, -117.0400),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
         zoomControl: true,
@@ -355,7 +352,6 @@ window.initMap = function() {
             strokeWeight: 2
         });
     });
-
 
     var styleArray = [{"stylers":[{"hue":"#ff1a00"},
         {"invert_lightness":true},
@@ -406,6 +402,45 @@ window.initMap = function() {
 
     }
 
+    function CenterControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '2px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.marginLeft = '20px';
+        controlUI.style.marginTop = '20px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '13px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+            map.setCenter(originalCenter);
+            map.setZoom(originalZoom);
+                // map.setZoom(minZoomLevel);
+        });
+
+    }
+
+    var centerControlDiv = document.createElement('div');
+    var centerControl = new CenterControl(centerControlDiv, map);
+
     var ToggleControlDiv = document.createElement('div');
     var ToggleControl = new ToggleControl(ToggleControlDiv, map);
     // var meter = new Image();
@@ -413,6 +448,8 @@ window.initMap = function() {
 
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+
     // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
     // console.log(map.controls[google.maps.ControlPosition.BOTTOM_LEFT]);
 
@@ -552,3 +589,54 @@ $('#destinations-form').submit(function(e) {
     var ending = $('#ending').val();
     window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
 });
+
+//Getting starting location
+$("#currLocation").click(function () {
+    console.log("Getting location");
+    getLocation();
+    return false;
+});
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+    } else {
+        alert('It seems like Geolocation, which is required for this page, is not enabled in your browser.');
+    }
+}
+
+function successFunction(position) {
+    var lati = position.coords.latitude;
+    var long = position.coords.longitude;
+    //alert('Your latitude is :' + lati + ' and longitude is ' + long);
+    var latlng = lati + " , " + long;
+    geoLocate(latlng);
+}
+
+function geoLocate(LATLNG) {
+    var input = LATLNG;
+    var latlngStr = input.split(',', 2);
+    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+    
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({'location': latlng}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            //infowindow.setContent(results[1].formatted_address);
+            $("#starting").text(results[1].formatted_address);
+            $("#starting").val(results[1].formatted_address);
+            console.log("Got location");
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+    });
+}
+
+function errorFunction(position) {
+    alert("Couldn't get your location!");
+}
+

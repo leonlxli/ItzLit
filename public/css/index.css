@@ -15,8 +15,26 @@ body {
 }
 
 #destinations {
-  background-color: #191919;
-  color: white;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    color: white;
+    background-color: black;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing2.jpg');
+    background-position: center;
+    opacity: 1.6;
+/*
+    background: black; /* For browsers that do not support gradients
+    background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0 
+    background: -o-linear-gradient(black, #20457F); /* For Opera 11.1 to 12.0
+    background: -moz-linear-gradient(black, #20457F); /* For Firefox 3.6 to 15
+    background: linear-gradient(black, #20457F); /* Standard syntax
+    color: white;
+*/
+/*
+    background-color: #191919;
+    color: white;
+*/
 }
 
 h1.text-center {
@@ -200,10 +218,36 @@ p.app-description {
     color: #d9534f;
 }
 
-.btn-primary.btn-outline:hover,
+.btn-.btn-outline:hover,
 .btn-success.btn-outline:hover,
 .btn-info.btn-outline:hover,
 .btn-warning.btn-outline:hover,
 .btn-danger.btn-outline:hover {
     color: #fff;
+}
+
+.btn-dest {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #000000;
+  *background-color: #000000;
+  border-color: #000000 #000000 #000000;
+  border-color: rgba(0, 0, 0, 1) rgba(0, 0, 0, 1) rgba(0, 0, 0, 1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-dest:hover,
+.btn-dest:focus,
+.btn-dest.disabled,
+.btn-dest[disabled] {
+  color: #ffffff;
+  background-color: #7F7F7F;
+  *background-color: #7F7F7F;
+}
+
+.btn-dest:active,
+.btn-dest.active {
+  background-color: #292B2E;
+  color: #ffffff;
 }
