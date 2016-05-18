@@ -10,7 +10,19 @@ body {
     white-space: nowrap;
 }
 
-#main, #destinations {
+#main, #destinations, #moreInfo {
+    height: 100%;
+}
+
+#moreInfo {
+    background-color: #191919;
+    color: white;
+    height: 100%;
+}
+
+#forum {
+    background-color: #191919;
+    color: white;
     height: 100%;
 }
 
@@ -19,10 +31,17 @@ body {
     width: 100%;
     margin: 0 auto;
     color: white;
+    background: black; /* For browsers that do not support gradients*/
+    background: -webkit-linear-gradient(black, #1F2021); /* For Safari 5.1 to 6.0*/
+    background: -o-linear-gradient(black, #1F2021); /* For Opera 11.1 to 12.0*/
+    background: -moz-linear-gradient(black, #1F2021); /* For Firefox 3.6 to 15*/
+    background: linear-gradient(black, #1F2021); /* Standard syntax*/
+/*
     background-color: black;
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing2.jpg');
     background-position: center;
     opacity: 1.6;
+*/
 /*
     background: black; /* For browsers that do not support gradients
     background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0 
@@ -35,6 +54,14 @@ body {
     background-color: #191919;
     color: white;
 */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Exo';
+}
+
+a, p {
+    font-family: 'Raleway';
 }
 
 h1.text-center {
@@ -114,12 +141,14 @@ p.app-description {
 
 #sidebar {
     float: left;
-    height: 80%;
+    height: 100%;
     width: 33%;
+    background-color: #BEC2C9;
 }
 
 .row {
-     padding-left: 67px;
+    font-family: 'Exo';
+    /*padding-left: 67px;*/
 }
 
 .selector {
@@ -134,7 +163,8 @@ p.app-description {
 
 #map {
     float: left;
-    height: 80%;
+    padding-top: 50px;
+    height: 100%;
     width: 67%;
 }
 
