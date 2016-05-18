@@ -49,6 +49,14 @@ body {
 */
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Exo';
+}
+
+a, p {
+    font-family: 'Raleway';
+}
+
 h1.text-center {
     font-family: 'Exo';
     letter-spacing: 20px;
@@ -132,6 +140,7 @@ p.app-description {
 }
 
 .row {
+    font-family: 'Exo';
     /*padding-left: 67px;*/
 }
 
