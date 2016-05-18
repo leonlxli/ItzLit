@@ -14,7 +14,7 @@ body {
     height: 100%;
 }
 
-#forum {
+#moreInfo {
     background-color: #191919;
     color: white;
     height: 100%;
@@ -23,6 +23,7 @@ body {
 #forum {
     background-color: #191919;
     color: white;
+    height: 100%;
 }
 
 #destinations {
