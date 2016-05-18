@@ -15,16 +15,26 @@ body {
 }
 
 #destinations {
-    background: black; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(black, #20457F); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(black, #20457F); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(black, #20457F); /* Standard syntax */
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
     color: white;
+    background-color: black;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing2.jpg');
+    background-position: center;
+    opacity: 1.6;
 /*
-  background-color: #191919;
-  color: white;
-  */
+    background: black; /* For browsers that do not support gradients
+    background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0 
+    background: -o-linear-gradient(black, #20457F); /* For Opera 11.1 to 12.0
+    background: -moz-linear-gradient(black, #20457F); /* For Firefox 3.6 to 15
+    background: linear-gradient(black, #20457F); /* Standard syntax
+    color: white;
+*/
+/*
+    background-color: #191919;
+    color: white;
+*/
 }
 
 h1.text-center {
