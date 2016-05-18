@@ -14,7 +14,13 @@ body {
     height: 100%;
 }
 
-#moreInfo {
+#forum {
+    background-color: #191919;
+    color: white;
+    height: 100%;
+}
+
+#forum {
     background-color: #191919;
     color: white;
 }
