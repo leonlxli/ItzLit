@@ -4908,9 +4908,11 @@ input[type="submit"].btn.btn-mini {
   background-color: #ffffff;
   border: 0;
   outline: 0;
+  /*
   -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
      -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
           box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+          */
 }
 
 .navbar-inverse .btn-navbar {

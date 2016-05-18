@@ -622,10 +622,10 @@ function geoLocate(LATLNG) {
 
     geocoder.geocode({'location': latlng}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
+          if (results[0]) {
             //infowindow.setContent(results[1].formatted_address);
-            $("#starting").text(results[1].formatted_address);
-            $("#starting").val(results[1].formatted_address);
+            $("#starting").text(results[0].formatted_address);
+            $("#starting").val(results[0].formatted_address);
             console.log("Got location");
           } else {
             window.alert('No results found');
