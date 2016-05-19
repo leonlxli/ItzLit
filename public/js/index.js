@@ -640,21 +640,17 @@ function errorFunction(position) {
     alert("Couldn't get your location!");
 }
 
+//navbar animation
 $("[href^='#']").on("click", function( e ) {  
-
       var target = $(this).attr('href');
-
       var scrollTop = $( target ).offset().top-$('.header').height()-$('.header').outerHeight();
 
       if ( target =='#home'){
          scrollTop = 0;
       }
-
       $("body, html").animate({
               scrollTop: scrollTop
           }, 800);
 
       e.preventDefault();
-
-
-    });
+});
