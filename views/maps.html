@@ -8,30 +8,28 @@
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span> 
-          </button>
-          <a class="navbar-brand" href="/">ITZ LIT</a>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">ITZ LIT</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#main">MAP</a></li>
+                    <li><a href="#moreInfo">MORE INFO</a></li>
+                    <li><a href="#forum">FORUM</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav">
-            <li><a href="#main">MAP</a></li>
-            <li><a href="#moreInfo">MORE INFO</a></li>
-            <li><a href="#forum">FORUM</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-          </ul>
-        </div>
-      </div>
     </nav>
-
     <div id="main" class="row" style="padding-top: 50px">
         <div id="sidebar">
             <div>
@@ -55,15 +53,17 @@
                 </center>
                 <div style="margin-left:40px">
                     <p>Starting point:</p>
+                    <p id="startingp"></p>
                     <p>Ending point:</p>
+                    <p id="endingp"></p>
                 </div>
                 <center>
                     <h2 id="uberTypeSelected" class="uber-selection">ROUTE</h2>
                 </center>
                 <div style="margin-left:40px">
-                    <p>Route 1</p>
-                    <p>Route 2</p>
-                    <p>Route 3</p>
+                    <div id="routeInfo">
+
+                    </div>
                 </div>
             </div>
             <br>
@@ -71,7 +71,6 @@
         </div>
         <div id="map"></div>
     </div>
-
     <div id="moreInfo">
         <div class="container" style="padding-top: 5%">
             <div class="row">
@@ -84,13 +83,10 @@
             </div>
         </div>
     </div>
-
-
     <div id="d3">
         <svg class="chart">
         </svg>
     </div>
-
     <div id="forum" class="text-center">
         <div class="container" style="padding-top: 5%">
             <div class="row">
@@ -103,15 +99,6 @@
             </div>
         </div>
     </div>
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeAnNaWn4NxU_2lyPMot7FQlMikqHdPuQ
-        &libraries=geometry,visualization&callback=initMap"></script>
-    <script src="/js/index.js"></script>
-
-
-    <!--div id="info-box">?</div-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeAnNaWn4NxU_2lyPMot7FQlMikqHdPuQ
