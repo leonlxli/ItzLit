@@ -242,17 +242,17 @@ function CreateDirections(start, end, method, callback) {
     geocoder.geocode({
         address: start
     }, function(results, status) {
-        $.get("/currentCrimes", {
-            lat: results[0].geometry.location.lat(),
-            lng: results[0].geometry.location.lng(),
-            distance: 0.5
-        }, function(data) {
-            currentCrimes = data;
-            for (var i in currentCrimes.crimes) {
-                crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
-            }
-            crimeDone = true;
-        });
+        // $.get("/currentCrimes", {
+        //     lat: results[0].geometry.location.lat(),
+        //     lng: results[0].geometry.location.lng(),
+        //     distance: 0.5
+        // }, function(data) {
+        //     currentCrimes = data;
+        //     for (var i in currentCrimes.crimes) {
+        //         crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
+        //     }
+        //     crimeDone = true;
+        // });
     });
     var methodOfTravel;
     if (method == "driving") {
@@ -289,7 +289,7 @@ function CreateDirections(start, end, method, callback) {
                 originalCenter = map.getCenter();
                 originalZoom = map.getZoom();
             }
-            if (lightsDone && crimeDone) {
+            if (lightsDone) {
                 for (var route in response.routes) {
                     // console.log(response.routes[route])
 
@@ -315,18 +315,18 @@ function CreateDirections(start, end, method, callback) {
                             numLights++;
                         }
                     }
-                    for (var i in crimeCoordinates) {
-                        var location = new google.maps.LatLng(Number(crimeCoordinates[i][0]), Number(crimeCoordinates[i][1]))
-                        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                            // console.log("here")
-                            numCrimes++;
-                        }
-                    }
+                    // for (var i in crimeCoordinates) {
+                    //     var location = new google.maps.LatLng(Number(crimeCoordinates[i][0]), Number(crimeCoordinates[i][1]))
+                    //     if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+                    //         // console.log("here")
+                    //         numCrimes++;
+                    //     }
+                    // }
                     var lightPercent = ((numLights * 40) / response.routes[route].legs[0].distance.value) * 100
                     var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                     routeInfo.push({
                         route: response.routes[route],
-                        crimes: numCrimes,
+                        crimes: 0,
                         lights: lightPercent,
                         lightPercentText: lightText,
                         distance: response.routes[route].legs[0].distance.text,
