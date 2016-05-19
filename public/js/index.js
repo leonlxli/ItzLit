@@ -13,32 +13,32 @@ var heatmap;
 var originalCenter;
 var originalZoom;
 
-function getPoints(){
+function getPoints() {
     var latlangLights = []
-    for(i in lights){
-         latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
+    for (i in lights) {
+        latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
     }
     return latlangLights;
 }
 
 function changeGradient() {
-  var gradient = [
-    'rgba(0, 255, 255, 0)',
-    'rgba(0, 255, 255, 1)',
-    'rgba(0, 191, 255, 1)',
-    'rgba(0, 127, 255, 1)',
-    'rgba(0, 63, 255, 1)',
-    'rgba(0, 0, 255, 1)',
-    'rgba(0, 0, 223, 1)',
-    'rgba(0, 0, 191, 1)',
-    'rgba(0, 0, 159, 1)',
-    'rgba(0, 0, 127, 1)',
-    'rgba(63, 0, 91, 1)',
-    'rgba(127, 0, 63, 1)',
-    'rgba(191, 0, 31, 1)',
-    'rgba(255, 0, 0, 1)'
-  ]
-  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+    var gradient = [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+    ]
+    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
 $(document).ready(function() {
@@ -70,10 +70,28 @@ $(document).ready(function() {
 
     });
 
-    $("#all").addClass("selected");
+    var getQueryString = function(field, url) {
+        var href = url ? url : window.location.href;
+        var reg = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
+        var string = reg.exec(href);
+        return string ? string[1] : null;
+    };
 
-    $('#rankings').children('button').remove();
-    $('#rankings').children('div').remove();
+    var start = getQueryString('starting').replace(/%20/g, " "),
+        end = getQueryString('ending').replace(/%20/g, " ");
+
+    $("#startingp").text(start);
+    $("#endingp").text(end);
+
+    setTimeout(function() {
+        CreateDirections(start, end, "walking", function(res, err) {
+            console.log(res)
+            var info = $("#routeInfo");
+            for (var i in res) {
+                info.append("<h4>Route " + i + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p>")
+            }
+        });
+    }, 1000);
 
 });
 
@@ -224,17 +242,17 @@ function CreateDirections(start, end, method, callback) {
     geocoder.geocode({
         address: start
     }, function(results, status) {
-        $.get("/currentCrimes", {
-            lat: results[0].geometry.location.lat(),
-            lng: results[0].geometry.location.lng(),
-            distance: 1.00
-        }, function(data) {
-            currentCrimes = data;
-            for (var i in currentCrimes.crimes) {
-                crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
-            }
-            crimeDone = true;
-        });
+        // $.get("/currentCrimes", {
+        //     lat: results[0].geometry.location.lat(),
+        //     lng: results[0].geometry.location.lng(),
+        //     distance: 0.5
+        // }, function(data) {
+        //     currentCrimes = data;
+        //     for (var i in currentCrimes.crimes) {
+        //         crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
+        //     }
+        //     crimeDone = true;
+        // });
     });
     var methodOfTravel;
     if (method == "driving") {
@@ -267,12 +285,11 @@ function CreateDirections(start, end, method, callback) {
         console.log(response.routes)
 
         var check = function() {
-            if(originalCenter == null || originalZoom == null)
-            {
+            if (originalCenter == null || originalZoom == null) {
                 originalCenter = map.getCenter();
                 originalZoom = map.getZoom();
             }
-            if (lightsDone && crimeDone) {
+            if (lightsDone) {
                 for (var route in response.routes) {
                     // console.log(response.routes[route])
 
@@ -298,18 +315,18 @@ function CreateDirections(start, end, method, callback) {
                             numLights++;
                         }
                     }
-                    for (var i in crimeCoordinates) {
-                        var location = new google.maps.LatLng(Number(crimeCoordinates[i][0]), Number(crimeCoordinates[i][1]))
-                        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                            // console.log("here")
-                            numCrimes++;
-                        }
-                    }
+                    // for (var i in crimeCoordinates) {
+                    //     var location = new google.maps.LatLng(Number(crimeCoordinates[i][0]), Number(crimeCoordinates[i][1]))
+                    //     if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+                    //         // console.log("here")
+                    //         numCrimes++;
+                    //     }
+                    // }
                     var lightPercent = ((numLights * 40) / response.routes[route].legs[0].distance.value) * 100
                     var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                     routeInfo.push({
                         route: response.routes[route],
-                        crimes: numCrimes,
+                        crimes: 0,
                         lights: lightPercent,
                         lightPercentText: lightText,
                         distance: response.routes[route].legs[0].distance.text,
@@ -353,15 +370,25 @@ window.initMap = function() {
         });
     });
 
-    var styleArray = [{"stylers":[{"hue":"#ff1a00"},
-        {"invert_lightness":true},
-        {"saturation":-100},
-        {"lightness":33},
-        {"gamma":0.5}]},
-        {"featureType":"water",
-        "elementType":"geometry",
-        "stylers":[{"color":"#2D333C"}]}
-    ]
+    var styleArray = [{
+        "stylers": [{
+            "hue": "#ff1a00"
+        }, {
+            "invert_lightness": true
+        }, {
+            "saturation": -100
+        }, {
+            "lightness": 33
+        }, {
+            "gamma": 0.5
+        }]
+    }, {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [{
+            "color": "#2D333C"
+        }]
+    }]
 
     map.setOptions({
         styles: styleArray
@@ -433,7 +460,7 @@ window.initMap = function() {
         controlUI.addEventListener('click', function() {
             map.setCenter(originalCenter);
             map.setZoom(originalZoom);
-                // map.setZoom(minZoomLevel);
+            // map.setZoom(minZoomLevel);
         });
 
     }
@@ -449,149 +476,13 @@ window.initMap = function() {
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
-
-    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meter);
-    // console.log(map.controls[google.maps.ControlPosition.BOTTOM_LEFT]);
-
-
-    // // Bounds for North America
-    // var strictBounds = new google.maps.LatLngBounds(
-    //     new google.maps.LatLng(32.7297, -117.0451),
-    //     new google.maps.LatLng(33.2157, -117.0300));
-    //
-    // // Listen for the dragend event
-    // var lastValidCenter = map.getCenter();
-    // google.maps.event.addListener(map, 'center_changed', function() {
-    //     if (strictBounds.contains(map.getCenter())) {
-    //         // still within valid bounds, so save the last valid position
-    //         lastValidCenter = map.getCenter();
-    //         return;
-    //     }
-    //
-    //     // not valid anymore => return to last valid position
-    //     map.panTo(lastValidCenter);
-    // });
-
-    // Limit the zoom level
-
-    // var cityName;
-    //
-    // infoWindow = new google.maps.InfoWindow({
-    //
-    // });
-    // Creates the infoWindow object
-
-//     google.maps.event.addListener(map, 'click', function(event) {
-//         infoWindow.close();
-//         infoWindow = new google.maps.InfoWindow({
-//             content: '<div class="scrollFix"></div>'
-//         });
-//         var html = "<center><p>Please click on an outlined<br>region for data!</p></center>";
-//         infoWindow.setContent(html);
-//         var latlng = event.latLng;
-//         //console.log(latlng);
-//         infoWindow.setPosition(latlng);
-//         infoWindow.open(map);
-//     });
-//
-//     map.data.addListener('click', function(event) {
-//         infoWindow.close();
-//         infoWindow = new google.maps.InfoWindow({
-//             content: '<div class="scrollFix"></div>'
-//         });
-//
-//         var rawData;
-//         cityName = event.feature.getProperty('NAME');
-//         for (i = 0; i < allData.length; i++) {
-//             if (cityName.toUpperCase() == allData[i].Area.toUpperCase()) {
-//                 // Render Data for bar graphs
-//                 // console.log(allData[i].data['scaled data']);
-//                 var bars = buildGraph(allData[i], infoWindow);
-//                 var raw = allData[i].data;
-//
-//                 rawData =
-//                     '<div class="row">' +
-//                     '<br />' +
-//                     '<p class="col-md-6"><strong> Population: </strong>' + raw['population'] + '</p>' +
-//                     '<p class="col-md-6"><strong> Median income: </strong>' + raw['Median income'] + '</p>' +
-//                     '<p class="col-md-6"><strong> Family Households With Children: </strong>' + raw['Family Households With Children'] + '</p>' +
-//                     '<p class="col-md-6"><strong> Hispanic Population: </strong>' + raw['Hispanic Population'] + '</p>' +
-//                     '<p class="col-md-6"><strong> Families without vehicles: </strong>' + raw['Families without vehicles'] + '</p>' +
-//                     '<p class="col-md-6"><strong> Families with only 1 vehicle: </strong>' + raw['Families with only 1 vehicle'] + '</p>' +
-//                     '<p class="col-md-6"><strong> Number of people working in this region: </strong>' + raw['Number of people working in this region'] + '</p>' +
-//                     '</div>';
-//             }
-//         }
-//         var html = "<p>" + cityName + "</p>";
-//         var d3 = $('#d3').html();
-//         // console.log(d3);
-//         infoWindow.setContent('<div class="scrollFix">' + html + d3 + rawData + '</div>');
-//         //buildGraph(html, infoWindow);
-//     })
-//
-//     // Opens infoWindow on click
-//     map.data.addListener("click", function(event) {
-//         infoWindow.close();
-//         var latlng = event.latLng;
-//         if (tooltip) {
-//             tooltip.close();
-//         }
-//         infoWindow.setPosition(latlng);
-//         infoWindow.open(map);
-//         map.setCenter(infoWindow.getPosition());
-//
-//     });
-//
-//     // Closes window when mouseOut
-//     map.data.addListener("mouseout", function(event) {
-//         // infoWindow.close();
-//         if (tooltip) tooltip.close();
-//         map.data.overrideStyle(event.feature, {
-//             strokeWeight: 2
-//         });
-//     });
-//
-//     map.data.addListener('mouseover', function(event) {
-//         tooltip = new google.maps.InfoWindow({
-//             pixelOffset: new google.maps.Size(0, -10)
-//         });
-//         tooltip.setPosition(event.latLng);
-//         tooltip.setContent('<p>' + event.feature.getProperty('NAME') + '</p><p> Click for more Information</p>');
-//         tooltip.open(map);
-//         map.data.overrideStyle(event.feature, {
-//             strokeWeight: 6
-//         });
-//     });
-//     map.data.addListener('mousemove', function(event) {
-//         tooltip.setPosition(event.latLng);
-//     });
 }
 
 
-$("a.page-scroll").click(function() {
-    $('html,body').animate({
-            scrollTop: $("#selectButtons").offset().top
-        },
-        'slow');
-});
 
-$("img.uberType").click(function() {
-    $('html,body').animate({
-            scrollTop: $("#sidebar").offset().top
-        },
-        'slow');
-});
-
-$('#destinations-form').submit(function(e) {
-    console.log('fuk ');
-    e.preventDefault();
-    var starting = $('#starting').val();
-    var ending = $('#ending').val();
-    window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
-});
 
 //Getting starting location
-$("#currLocation").click(function () {
+$("#currLocation").click(function() {
     console.log("Getting location");
     getLocation();
     return false;
@@ -616,22 +507,27 @@ function successFunction(position) {
 function geoLocate(LATLNG) {
     var input = LATLNG;
     var latlngStr = input.split(',', 2);
-    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-    
+    var latlng = {
+        lat: parseFloat(latlngStr[0]),
+        lng: parseFloat(latlngStr[1])
+    };
+
     var geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({'location': latlng}, function(results, status) {
+    geocoder.geocode({
+        'location': latlng
+    }, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
-          if (results[0]) {
-            //infowindow.setContent(results[1].formatted_address);
-            $("#starting").text(results[0].formatted_address);
-            $("#starting").val(results[0].formatted_address);
-            console.log("Got location");
-          } else {
-            window.alert('No results found');
-          }
+            if (results[0]) {
+                //infowindow.setContent(results[1].formatted_address);
+                $("#starting").text(results[0].formatted_address);
+                $("#starting").val(results[0].formatted_address);
+                console.log("Got location");
+            } else {
+                window.alert('No results found');
+            }
         } else {
-          window.alert('Geocoder failed due to: ' + status);
+            window.alert('Geocoder failed due to: ' + status);
         }
     });
 }
@@ -640,3 +536,17 @@ function errorFunction(position) {
     alert("Couldn't get your location!");
 }
 
+//navbar animation
+$("[href^='#']").on("click", function(e) {
+    var target = $(this).attr('href');
+    var scrollTop = $(target).offset().top - $('.header').height() - $('.header').outerHeight();
+
+    if (target == '#home') {
+        scrollTop = 0;
+    }
+    $("body, html").animate({
+        scrollTop: scrollTop
+    }, 800);
+
+    e.preventDefault();
+});

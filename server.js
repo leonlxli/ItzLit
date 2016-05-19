@@ -119,7 +119,8 @@ passport.use(new FacebookStrategy({
 
 var router = {
     // uberData: require("./routes/uberData"),
-    myData: require("./routes/myData")
+    myData: require("./routes/myData"),
+    index: require("./routes/index")
         // invalid: require("./routes/invalid")
 };
 const query = "select charge_description, activity_date, block_address, community, zip " +
@@ -173,7 +174,10 @@ app.get('/directions', router.myData.getDirections);
 
 app.get('/currentCrimes', router.myData.getCurrentCrimes);
 
-
+app.get('/getAllCrimeData', router.index.getAllCrimeData);
+app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
+app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
+app.get('/getTimeBarCrimeData', router.index.getTimeBarCrimeData);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

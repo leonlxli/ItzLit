@@ -5,31 +5,31 @@
 <html>
 
 <head>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span> 
-          </button>
-          <a class="navbar-brand" href="#">ITZ LIT</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">MAP</a></li>
-            <li><a href="#moreInfo">MORE INFO</a></li>
-            <li><a href="/forum">FORUM</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
 </head>
 
-<body>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">ITZ LIT</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#main">MAP</a></li>
+                    <li><a href="#moreInfo">MORE INFO</a></li>
+                    <li><a href="#forum">FORUM</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div id="main" class="row" style="padding-top: 50px">
         <div id="sidebar">
             <div>
@@ -53,15 +53,17 @@
                 </center>
                 <div style="margin-left:40px">
                     <p>Starting point:</p>
+                    <p id="startingp"></p>
                     <p>Ending point:</p>
+                    <p id="endingp"></p>
                 </div>
                 <center>
                     <h2 id="uberTypeSelected" class="uber-selection">ROUTE</h2>
                 </center>
                 <div style="margin-left:40px">
-                    <p>Route 1</p>
-                    <p>Route 2</p>
-                    <p>Route 3</p>
+                    <div id="routeInfo">
+
+                    </div>
                 </div>
             </div>
             <br>
@@ -69,27 +71,42 @@
         </div>
         <div id="map"></div>
     </div>
-
     <div id="moreInfo">
-        <div class="row" style="padding-top: 5%">
-            <center><h1>More Information</h1></center>
+        <div class="container" style="padding-top: 5%">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h1 class="text-center" style="font-size:80px">MORE INFORMATION</h1>
+                    <!-- <h3 class="landing-description">Graphs and other cool stuff!!!</h3>
+                    <hr width="60%">
+                    <p class="app-description">LET'S GET VISUAL!</p> -->
+                        <center><div id="stackBarChart"></div></center>
+                </div>
+            </div>
         </div>
     </div>
-
-
     <div id="d3">
         <svg class="chart">
         </svg>
     </div>
-
-
-    <!--div id="info-box">?</div-->
+    <div id="forum" class="text-center">
+        <div class="container" style="padding-top: 5%">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h1 class="text-center" style="font-size:80px">FORUM</h1>
+                    <h3 class="landing-description">Wao we're gonna have people talk to each other</h3>
+                    <hr width="60%">
+                    <p class="app-description">COOL RIGHT???</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeAnNaWn4NxU_2lyPMot7FQlMikqHdPuQ
         &libraries=geometry,visualization&callback=initMap"></script>
     <script src="/js/index.js"></script>
     <script src="/js/maps.js"></script>
+    <script src="/js/barchart.js"></script>
 </body>
 
 </html>
