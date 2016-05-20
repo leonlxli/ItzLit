@@ -1,4 +1,4 @@
-var request = require("request");
+// var request = require("request");
 
 exports.getCrimes = function(req, res) {
     var data = require('../crime_data.json')
@@ -22,12 +22,29 @@ exports.getLights = function(req, res) {
 exports.getCurrentCrimes = function(req, res) {
     var d = new Date();
     var n = d.getTime();
-    console.log("hello")
-    request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
-        var i = body.indexOf('{');
-        var data = JSON.parse(body.substring(i, body.length - 1));
-        // localStorage.setItem('currentCrimes', JSON.stringify(obj));
-        res.json(data);
-    });
-}
+    // console.log("hello")
+    // request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
+    //     var i = body.indexOf('{');
+    //     var data = JSON.parse(body.substring(i, body.length - 1));
+    //     // localStorage.setItem('currentCrimes', JSON.stringify(obj));
+    //     res.json(data);
+    // });
+    var sys = require('util');
+    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        sys.puts("State: " + this.readyState);
+
+        if (this.readyState === 4) {
+            var body = this.responseText
+            var i = body.indexOf('{');
+            var data = JSON.parse(body.substring(i, body.length - 1));
+            res.json(data);
+        }
+    };
+
+    xhr.open("GET", "http://api.spotcrime.com/crimes.json?lat=" + req.query.lat + "&lon=" + req.query.lng + "&radius=" + req.query.distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n);
+    xhr.send();
+}
