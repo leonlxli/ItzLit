@@ -25,7 +25,7 @@ exports.getCurrentCrimes = function(req, res) {
     console.log("hello")
     request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
         console.log(response)
-        console.log(error)
+        // console.log(error)
     });
     var sys = require('util');
     var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
