@@ -170,7 +170,7 @@ app.get('/destinations', function(req, res) {
 });
 app.get('/lights', router.myData.getLights);
 app.get('/crimes', router.myData.getCrimes);
-app.get('/directions', router.myData.getDirections);
+// app.get('/directions', router.myData.getDirections);
 
 app.get('/currentCrimes', router.myData.getCurrentCrimes);
 

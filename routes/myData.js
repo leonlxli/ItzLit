@@ -30,3 +30,4 @@ exports.getCurrentCrimes = function(req, res) {
         res.json(data);
     });
 }
+
