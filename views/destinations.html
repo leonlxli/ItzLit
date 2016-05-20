@@ -9,50 +9,46 @@
 
 <body>
     <div id="destinations">
-      <div class="row" style="padding-top: 10%">
-        <div class="col-md-6 col-md-offset-3">
-          <h1>Please enter your destinations here:</h1>
-        </div>
-      </div>
-      <div class="row">
-        <form id="destinations-form" class="col-md-6 col-md-offset-3">
-          <fieldset class="form-group">
-            <label for="starting">Starting Point</label>
-            <input type="text" class="form-control" id="starting" placeholder="Starting point address" required>
-            <br>
-            <button id="currLocation" type="button" class="currLocation btn">Use current location</button>
-          </fieldset>
-          <fieldset class="form-group">
-            <br>
-            <label for="ending">Ending Point</label>
-            <input type="text" class="form-control" id="ending" placeholder="Ending point address" required>
-          </fieldset>
-
-          <fieldset class="form-group">
-            <br>
-            <label for="transport">Slect your mode of transpotation here:</label>
-              <br>
-              <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-dest outline active">
-                <input type="radio" name="options" id="option1" autocomplete="off" checked> <img src="/images/driving.png" width="35" height="35">   Driving
-              </label>
-              <label class="btn btn-dest">
-                <input type="radio" name="options" id="option2" autocomplete="off"><img src="/images/transit.png" width="35" height="35">   Transit
-              </label>
-              <label class="btn btn-dest">
-                <input type="radio" name="options" id="option3" autocomplete="off"><img src="/images/walking.png" width="35" height="35">   Walking
-              </label>
+        <div class="row" style="padding-top: 10%">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>Please enter your destinations here:</h1>
             </div>
-          </fieldset>
-
-          <center>
-            <br>
-          <input type="submit" class="btn-lg btn-outline btn-submit text-uppercase" value="ROUTE ME">
-          </center>
-
-        </form>
-      </div>
-
+        </div>
+        <div class="row">
+            <form id="destinations-form" class="col-md-6 col-md-offset-3">
+                <fieldset class="form-group">
+                    <label for="starting">Starting Point</label>
+                    <input type="text" class="form-control" id="starting" placeholder="Starting point address" required>
+                    <br>
+                    <button id="currLocation" type="button" class="currLocation btn">Use current location</button>
+                </fieldset>
+                <fieldset class="form-group">
+                    <br>
+                    <label for="ending">Ending Point</label>
+                    <input type="text" class="form-control" id="ending" placeholder="Ending point address" required>
+                </fieldset>
+                <fieldset class="form-group">
+                    <br>
+                    <label for="transport">Slect your mode of transpotation here:</label>
+                    <br>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-dest outline active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked> <img src="/images/driving.png" width="35" height="35"> Driving
+                        </label>
+                        <label class="btn btn-dest">
+                            <input type="radio" name="options" id="option2" autocomplete="off"><img src="/images/transit.png" width="35" height="35"> Transit
+                        </label>
+                        <label class="btn btn-dest">
+                            <input type="radio" name="options" id="option3" autocomplete="off"><img src="/images/walking.png" width="35" height="35"> Walking
+                        </label>
+                    </div>
+                </fieldset>
+                <center>
+                    <br>
+                    <input type="submit" class="btn-lg btn-outline btn-submit text-uppercase" value="ROUTE ME">
+                </center>
+            </form>
+        </div>
         <!--div id="destinations" class="row" style="padding-top: 10%;">
           <div class="col-md-6 col-md-offset-3">
             <h1>Enter your starting and ending destinations.</h1>
@@ -82,19 +78,14 @@
           </div>
         </div-->
     </div>
-
 </body>
-</html>
 
+</html>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="/js/destinations.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeAnNaWn4NxU_2lyPMot7FQlMikqHdPuQ
     &libraries=places&callback=initAutocomplete"></script>
-<script src="/js/index.js"></script>
-<script src="/js/destinations.js"></script>
-
-<script src="/js/maps.js"></script>
-
 <!--
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
