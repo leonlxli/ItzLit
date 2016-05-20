@@ -23,7 +23,7 @@ exports.getCurrentCrimes = function(req, res) {
     var d = new Date();
     var n = d.getTime();
     console.log("hello")
-    request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
+    request("http://api.spotcrime.com/crimes.json?lat=32.7157&lon=-117.1611&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1463679826441", function(error, response, body) {
         console.log(response)
         // console.log(error)
     });
@@ -43,6 +43,6 @@ exports.getCurrentCrimes = function(req, res) {
         }
     };
 
-    xhr.open("GET", "http://api.spotcrime.com/crimes.json?lat=" + req.query.lat + "&lon=" + req.query.lng + "&radius=" + req.query.distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n);
+    xhr.open("GET", "http://api.spotcrime.com/crimes.json?lat=32.7157&lon=-117.1611&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1463679826441");
     xhr.send();
 }
