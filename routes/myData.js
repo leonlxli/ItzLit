@@ -24,12 +24,12 @@ exports.getLights = function(req, res) {
 exports.getCurrentCrimes = function(req, res) {
     var d = new Date();
     var n = d.getTime();
-    /*request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
+    request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
         var i = body.indexOf('{');
         var data = JSON.parse(body.substring(i, body.length - 1));
         // localStorage.setItem('currentCrimes', JSON.stringify(obj));
         res.json(data);
-    });*/
+    });
 }
 
 var mockRequest = function(options, callback) {
