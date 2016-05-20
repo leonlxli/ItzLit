@@ -71,15 +71,16 @@ $(document).ready(function() {
     var spinner = new Spinner().spin()
     target.appendChild(spinner.el)
 
-    //selectUber('UberX');
     $.get("/currentCrimes", {
         lat: 32.7157,
         lng: -117.1611,
         distance: 8.00
     }, function(data) {
+
         SDCrimes = data;
-        for (var i in currentCrimes.crimes) {
-            crimeCoordinates.push([currentCrimes.crimes[i].lat, currentCrimes.crimes[i].lon])
+        console.log(SDCrimes)
+        for (var i in SDCrimes.crimes) {
+            crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
         }
         crimeDone = true;
     });
@@ -96,7 +97,6 @@ $(document).ready(function() {
     var CrimeData;
     $.get("/crimes", function(data) {
         crimes = data;
-
     });
 
     var getQueryString = function(field, url) {
