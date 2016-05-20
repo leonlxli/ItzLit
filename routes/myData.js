@@ -1,5 +1,3 @@
-var crimes;
-var GoogleMapsAPI = require('googlemaps')
 var request = require("request");
 
 exports.getCrimes = function(req, res) {
@@ -31,43 +29,4 @@ exports.getCurrentCrimes = function(req, res) {
         // localStorage.setItem('currentCrimes', JSON.stringify(obj));
         res.json(data);
     });
-}
-
-var mockRequest = function(options, callback) {
-    var res = {
-        statusCode: 200
-    };
-    var data = JSON.stringify([]);
-    return callback(null, res, data);
-};
-
-exports.getDirections = function(req, res) {
-
-    var config = {
-        key: 'AIzaSyAcpvjQfNGee-cz_5z4BdkK4EGCxbgCbfA'
-    };
-
-    var gm = new GoogleMapsAPI(config);
-    console.log("getDirections")
-    var start = "3633 Nobel Dr, San Diego, CA 92122"
-    var end = "9500 Gilman Dr, La Jolla, CA 92093"
-    var params = {
-        origin: start,
-        destination: end,
-        alternatives: true,
-        encode_polylines: true,
-
-    };
-    gm.directions(params, function(err, result) {
-        // console.log(result)
-        console.log(result)
-
-        // var polyline = gm.Polyline({
-        //     path: [],
-        //     strokeColor: '#FF0000',
-        //     strokeWeight: 3
-        // });
-
-    });
-
 }
