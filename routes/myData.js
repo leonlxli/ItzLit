@@ -39,9 +39,9 @@ exports.getCurrentCrimes = function(req, res) {
 
         if (this.readyState === 4) {
             var body = this.responseText
-            var i = body.indexOf('{');
-            var data = JSON.parse(body.substring(i, body.length - 1));
-            res.json(data);
+            // var i = body.indexOf('{');
+            // var data = JSON.parse(body.substring(i, body.length - 1));
+            res.json(body);
         }
     };
 
