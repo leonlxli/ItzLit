@@ -87,7 +87,7 @@ $(document).ready(function() {
     //     }
     //     crimeDone = true;
     // });
-    $.get("http://api.spotcrime.com/crimes.json?lat=32.7157&lon=-117.1611&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.&_=1463679826441", function(data, body){
+    $.get("http://api.spotcrime.com/crimes.json?lat=32.7157&lon=-117.1611&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.", function(data, body){
         console.log(data)
         console.log(body)
 
