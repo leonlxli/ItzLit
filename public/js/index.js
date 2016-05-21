@@ -74,24 +74,24 @@ $(document).ready(function() {
     // var spinner = new Spinner().spin()
     target.appendChild(spinner.el)
 
-    // $.get("/currentCrimes", {
-    //     lat: 32.7157,
-    //     lng: -117.1611,
-    //     distance: 8.00
-    // }, function(data) {
+    $.get("/currentCrimes", {
+        lat: 32.7157,
+        lng: -117.1611,
+        distance: 8.00
+    }, function(data) {
 
-    //     SDCrimes = data;
-    //     console.log(SDCrimes)
-    //     for (var i in SDCrimes.crimes) {
-    //         crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
-    //     }
-    //     crimeDone = true;
-    // });
-    $.get("http://api.spotcrime.com/crimes.json?lat=32.7157&lon=-117.1611&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.", function(data, body){
-        console.log(data)
-        console.log(body)
+        SDCrimes = data;
+        console.log(SDCrimes)
+        for (var i in SDCrimes.crimes) {
+            crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
+        }
+        crimeDone = true;
+    });
+    // $.get("http://api.spotcrime.com/crimes.json?lat=32.7157&lon=-117.1611&radius=0.02&callback=jQuery21307676314746535686_1462858455579&key=.", function(data, body){
+    //     console.log(data)
+    //     console.log(body)
 
-    })
+    // })
     $.get("/lights", function(data) {
         lights = data.lights;
         heatmap = new google.maps.visualization.HeatmapLayer({
