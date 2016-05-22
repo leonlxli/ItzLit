@@ -44,27 +44,22 @@ function getPoints() {
     return latlangLights;
 }
 
-
-
-function changeGradient() {
-    var gradient = [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
-    ]
-    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-}
+var gradient = [
+    'rgba(185, 185, 70, 0.0)',
+    'rgba(185, 185, 70, 0.7)',
+    'rgba(191, 191, 64, 0.6)',
+    'rgba(198, 198, 57, 0.6)',
+    'rgba(204, 204, 51, 0.8)',
+    'rgba(210, 210, 45, 0.8)',
+    'rgba(217, 217, 38, 0.8)',
+    'rgba(223, 223, 32, 0.8)',
+    'rgba(230, 230, 25, 0.9)',
+    'rgba(236, 236, 19, 1)',
+    'rgba(242, 242, 13, 1)',
+    'rgba(249, 249, 6, 1)',
+    'rgba(255, 255, 0, 1)',
+    'rgba(255, 255, 0, 1)'
+]
 
 $(document).ready(function() {
 
@@ -92,9 +87,9 @@ $(document).ready(function() {
         lights = data.lights;
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: getPoints(),
-            map: map
+            map: map,
+            gradient: gradient
         });
-
         lightsDone = true
     });
     var CrimeData;
@@ -498,17 +493,30 @@ window.initMap = function() {
 
     }
 
+    function meterControl (controlDiv, map) {
+        var controlUI = document.createElement('div');
+        controlUI.style.marginTop = '18px';
+        var meter = new Image();
+        meter.src = '../images/maplegend.png';
+        controlDiv.appendChild(controlUI);
+        controlUI.appendChild(meter);
+    }
+
     var centerControlDiv = document.createElement('div');
     var centerControl = new CenterControl(centerControlDiv, map);
 
     var ToggleControlDiv = document.createElement('div');
     var ToggleControl = new ToggleControl(ToggleControlDiv, map);
-    // var meter = new Image();
-    // meter.src = '../images/meter.png';
+
+    var meterDiv = document.createElement('div');
+    var meterControl = new meterControl(meterDiv, map);
+    //  var meter = new Image();
+    //  meter.src = '../images/maplegend.png';
 
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meterDiv);
 }
 
 
