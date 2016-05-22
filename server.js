@@ -15,6 +15,7 @@ var models = require("./models");
 var mongoose = require('mongoose');
 const MongoStore = require("connect-mongo")(session);
 
+var io = require('socket.io')(http);
 
 //client id and client secret here, taken from .env (which you need to create)
 
@@ -116,11 +117,14 @@ passport.use(new FacebookStrategy({
     }));
 
 
-
 var router = {
     // uberData: require("./routes/uberData"),
     myData: require("./routes/myData"),
-    index: require("./routes/index")
+    index: require("./routes/index"),
+
+    // commenting routes
+    newPost: require("./routes/newPost"),
+    comments: require("./routes/comments")
         // invalid: require("./routes/invalid")
 };
 const query = "select charge_description, activity_date, block_address, community, zip " +
@@ -155,6 +159,14 @@ app.get('/auth/facebook/callback',
         res.redirect('/');
     });
 
+// for forum page
+app.get("/newPost", router.newPost.view);
+app.post("/newPost", router.newPost.post);
+app.get('/comments', router.comments.view);
+app.get('/comments/get', router.comments.getComments);
+app.post('/comments', router.comments.post);
+app.post('/comments/delete', router.comments.delete);
+
 app.get('/', function(req, res) {
     res.render('index');
 });
@@ -178,6 +190,45 @@ app.get('/getAllCrimeData', router.index.getAllCrimeData);
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
 app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
 app.get('/getTimeBarCrimeData', router.index.getTimeBarCrimeData);
+
+
+// server side socket io
+io.use(function(socket, next) {
+    session_middleware(socket.request, {}, next);
+});
+
+var currentlyOnline = 0;
+
+io.on('connection', function(socket) {
+    currentlyOnline += 1;
+    io.emit('online', JSON.stringify({
+        online: currentlyOnline
+    }));
+    socket.on('disconnect', function() {
+            if (currentlyOnline > 0) {
+                currentlyOnline -= 1;
+                io.emit('online', JSON.stringify({
+                    online: currentlyOnline
+                }));
+            }
+
+        })
+        socket.on('comment', function(msg) {
+        var user = socket.request.session.passport.user;
+        console.log('comment========');
+        console.log(msg)
+        io.emit('comment', JSON.stringify(msg));
+    });
+    socket.on('newsfeed', function(msg) {
+        var user = socket.request.session.passport.user;
+        console.log('newsfeed========');
+        console.log(msg)
+        io.emit('newsfeed', JSON.stringify(msg));
+    });
+})
+
+
+
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
