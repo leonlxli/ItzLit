@@ -14,59 +14,49 @@ var originalCenter;
 var originalZoom;
 
 var opts = {
-  lines: 13 // The number of lines to draw
-, length: 28 // The length of each line
-, width: 12 // The line thickness
-, radius: 33 // The radius of the inner circle
-, scale: 0.5 // Scales overall size of the spinner
-, corners: 1 // Corner roundness (0..1)
-, color: '#000' // #rgb or #rrggbb or array of colors
-, opacity: 0.2 // Opacity of the lines
-, rotate: 0 // The rotation offset
-, direction: 1 // 1: clockwise, -1: counterclockwise
-, speed: 1.1 // Rounds per second
-, trail: 80 // Afterglow percentage
-, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-, zIndex: 2e9 // The z-index (defaults to 2000000000)
-, className: 'spinner' // The CSS class to assign to the spinner
-, top: '50%' // Top position relative to parent
-, left: '50%' // Left position relative to parent
-, shadow: false // Whether to render a shadow
-, hwaccel: false // Whether to use hardware acceleration
-, position: 'absolute' // Element positioning
+    lines: 13 // The number of lines to draw
+        ,
+    length: 28 // The length of each line
+        ,
+    width: 12 // The line thickness
+        ,
+    radius: 33 // The radius of the inner circle
+        ,
+    scale: 0.5 // Scales overall size of the spinner
+        ,
+    corners: 1 // Corner roundness (0..1)
+        ,
+    color: '#000' // #rgb or #rrggbb or array of colors
+        ,
+    opacity: 0.2 // Opacity of the lines
+        ,
+    rotate: 0 // The rotation offset
+        ,
+    direction: 1 // 1: clockwise, -1: counterclockwise
+        ,
+    speed: 1.1 // Rounds per second
+        ,
+    trail: 80 // Afterglow percentage
+        ,
+    fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+        ,
+    zIndex: 2e9 // The z-index (defaults to 2000000000)
+        ,
+    className: 'spinner' // The CSS class to assign to the spinner
+        ,
+    top: '50%' // Top position relative to parent
+        ,
+    left: '50%' // Left position relative to parent
+        ,
+    shadow: false // Whether to render a shadow
+        ,
+    hwaccel: false // Whether to use hardware acceleration
+        ,
+    position: 'absolute' // Element positioning
 }
 
-function getPoints() {
-    var latlangLights = []
-    for (i in lights) {
-        latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
-    }
-    return latlangLights;
-}
 
-
-
-function changeGradient() {
-    var gradient = [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
-    ]
-    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-}
-
-$(document).ready(function() {
+function start() {
 
     var target = document.getElementById('spinner')
     var spinner = new Spinner(opts).spin(target);
@@ -125,8 +115,175 @@ $(document).ready(function() {
             }
         });
     }, 1000);
+}
 
-});
+window.initMap = function() {
+    start();
+
+    console.log("hi")
+    var minZoomLevel = 13;
+    // $.get('/directions', function(data) {
+    //     console.log(data)
+    // })
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: minZoomLevel,
+        // center: new google.maps.LatLng(32.8787, -117.0400),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false,
+        zoomControl: true,
+        mapTypeControl: false,
+        scrollwheel: false
+    });
+
+    map.data.setStyle(function(feature) {
+        var color = feature.getProperty('color');
+        return ({
+            fillColor: color,
+            fillOpacity: 0.5,
+            strokeWeight: 2
+        });
+    });
+
+    var styleArray = [{
+        "stylers": [{
+            "hue": "#ff1a00"
+        }, {
+            "invert_lightness": true
+        }, {
+            "saturation": -100
+        }, {
+            "lightness": 33
+        }, {
+            "gamma": 0.5
+        }]
+    }, {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [{
+            "color": "#2D333C"
+        }]
+    }]
+
+    map.setOptions({
+        styles: styleArray
+    });
+
+
+    function ToggleControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '2px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.marginLeft = '20px';
+        controlUI.style.marginTop = '20px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to toggle the heatmap';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '13px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Toggle Heatmap';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
+        });
+
+    }
+
+    function CenterControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '2px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.marginLeft = '20px';
+        controlUI.style.marginTop = '20px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '13px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+            map.setCenter(originalCenter);
+            map.setZoom(originalZoom);
+            // map.setZoom(minZoomLevel);
+        });
+
+    }
+
+    var centerControlDiv = document.createElement('div');
+    var centerControl = new CenterControl(centerControlDiv, map);
+
+    var ToggleControlDiv = document.createElement('div');
+    var ToggleControl = new ToggleControl(ToggleControlDiv, map);
+    // var meter = new Image();
+    // meter.src = '../images/meter.png';
+
+    ToggleControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+}
+
+
+
+
+function getPoints() {
+    var latlangLights = []
+    for (i in lights) {
+        latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
+    }
+    return latlangLights;
+}
+
+
+
+function changeGradient() {
+    var gradient = [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+    ]
+    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
 
 //for highlighting selected uber
 $('.uberType').mouseenter(function() {
@@ -269,6 +426,8 @@ function buildGraph(myData) {
     return chart;
 }
 
+
+
 function CreateDirections(start, end, method, callback) {
     var geocoder = new google.maps.Geocoder();
     var startcoord;
@@ -376,142 +535,6 @@ function CreateDirections(start, end, method, callback) {
         check();
     });
 }
-
-window.initMap = function() {
-    console.log("hi")
-    var minZoomLevel = 13;
-    // $.get('/directions', function(data) {
-    //     console.log(data)
-    // })
-
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: minZoomLevel,
-        // center: new google.maps.LatLng(32.8787, -117.0400),
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        streetViewControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        scrollwheel: false
-    });
-
-    map.data.setStyle(function(feature) {
-        var color = feature.getProperty('color');
-        return ({
-            fillColor: color,
-            fillOpacity: 0.5,
-            strokeWeight: 2
-        });
-    });
-
-    var styleArray = [{
-        "stylers": [{
-            "hue": "#ff1a00"
-        }, {
-            "invert_lightness": true
-        }, {
-            "saturation": -100
-        }, {
-            "lightness": 33
-        }, {
-            "gamma": 0.5
-        }]
-    }, {
-        "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#2D333C"
-        }]
-    }]
-
-    map.setOptions({
-        styles: styleArray
-    });
-
-
-    function ToggleControl(controlDiv, map) {
-
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.borderRadius = '2px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.marginLeft = '20px';
-        controlUI.style.marginTop = '20px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to toggle the heatmap';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '13px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Toggle Heatmap';
-        controlUI.appendChild(controlText);
-
-        // Setup the click event listeners: simply set the map to Chicago.
-        controlUI.addEventListener('click', function() {
-            heatmap.setMap(heatmap.getMap() ? null : map);
-        });
-
-    }
-
-    function CenterControl(controlDiv, map) {
-
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.borderRadius = '2px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.marginLeft = '20px';
-        controlUI.style.marginTop = '20px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to recenter the map';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '13px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Center Map';
-        controlUI.appendChild(controlText);
-
-        // Setup the click event listeners: simply set the map to Chicago.
-        controlUI.addEventListener('click', function() {
-            map.setCenter(originalCenter);
-            map.setZoom(originalZoom);
-            // map.setZoom(minZoomLevel);
-        });
-
-    }
-
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
-
-    var ToggleControlDiv = document.createElement('div');
-    var ToggleControl = new ToggleControl(ToggleControlDiv, map);
-    // var meter = new Image();
-    // meter.src = '../images/meter.png';
-
-    ToggleControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
-}
-
-
 
 
 //Getting starting location
