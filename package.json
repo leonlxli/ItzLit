@@ -13,8 +13,6 @@
     "express-handlebars": "1.2.2",
     "express-session": "1.10.4",
     "googlemaps": "1.6.0",
-    "jquery": "2.2.4",
-    "jsdom": "9.1.0",
     "jsonfile": "2.3.0",
     "method-override": "2.3.5",
     "mongoose": "4.4.17",

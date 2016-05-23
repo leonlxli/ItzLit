@@ -1,5 +1,4 @@
 // var request = require("request");
-var jsonp = require('jsonp')
 
 exports.getCrimes = function(req, res) {
     var data = require('../crime_data.json')
@@ -28,15 +27,6 @@ exports.getCurrentCrimes = function(req, res) {
     //     console.log(err)
     //     console.log(data)
     // })
-    // $.ajax({
-    //     url: "http://api.spotcrime.com/crimes.json?lat=" + req.query.lat + "&lon=" + req.query.lng + "&radius=" + req.query.distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
-    //     dataType: 'jsonp',
-    //     success: function(data) {
-    //         console.log("success")
-    //         console.log(data)
-    //         // your code to handle data here
-    //     }
-    // });
     // console.log("hello")
     // request("http://api.spotcrime.com/crimes.json?lat=" + req.query.lat +"&lon="+req.query.lng+"&radius="+req.query.distance+"&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n, function(error, response, body) {
     //     var i = body.indexOf('{');
