@@ -110,8 +110,6 @@ $('#send_comment').submit(function(e) {
 })
 
 $(document).ready(function() {
-    $('select').material_select();
-    $('.modal-trigger').leanModal();
     putDeleteButtons();
 });
 
@@ -141,7 +139,6 @@ var okBtn2 = document.getElementById("okBtn2");
 
 // When the user clicks on the button, open the modal
 btn.onclick = function() {
-
         var message = $('#comment_content').val();
 
         if (message == "") {

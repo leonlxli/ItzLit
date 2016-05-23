@@ -29,12 +29,10 @@ exports.post = function(req, res) {
     console.log(date);
     if (req.user) {
         var newPost = new models.Posts({
-            'gym': req.body.gym,
             'timeSinceE':seconds,
             'message': req.body.message,
             'user': {
-                'username': req.user.username,
-                'photo': req.user.photos[0].value
+                'username': req.user.username
             },
             'posted': date,
             'comments': [],

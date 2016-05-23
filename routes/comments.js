@@ -75,7 +75,6 @@ exports.post = function(req, res) {
             console.log(err);
         } else {
             posts.comments.push({
-                'photo': req.user.photos[0].value,
                 'message': req.body.comment,
                 'username': req.user.username,
                 'posted': date,

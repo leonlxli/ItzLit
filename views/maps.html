@@ -96,6 +96,23 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Comments Modal -->
+                    <div id="commentsModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Comments</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Your route is calculated based on street light and crime data. Blah blah blah.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </center>
                 <div style="margin-left:40px">
                     <p>Starting point:</p>
@@ -158,6 +175,7 @@
                             <div class="col s10 offset-s1">
                                 <div class="card white">
                                     <div class="card-content black-text">
+                                      <p> TEST CARD </p>
                                         <img style="vertical-align:middle;" src="{{user.photo}}" />
                                         <b>  {{user.username}}</b><span class="username"> posted on {{posted}}:</p></span>
                                         <div class="card-title">
@@ -194,11 +212,16 @@
     </div>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script src="/js/index.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeAnNaWn4NxU_2lyPMot7FQlMikqHdPuQ
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxU3ewOQTPgI7Pf3wvcDZp-N8hv3cYnU
         &libraries=geometry,visualization&callback=initMap"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="/js/spin.js"></script>
     <script src="/js/barchart.js"></script>
+    <script src="./js/socket.io.min.js"></script>
+    <script src="./js/newPost.js"></script>
+    <!-- <script src="./js/comment.js"></script> -->
+
+
 </body>
 
 </html>

@@ -2,6 +2,8 @@
   "name": "mywebapp",
   "version": "0.0.1",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "mongod --dbpath dbpath --logpath log/mongod.log&",
     "start": "node server.js"
   },
   "dependencies": {

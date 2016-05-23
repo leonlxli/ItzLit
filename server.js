@@ -1,13 +1,13 @@
 //dependencies for each module used
 var express = require('express');
-var http = require('http');
+const app = express();
+var http = require('http').createServer(app);;
 var path = require('path');
 var handlebars = require('express-handlebars');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var dotenv = require('dotenv');
 var pg = require('pg');
-var app = express();
 var jsonfile = require('jsonfile');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -230,6 +230,6 @@ io.on('connection', function(socket) {
 
 
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+http.listen(app.get("port"), function() {
+    console.log("Express server listening on port " + app.get("port"));
 });
