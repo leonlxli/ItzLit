@@ -56,22 +56,27 @@ var opts = {
 }
 
 function getCrimeCurr(lat, lng, distance) {
-    console.log("hi")
     var d = new Date();
     var n = d.getTime();
     $.ajax({
         url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
         dataType: 'jsonp',
         success: function(data) {
-            console.log("success")
-            console.log(data)
-                // your code to handle data here
+            // console.log(data)
+            // your code to handle data here
+            SDCrimes = data;
+            // console.log(SDCrimes)
+            for (var i in SDCrimes.crimes) {
+                crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
+            }
+            console.log(crimeCoordinates)
+            crimeDone = true;
         }
-    });
+    })
 }
 
 function start() {
-    getCrimeCurr(32.7157,-117.1611,8.00)
+    getCrimeCurr(32.7157, -117.1611, 8.00)
     var target = document.getElementById('spinner')
     var spinner = new Spinner(opts).spin(target);
     // var spinner = new Spinner().spin()
