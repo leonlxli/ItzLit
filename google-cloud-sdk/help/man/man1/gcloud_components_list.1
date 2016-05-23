@@ -1,0 +1,100 @@
+
+.TH "GCLOUD_COMPONENTS_LIST" 1
+
+
+
+.SH "NAME"
+.HP
+gcloud components list \- list the status of all Cloud SDK components
+
+
+
+.SH "SYNOPSIS"
+.HP
+\f5gcloud components list\fR [\fB\-\-show\-versions\fR] [\fB\-\-filter\fR\ \fIEXPRESSION\fR] [\fB\-\-flatten\fR\ [\fIKEY\fR,...]] [\fB\-\-limit\fR\ \fILIMIT\fR] [\fB\-\-sort\-by\fR\ \fIFIELDS\fR] [\fIGLOBAL\-FLAG\ ...\fR]
+
+
+.SH "DESCRIPTION"
+
+This command lists all the available components in the Cloud SDK. For each
+component, the command lists the following information:
+
+.RS 2m
+.IP "\(bu" 2m
+Status on your local workstation: not installed, installed (and up to date), and
+update available (installed, but not up to date)
+.RE
+.RS 2m
+.IP "\(bu" 2m
+Name of the component (a description)
+.RE
+.RS 2m
+.IP "\(bu" 2m
+ID of the component (used to refer to the component in other [gcloud components]
+commands)
+.RE
+.RS 2m
+.IP "\(bu" 2m
+Size of the component
+.RE
+
+In addition, if the \f5\-\-show\-versions\fR flag is specified, the command
+lists the currently installed version (if any) and the latest available version
+of each individual component.
+
+
+
+.SH "FLAGS"
+
+\fB\-\-show\-versions\fR
+.RS 2m
+Show installed and available versions of all components.
+
+
+.RE
+
+.SH "LIST COMMAND FLAGS"
+
+\fB\-\-filter\fR \fIEXPRESSION\fR
+.RS 2m
+Apply a Boolean filter \fIEXPRESSION\fR to each resource item to be listed. If
+the expression evaluates True then that item is listed. For more details run $
+gcloud topic filters. If \fB\-\-limit\fR is also specified then it is applied
+after \fB\-\-filter\fR.
+
+.RE
+\fB\-\-flatten\fR [\fIKEY\fR,...]
+.RS 2m
+Flatten \fIname\fR[] resource slices in \fIKEY\fR to separate records for each
+item in each slice. Multiple keys and slices may be specified. This also
+flattens keys for \fB\-\-format\fR and \fB\-\-filter\fR. For example,
+\fB\-\-flatten=abc.def[]\fR flattens \fBabc.def[].ghi\fR references to
+\fBabc.def.ghi\fR.
+
+.RE
+\fB\-\-limit\fR \fILIMIT\fR
+.RS 2m
+The maximum number of resources to list. The default is \fBunlimited\fR. If
+\fB\-\-filter\fR is also specified then it is applied before \fB\-\-limit\fR.
+
+.RE
+\fB\-\-sort\-by\fR \fIFIELDS\fR
+.RS 2m
+A comma\-separated list of resource field key names to sort by. The default
+order is ascending. Prefix a field with ``~'' for descending order on that
+field.
+
+
+.RE
+
+.SH "GLOBAL FLAGS"
+
+Run \fB$ gcloud help\fR for a description of flags available to all commands.
+
+
+
+.SH "EXAMPLES"
+
+$ gcloud components list
+
+$ gcloud components list \-\-show\-versions

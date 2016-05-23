@@ -1,0 +1,80 @@
+
+.TH "GCLOUD_AUTH_LOGIN" 1
+
+
+
+.SH "NAME"
+.HP
+gcloud auth login \- authorize gcloud to access Google Cloud Platform
+
+
+
+.SH "SYNOPSIS"
+.HP
+\f5gcloud auth login\fR [\fIACCOUNT\fR] [\fB\-\-activate\fR] [\fB\-\-brief\fR] [\fB\-\-enable\-gdrive\-access\fR] [\fB\-\-force\fR] [\fB\-\-launch\-browser\fR] [\fIGLOBAL\-FLAG\ ...\fR]
+
+
+.SH "DESCRIPTION"
+
+Obtains access credentials for your user account via a web\-based authorization
+flow. When this command completes successfully, it sets the active account in
+the current configuration to the account specified. If no configuration exists,
+it creates a configuration named default.
+
+If valid credentials for an account are already available from a prior
+authorization, the account is set to active without rerunning the flow.
+
+Use \f5gcloud auth list\fR to view credentialed accounts.
+
+Deprecated behavior: This command also saves the credentials for Application
+Default Credentials. This behavior has been taken over by 'gcloud auth
+application\-default login', so prefer to use that command instead for that
+purpose.
+
+
+
+.SH "POSITIONAL ARGUMENTS"
+
+[\fIACCOUNT\fR]
+.RS 2m
+User account used for authorization.
+
+
+.RE
+
+.SH "FLAGS"
+
+\fB\-\-activate\fR
+.RS 2m
+Set the new account to active. Enabled by default, use \fB\-\-no\-activate\fR to
+disable.
+
+.RE
+\fB\-\-brief\fR
+.RS 2m
+Minimal user output.
+
+.RE
+\fB\-\-enable\-gdrive\-access\fR
+.RS 2m
+Enable Google Drive access.
+
+.RE
+\fB\-\-force\fR
+.RS 2m
+Re\-run the web authorization flow even if the given account has valid
+credentials.
+
+.RE
+\fB\-\-launch\-browser\fR
+.RS 2m
+Launch a browser for authorization. If not enabled or DISPLAY variable is not
+set, prints a URL to standard output to be copied. Enabled by default, use
+\fB\-\-no\-launch\-browser\fR to disable.
+
+
+.RE
+
+.SH "GLOBAL FLAGS"
+
+Run \fB$ gcloud help\fR for a description of flags available to all commands.

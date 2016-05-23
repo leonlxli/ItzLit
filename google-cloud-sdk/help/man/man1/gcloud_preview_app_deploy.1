@@ -1,0 +1,131 @@
+
+.TH "GCLOUD_PREVIEW_APP_DEPLOY" 1
+
+
+
+.SH "NAME"
+.HP
+gcloud preview app deploy \- \fB(BETA)\fR deploy the local code and/or configuration of your app to App Engine
+
+
+
+.SH "SYNOPSIS"
+.HP
+\f5gcloud preview app deploy\fR [\fIDEPLOYABLES\fR\ ...] [\fB\-\-bucket\fR\ \fIBUCKET\fR] [\fB\-\-docker\-build\fR\ \fIDOCKER_BUILD\fR] [\fB\-\-force\fR] [\fB\-\-image\-url\fR\ \fIIMAGE_URL\fR] [\fB\-\-promote\fR] [\fB\-\-stop\-previous\-version\fR] [\fB\-\-version\fR\ \fIVERSION\fR] [\fIGLOBAL\-FLAG\ ...\fR]
+
+
+.SH "DESCRIPTION"
+
+\fB(BETA)\fR This command is used to deploy both code and configuration to the
+App Engine server. As an input it takes one or more \f5\fIDEPLOYABLES\fR\fR that
+should be uploaded. A \f5\fIDEPLOYABLE\fR\fR can be a service's .yaml file or a
+configuration's .yaml file.
+
+To use a temporary VM (with the default \f5\-\-docker\-build=remote\fR setting),
+rather than the Container Builder API to perform docker builds, run:
+
+.RS 2m
+$ gcloud config set app/use_cloud_build false
+.RE
+
+See https://cloud.google.com/container\-builder/docs/ for more information.
+
+
+
+.SH "POSITIONAL ARGUMENTS"
+
+[\fIDEPLOYABLES\fR ...]
+.RS 2m
+The yaml files for the services or configurations you want to deploy. If not
+given, defaults to \f5app.yaml\fR in the current directory. If that is not
+found, attempts to automatically generate necessary configuration files (such as
+app.yaml) in the current directory.
+
+
+.RE
+
+.SH "FLAGS"
+
+\fB\-\-bucket\fR \fIBUCKET\fR
+.RS 2m
+The Google Cloud Storage bucket used to stage files associated with the
+deployment. If this argument is not specified, the application's default code
+bucket is used.
+
+.RE
+\fB\-\-docker\-build\fR \fIDOCKER_BUILD\fR
+.RS 2m
+Perform a hosted ('remote') or local ('local') Docker build. To perform a local
+build, you must have your local docker environment configured correctly. The
+default is a hosted build.
+
+.RE
+\fB\-\-force\fR
+.RS 2m
+Force deploying, overriding any previous in\-progress deployments to this
+version.
+
+.RE
+\fB\-\-image\-url\fR \fIIMAGE_URL\fR
+.RS 2m
+Deploy with a specific Docker image. Docker url must be from one of the valid
+gcr hostnames.
+
+.RE
+\fB\-\-promote\fR
+.RS 2m
+Promote the deployed version to receive all traffic.
+
+True by default. To change the default behavior for your current environment,
+run:
+
+.RS 2m
+$ gcloud config set app/promote_by_default false
+.RE
+
+Overrides the default \fBpromote_by_default\fR property value for this command
+invocation. Use \fB\-\-no\-promote\fR to disable.
+
+.RE
+\fB\-\-stop\-previous\-version\fR
+.RS 2m
+Stop the previously running version when deploying a new version that receives
+all traffic (off by default). Use \fB\-\-no\-stop\-previous\-version\fR to
+disable.
+
+.RE
+\fB\-\-version\fR \fIVERSION\fR
+.RS 2m
+The version of the app that will be created or replaced by this deployment. If
+you do not specify a version, one will be generated for you.
+
+
+.RE
+
+.SH "GLOBAL FLAGS"
+
+Run \fB$ gcloud help\fR for a description of flags available to all commands.
+
+
+
+.SH "EXAMPLES"
+
+To deploy a single service, run:
+
+.RS 2m
+$ gcloud preview app deploy ~/my_app/app.yaml
+.RE
+
+To deploy multiple services, run:
+
+.RS 2m
+$ gcloud preview app deploy ~/my_app/app.yaml \e
+    ~/my_app/another_service.yaml
+.RE
+
+
+
+.SH "NOTES"
+
+This command is currently in BETA and may change without notice.
+

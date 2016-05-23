@@ -1,0 +1,7 @@
+runtime: nodejs
+vm: true
+api_version: 1
+env_variables:
+  FACEBOOK_APP_ID: '1101835213214577'
+  FACEBOOk_SECRET: '42b45d760849dfd82f8780887a6c7d84'
+  SESSION_SECRET:'4fa238c5d0d632881b6786f3b2d944950169948f'

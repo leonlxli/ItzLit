@@ -1,0 +1,202 @@
+
+.TH "GCLOUD_CONTAINER_CLUSTERS_CREATE" 1
+
+
+
+.SH "NAME"
+.HP
+gcloud container clusters create \- create a cluster for running containers
+
+
+
+.SH "SYNOPSIS"
+.HP
+\f5gcloud container clusters create\fR \fINAME\fR [\fB\-\-additional\-zones\fR\ \fIZONE\fR,[\fIZONE\fR,...]] [\fB\-\-cluster\-ipv4\-cidr\fR\ \fICLUSTER_IPV4_CIDR\fR] [\fB\-\-disable\-addons\fR\ [\fIDISABLE_ADDONS\fR,...]] [\fB\-\-disk\-size\fR\ \fIDISK_SIZE\fR] [\fB\-\-enable\-cloud\-endpoints\fR] [\fB\-\-enable\-cloud\-logging\fR] [\fB\-\-enable\-cloud\-monitoring\fR] [\fB\-\-machine\-type\fR\ \fIMACHINE_TYPE\fR,\ \fB\-m\fR\ \fIMACHINE_TYPE\fR] [\fB\-\-max\-nodes\-per\-pool\fR\ \fIMAX_NODES_PER_POOL\fR] [\fB\-\-network\fR\ \fINETWORK\fR] [\fB\-\-num\-nodes\fR\ \fINUM_NODES\fR;\ default="3"] [\fB\-\-password\fR\ \fIPASSWORD\fR] [\fB\-\-scopes\fR\ \fISCOPE\fR,[\fISCOPE\fR,...]] [\fB\-\-subnetwork\fR\ \fISUBNETWORK\fR] [\fB\-\-username\fR\ \fIUSERNAME\fR,\ \fB\-u\fR\ \fIUSERNAME\fR;\ default="admin"] [\fB\-\-wait\fR] [\fB\-\-zone\fR\ \fIZONE\fR,\ \fB\-z\fR\ \fIZONE\fR] [\fIGLOBAL\-FLAG\ ...\fR]
+
+
+.SH "DESCRIPTION"
+
+Create a cluster for running containers.
+
+
+
+.SH "POSITIONAL ARGUMENTS"
+
+\fINAME\fR
+.RS 2m
+The name of this cluster.
+
+
+.RE
+
+.SH "FLAGS"
+
+\fB\-\-additional\-zones\fR \fIZONE\fR,[\fIZONE\fR,...]
+.RS 2m
+The set of additional zones in which the specified node footprint should be
+replicated. All zones must be in the same region as the cluster's primary zone.
+If additional\-zones is not specified, all nodes will be in the cluster's
+primary zone.
+
+Note that \f5NUM_NODES\fR nodes will be created in each zone, such that if you
+specify \f5\-\-num\-nodes=4\fR and choose one additional zone, 8 nodes will be
+created.
+
+Multiple locations can be specified, separated by commas. For example:
+
+.RS 2m
+$ {command} example\-cluster \-\-zone us\-central1\-a \e
+    \-\-additional\-zones us\-central1\-b,us\-central1\-c
+.RE
+
+
+.RE
+\fB\-\-cluster\-ipv4\-cidr\fR \fICLUSTER_IPV4_CIDR\fR
+.RS 2m
+The IP address range for the pods in this cluster in CIDR notation (e.g.
+10.0.0.0/14). Defaults to server\-specified
+
+.RE
+\fB\-\-disable\-addons\fR [\fIDISABLE_ADDONS\fR,...]
+.RS 2m
+List of cluster addons to disable. Options are HttpLoadBalancing,
+HorizontalPodAutoscaling
+
+.RE
+\fB\-\-disk\-size\fR \fIDISK_SIZE\fR
+.RS 2m
+Size in GB for node VM boot disks. Defaults to 100GB.
+
+.RE
+\fB\-\-enable\-cloud\-endpoints\fR
+.RS 2m
+Automatically enable Google Cloud Endpoints to take advantage of API management
+features. Enabled by default, use \fB\-\-no\-enable\-cloud\-endpoints\fR to
+disable.
+
+.RE
+\fB\-\-enable\-cloud\-logging\fR
+.RS 2m
+Automatically send logs from the cluster to the Google Cloud Logging API.
+Enabled by default, use \fB\-\-no\-enable\-cloud\-logging\fR to disable.
+
+.RE
+\fB\-\-enable\-cloud\-monitoring\fR
+.RS 2m
+Automatically send metrics from pods in the cluster to the Google Cloud
+Monitoring API. VM metrics will be collected by Google Compute Engine regardless
+of this setting. Enabled by default, use \fB\-\-no\-enable\-cloud\-monitoring\fR
+to disable.
+
+.RE
+\fB\-\-machine\-type\fR \fIMACHINE_TYPE\fR, \fB\-m\fR \fIMACHINE_TYPE\fR
+.RS 2m
+The type of machine to use for nodes. Defaults to server\-specified
+
+.RE
+\fB\-\-max\-nodes\-per\-pool\fR \fIMAX_NODES_PER_POOL\fR
+.RS 2m
+The maximum number of nodes to allocate per default initial node pool. Container
+engine will automatically create enough nodes pools such that each node pool
+contains less than \-\-max\-nodes\-per\-pool nodes. Defaults to 1000 nodes, but
+can be set as low as 100 nodes per pool on initial create.
+
+.RE
+\fB\-\-network\fR \fINETWORK\fR
+.RS 2m
+The Compute Engine Network that the cluster will connect to. Google Container
+Engine will use this network when creating routes and firewalls for the
+clusters. Defaults to the 'default' network.
+
+.RE
+\fB\-\-num\-nodes\fR \fINUM_NODES\fR; default="3"
+.RS 2m
+The number of nodes to be created in each of the cluster's zones.
+
+.RE
+\fB\-\-password\fR \fIPASSWORD\fR
+.RS 2m
+The password to use for cluster auth. Defaults to a randomly\-generated string.
+
+.RE
+\fB\-\-scopes\fR \fISCOPE\fR,[\fISCOPE\fR,...]
+.RS 2m
+Specifies scopes for the node instances. The project's default service account
+is used. Examples:
+
+.RS 2m
+$ gcloud container clusters create example\-cluster \e
+    \-\-scopes https://www.googleapis.com/auth/devstorage.read_only
+.RE
+
+.RS 2m
+$ gcloud container clusters create example\-cluster \e
+    \-\-scopes bigquery,storage\-rw,compute\-ro
+.RE
+
+Multiple SCOPEs can specified, separated by commas. The scopes necessary for the
+cluster to function properly (compute\-rw, storage\-ro), are always added, even
+if not explicitly specified.
+
+SCOPE can be either the full URI of the scope or an alias. Available aliases
+are:
+
+
+.TS
+tab(,);
+lB lB
+l l.
+Alias,URI
+bigquery,https://www.googleapis.com/auth/bigquery
+cloud\-platform,https://www.googleapis.com/auth/cloud\-platform
+compute\-ro,https://www.googleapis.com/auth/compute.readonly
+compute\-rw,https://www.googleapis.com/auth/compute
+datastore,https://www.googleapis.com/auth/datastore
+logging\-write,https://www.googleapis.com/auth/logging.write
+monitoring,https://www.googleapis.com/auth/monitoring
+monitoring\-write,https://www.googleapis.com/auth/monitoring.write
+service\-control,https://www.googleapis.com/auth/servicecontrol
+service\-management,https://www.googleapis.com/auth/service.management
+sql,https://www.googleapis.com/auth/sqlservice
+sql\-admin,https://www.googleapis.com/auth/sqlservice.admin
+storage\-full,https://www.googleapis.com/auth/devstorage.full_control
+storage\-ro,https://www.googleapis.com/auth/devstorage.read_only
+storage\-rw,https://www.googleapis.com/auth/devstorage.read_write
+taskqueue,https://www.googleapis.com/auth/taskqueue
+useraccounts\-ro,https://www.googleapis.com/auth/cloud.useraccounts.readonly
+useraccounts\-rw,https://www.googleapis.com/auth/cloud.useraccounts
+userinfo\-email,https://www.googleapis.com/auth/userinfo.email
+.TE
+
+
+.RE
+\fB\-\-subnetwork\fR \fISUBNETWORK\fR
+.RS 2m
+The name of the Google Compute Engine subnetwork
+(https://cloud.google.com/compute/docs/subnetworks) to which the cluster is
+connected. If specified, the cluster's network must be a "custom subnet"
+network. Specification of subnetworks is an alpha feature, and requires that the
+Google Compute Engine alpha API be enabled.
+
+.RE
+\fB\-\-username\fR \fIUSERNAME\fR, \fB\-u\fR \fIUSERNAME\fR; default="admin"
+.RS 2m
+The user name to use for cluster auth.
+
+.RE
+\fB\-\-wait\fR
+.RS 2m
+Poll the operation for completion after issuing a create request. Enabled by
+default, use \fB\-\-no\-wait\fR to disable.
+
+.RE
+\fB\-\-zone\fR \fIZONE\fR, \fB\-z\fR \fIZONE\fR
+.RS 2m
+The compute zone (e.g. us\-central1\-a) for the cluster
+
+
+.RE
+
+.SH "GLOBAL FLAGS"
+
+Run \fB$ gcloud help\fR for a description of flags available to all commands.

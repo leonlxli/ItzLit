@@ -1,0 +1,64 @@
+
+.TH "GCLOUD_COMPUTE_NETWORKS_CREATE" 1
+
+
+
+.SH "NAME"
+.HP
+gcloud compute networks create \- create a Google Compute Engine network
+
+
+
+.SH "SYNOPSIS"
+.HP
+\f5gcloud compute networks create\fR \fINAME\fR [\fB\-\-description\fR\ \fIDESCRIPTION\fR] [\fB\-\-mode\fR\ \fIMODE\fR] [\fB\-\-range\fR\ \fIRANGE\fR] [\fIGLOBAL\-FLAG\ ...\fR]
+
+
+.SH "DESCRIPTION"
+
+\fBgcloud compute networks create\fR is used to create virtual networks. A
+network performs the same function that a router does in a home network: it
+describes the network range and gateway IP address, handles communication
+between instances, and serves as a gateway between instances and callers outside
+the network.
+
+
+
+.SH "POSITIONAL ARGUMENTS"
+
+\fINAME\fR
+.RS 2m
+The name of the network.
+
+
+.RE
+
+.SH "FLAGS"
+
+\fB\-\-description\fR \fIDESCRIPTION\fR
+.RS 2m
+An optional, textual description for the network.
+
+.RE
+\fB\-\-mode\fR \fIMODE\fR
+.RS 2m
+Mode may be auto, custom, or legacy. It is recommended that you select "auto"
+where subnets are created for you automatically. Custom can be used to create
+subnets manually. Legacy will create an old style network that has a range and
+cannot have subnets.
+
+.RE
+\fB\-\-range\fR \fIRANGE\fR
+.RS 2m
+Specifies the IPv4 address range of legacy mode networks. The range must be
+specified in CIDR format:
+http://en.wikipedia.org/wiki/Classless_Inter\-Domain_Routing.
+
+This flag only works if mode is legacy.
+
+
+.RE
+
+.SH "GLOBAL FLAGS"
+
+Run \fB$ gcloud help\fR for a description of flags available to all commands.
