@@ -129,7 +129,7 @@ const query = "select charge_description, activity_date, block_address, communit
     "NULLIF(zip, '') IS NOT NULL AND NULLIF(community, '') IS NOT NULL AND NULLIF(charge_description, '') IS NOT NULL AND" +
     "community NOT LIKE 'UNKNOWN' LIMIT 10000;";
 //set environment ports and start application
-app.set('port', process.env.PORT || 8050);
+app.set('port', process.env.PORT || 3000);
 
 /* Passport serialization here */
 passport.serializeUser(function(user, done) {

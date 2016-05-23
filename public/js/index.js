@@ -55,28 +55,41 @@ var opts = {
     position: 'absolute' // Element positioning
 }
 
+function getCrimeCurr(lat, lng, distance) {
+    console.log("hi")
+    var d = new Date();
+    var n = d.getTime();
+    $.ajax({
+        url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
+        dataType: 'jsonp',
+        success: function(data) {
+            console.log("success")
+            console.log(data)
+                // your code to handle data here
+        }
+    });
+}
 
 function start() {
-
+    getCrimeCurr(32.7157,-117.1611,8.00)
     var target = document.getElementById('spinner')
     var spinner = new Spinner(opts).spin(target);
-
     // var spinner = new Spinner().spin()
     target.appendChild(spinner.el)
 
-    $.get("/currentCrimes", {
-        lat: 32.7157,
-        lng: -117.1611,
-        distance: 8.00
-    }, function(data) {
+    // $.get("/currentCrimes", {
+    //     lat: 32.7157,
+    //     lng: -117.1611,
+    //     distance: 8.00
+    // }, function(data) {
 
-        SDCrimes = data;
-        console.log(SDCrimes)
-        for (var i in SDCrimes.crimes) {
-            crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
-        }
-        crimeDone = true;
-    });
+    //     SDCrimes = data;
+    //     console.log(SDCrimes)
+    //     for (var i in SDCrimes.crimes) {
+    //         crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
+    //     }
+    //     crimeDone = true;
+    // });
 
     $.get("/lights", function(data) {
         lights = data.lights;
