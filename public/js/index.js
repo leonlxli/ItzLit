@@ -123,22 +123,7 @@ function getCrimeCurr(lat, lng, distance) {
 function start() {
     var target = document.getElementById('spinner')
     var spinner = new Spinner(opts).spin(target);
-    // var spinner = new Spinner().spin()
     target.appendChild(spinner.el)
-
-    // $.get("/currentCrimes", {
-    //     lat: 32.7157,
-    //     lng: -117.1611,
-    //     distance: 8.00
-    // }, function(data) {
-
-    //     SDCrimes = data;
-    //     console.log(SDCrimes)
-    //     for (var i in SDCrimes.crimes) {
-    //         crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
-    //     }
-    //     crimeDone = true;
-    // });
 
     $.get("/lights", function(data) {
         lights = data.lights;
@@ -174,7 +159,8 @@ function start() {
             console.log(res)
             var info = $("#routeInfo");
             for (var i in res) {
-                info.append("<h4>Route " + i + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p>")
+                var num = Number(i)+1;
+                info.append("<h4>Route " + num + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p>")
             }
         });
     }, 1000);
@@ -598,17 +584,17 @@ function CreateDirections(start, end, method, callback) {
                         }
                     }
                     for (var i in crimeCoordinates) {
+                        console.log(i)
                         var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
                         if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                            // console.log("here")
                             numCrimes++;
                         }
                     }
-                    var lightPercent = ((numLights * 40) / response.routes[route].legs[0].distance.value) * 100
+                    var lightPercent = ((numLights * 25) / response.routes[route].legs[0].distance.value) * 100
                     var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                     routeInfo.push({
                         route: response.routes[route],
-                        crimes: 0,
+                        crimes: numCrimes,
                         lights: lightPercent,
                         lightPercentText: lightText,
                         distance: response.routes[route].legs[0].distance.text,
