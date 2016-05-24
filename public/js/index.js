@@ -55,6 +55,36 @@ var opts = {
     position: 'absolute' // Element positioning
 }
 
+function getCrimeImage(type){
+    if(type=="Robbery"){
+        return "../images/robbery.png"
+    }
+    else if(type=="Assault"){
+        return "../images/assault.png"
+    }
+    else if(type=="Burglary"){
+        return "../images/burglary.png"
+    }
+    else if(type=="Arson"){
+        return "../images/arson.png"
+    }
+    else if(type=="Arrest"){
+        return "../images/arrest.png"
+    }
+    else if(type=="Shooting"){
+        return "../images/shooting.png"
+    }
+    else if(type=="Theft"){
+        return "../images/teft.png"
+    }
+    else if(type=="Vandalism"){
+        return "../images/Vandalism.png"
+    }
+    else{
+        return "../images/other.png"
+    }
+}
+
 function getCrimeCurr(lat, lng, distance) {
     var d = new Date();
     var n = d.getTime();
@@ -65,15 +95,25 @@ function getCrimeCurr(lat, lng, distance) {
             SDCrimes = data;
             for (var i in SDCrimes.crimes) {
                 // crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
-                var myLatLng = {lat: SDCrimes.crimes[i].lat, lng: SDCrimes.crimes[i].lon}
+                var crimeImg = getCrimeImage(SDCrimes.crimes[i].type);
+                console.log(crimeImg)
+                var myLatLng = {
+                    lat: SDCrimes.crimes[i].lat,
+                    lng: SDCrimes.crimes[i].lon
+                }
                 crimeCoordinates.push(myLatLng)
-
                 var marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
-                    title: 'Hello World!'
+                    icon: crimeImg
                 });
-                console.log(marker)
+                marker.addListener('click', function() {
+                    var contentString = "<div><h1>" + SDCrimes.crimes[i].type + "</h1></div>"
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+                    infowindow.open(map, marker);
+                });
             }
             crimeDone = true;
         }
@@ -275,14 +315,14 @@ window.initMap = function() {
 
     }
 
-    function meterControl (controlDiv, map) {
-         var controlUI = document.createElement('div');
-         controlUI.style.marginTop = '18px';
-         var meter = new Image();
-         meter.src = '../images/maplegend.png';
-         controlDiv.appendChild(controlUI);
-         controlUI.appendChild(meter);
-     }
+    function meterControl(controlDiv, map) {
+        var controlUI = document.createElement('div');
+        controlUI.style.marginTop = '18px';
+        var meter = new Image();
+        meter.src = '../images/maplegend.png';
+        controlDiv.appendChild(controlUI);
+        controlUI.appendChild(meter);
+    }
 
     var centerControlDiv = document.createElement('div');
     var centerControl = new CenterControl(centerControlDiv, map);
@@ -316,21 +356,21 @@ function getPoints() {
 
 
 var gradient = [
-     'rgba(185, 185, 70, 0.0)',
-     'rgba(185, 185, 70, 0.8)',
-     'rgba(191, 191, 64, 0.6)',
-     'rgba(198, 198, 57, 0.6)',
-     'rgba(204, 204, 51, 0.8)',
-     'rgba(210, 210, 45, 0.8)',
-     'rgba(217, 217, 38, 0.8)',
-     'rgba(223, 223, 32, 0.8)',
-     'rgba(230, 230, 25, 0.9)',
-     'rgba(236, 236, 19, 1)',
-     'rgba(242, 242, 13, 1)',
-     'rgba(249, 249, 6, 1)',
-     'rgba(255, 255, 0, 1)',
-     'rgba(255, 255, 0, 1)'
- ]
+    'rgba(185, 185, 70, 0.0)',
+    'rgba(185, 185, 70, 0.8)',
+    'rgba(191, 191, 64, 0.6)',
+    'rgba(198, 198, 57, 0.6)',
+    'rgba(204, 204, 51, 0.8)',
+    'rgba(210, 210, 45, 0.8)',
+    'rgba(217, 217, 38, 0.8)',
+    'rgba(223, 223, 32, 0.8)',
+    'rgba(230, 230, 25, 0.9)',
+    'rgba(236, 236, 19, 1)',
+    'rgba(242, 242, 13, 1)',
+    'rgba(249, 249, 6, 1)',
+    'rgba(255, 255, 0, 1)',
+    'rgba(255, 255, 0, 1)'
+]
 
 //for highlighting selected uber
 $('.uberType').mouseenter(function() {
