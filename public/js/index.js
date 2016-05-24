@@ -55,6 +55,36 @@ var opts = {
     position: 'absolute' // Element positioning
 }
 
+function getCrimeImage(type){
+    if(type=="Robbery"){
+        return "../images/robbery.png"
+    }
+    else if(type=="Assault"){
+        return "../images/assault.png"
+    }
+    else if(type=="Burglary"){
+        return "../images/burglary.png"
+    }
+    else if(type=="Arson"){
+        return "../images/arson.png"
+    }
+    else if(type=="Arrest"){
+        return "../images/arrest.png"
+    }
+    else if(type=="Shooting"){
+        return "../images/shooting.png"
+    }
+    else if(type=="Theft"){
+        return "../images/theft.png"
+    }
+    else if(type=="Vandalism"){
+        return "../images/Vandalism.png"
+    }
+    else{
+        return "../images/other.png"
+    }
+}
+
 function getCrimeCurr(lat, lng, distance) {
     var d = new Date();
     var n = d.getTime();
@@ -65,15 +95,25 @@ function getCrimeCurr(lat, lng, distance) {
             SDCrimes = data;
             for (var i in SDCrimes.crimes) {
                 // crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
-                var myLatLng = {lat: SDCrimes.crimes[i].lat, lng: SDCrimes.crimes[i].lon}
+                var crimeImg = getCrimeImage(SDCrimes.crimes[i].type);
+                console.log(crimeImg)
+                var myLatLng = {
+                    lat: SDCrimes.crimes[i].lat,
+                    lng: SDCrimes.crimes[i].lon
+                }
                 crimeCoordinates.push(myLatLng)
-
                 var marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
-                    title: 'Hello World!'
+                    icon: crimeImg
                 });
-                console.log(marker)
+                marker.addListener('click', function() {
+                    var contentString = "<div><h1>" + SDCrimes.crimes[i].type + "</h1></div>"
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+                    infowindow.open(map, marker);
+                });
             }
             crimeDone = true;
         }
@@ -83,22 +123,7 @@ function getCrimeCurr(lat, lng, distance) {
 function start() {
     var target = document.getElementById('spinner')
     var spinner = new Spinner(opts).spin(target);
-    // var spinner = new Spinner().spin()
     target.appendChild(spinner.el)
-
-    // $.get("/currentCrimes", {
-    //     lat: 32.7157,
-    //     lng: -117.1611,
-    //     distance: 8.00
-    // }, function(data) {
-
-    //     SDCrimes = data;
-    //     console.log(SDCrimes)
-    //     for (var i in SDCrimes.crimes) {
-    //         crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
-    //     }
-    //     crimeDone = true;
-    // });
 
     $.get("/lights", function(data) {
         lights = data.lights;
@@ -134,7 +159,8 @@ function start() {
             console.log(res)
             var info = $("#routeInfo");
             for (var i in res) {
-                info.append("<h4>Route " + i + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p>")
+                var num = Number(i)+1;
+                info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p></div>")
             }
         });
     }, 1000);
@@ -275,14 +301,14 @@ window.initMap = function() {
 
     }
 
-    function meterControl (controlDiv, map) {
-         var controlUI = document.createElement('div');
-         controlUI.style.marginTop = '18px';
-         var meter = new Image();
-         meter.src = '../images/maplegend.png';
-         controlDiv.appendChild(controlUI);
-         controlUI.appendChild(meter);
-     }
+    function meterControl(controlDiv, map) {
+        var controlUI = document.createElement('div');
+        controlUI.style.marginTop = '18px';
+        var meter = new Image();
+        meter.src = '../images/maplegend.png';
+        controlDiv.appendChild(controlUI);
+        controlUI.appendChild(meter);
+    }
 
     var centerControlDiv = document.createElement('div');
     var centerControl = new CenterControl(centerControlDiv, map);
@@ -303,7 +329,9 @@ window.initMap = function() {
 }
 
 
-
+function displayDirections(index){
+    console.log(index)
+}
 
 function getPoints() {
     var latlangLights = []
@@ -316,21 +344,21 @@ function getPoints() {
 
 
 var gradient = [
-     'rgba(185, 185, 70, 0.0)',
-     'rgba(185, 185, 70, 0.8)',
-     'rgba(191, 191, 64, 0.6)',
-     'rgba(198, 198, 57, 0.6)',
-     'rgba(204, 204, 51, 0.8)',
-     'rgba(210, 210, 45, 0.8)',
-     'rgba(217, 217, 38, 0.8)',
-     'rgba(223, 223, 32, 0.8)',
-     'rgba(230, 230, 25, 0.9)',
-     'rgba(236, 236, 19, 1)',
-     'rgba(242, 242, 13, 1)',
-     'rgba(249, 249, 6, 1)',
-     'rgba(255, 255, 0, 1)',
-     'rgba(255, 255, 0, 1)'
- ]
+    'rgba(185, 185, 70, 0.0)',
+    'rgba(185, 185, 70, 0.8)',
+    'rgba(191, 191, 64, 0.6)',
+    'rgba(198, 198, 57, 0.6)',
+    'rgba(204, 204, 51, 0.8)',
+    'rgba(210, 210, 45, 0.8)',
+    'rgba(217, 217, 38, 0.8)',
+    'rgba(223, 223, 32, 0.8)',
+    'rgba(230, 230, 25, 0.9)',
+    'rgba(236, 236, 19, 1)',
+    'rgba(242, 242, 13, 1)',
+    'rgba(249, 249, 6, 1)',
+    'rgba(255, 255, 0, 1)',
+    'rgba(255, 255, 0, 1)'
+]
 
 //for highlighting selected uber
 $('.uberType').mouseenter(function() {
@@ -558,17 +586,17 @@ function CreateDirections(start, end, method, callback) {
                         }
                     }
                     for (var i in crimeCoordinates) {
+                        console.log(i)
                         var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
                         if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                            // console.log("here")
                             numCrimes++;
                         }
                     }
-                    var lightPercent = ((numLights * 40) / response.routes[route].legs[0].distance.value) * 100
+                    var lightPercent = ((numLights * 25) / response.routes[route].legs[0].distance.value) * 100
                     var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                     routeInfo.push({
                         route: response.routes[route],
-                        crimes: 0,
+                        crimes: numCrimes,
                         lights: lightPercent,
                         lightPercentText: lightText,
                         distance: response.routes[route].legs[0].distance.text,
