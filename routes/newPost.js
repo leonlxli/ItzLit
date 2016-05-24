@@ -32,7 +32,7 @@ exports.post = function(req, res) {
             'timeSinceE':seconds,
             'message': req.body.message,
             'user': {
-                'username': req.user.username
+                'username': req.user.displayName
             },
             'posted': date,
             'comments': [],
