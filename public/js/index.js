@@ -62,21 +62,25 @@ function getCrimeCurr(lat, lng, distance) {
         url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
         dataType: 'jsonp',
         success: function(data) {
-            // console.log(data)
-            // your code to handle data here
             SDCrimes = data;
-            // console.log(SDCrimes)
             for (var i in SDCrimes.crimes) {
-                crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
+                // crimeCoordinates.push([SDCrimes.crimes[i].lat, SDCrimes.crimes[i].lon])
+                var myLatLng = {lat: SDCrimes.crimes[i].lat, lng: SDCrimes.crimes[i].lon}
+                crimeCoordinates.push(myLatLng)
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: 'Hello World!'
+                });
+                console.log(marker)
             }
-            console.log(crimeCoordinates)
             crimeDone = true;
         }
     })
 }
 
 function start() {
-    getCrimeCurr(32.7157, -117.1611, 8.00)
     var target = document.getElementById('spinner')
     var spinner = new Spinner(opts).spin(target);
     // var spinner = new Spinner().spin()
@@ -136,7 +140,6 @@ function start() {
 }
 
 window.initMap = function() {
-    start();
 
     console.log("hi")
     var minZoomLevel = 13;
@@ -152,6 +155,20 @@ window.initMap = function() {
         mapTypeControl: false,
         scrollwheel: false
     });
+    start();
+
+    // var myLatLng = {
+    //     lat: 32.7157,
+    //     lng: -117.1611
+    // }
+    // crimeCoordinates.push(myLatLng)
+
+    // var marker = new google.maps.Marker({
+    //     position: myLatLng,
+    //     map: map,
+    //     title: 'Hello World!'
+    // });
+    // console.log(marker)
 
     map.data.setStyle(function(feature) {
         var color = feature.getProperty('color');
@@ -452,6 +469,9 @@ function CreateDirections(start, end, method, callback) {
     geocoder.geocode({
         address: start
     }, function(results, status) {
+        console.log(results[0].geometry.location.lat())
+        getCrimeCurr(results[0].geometry.location.lat(), results[0].geometry.location.lng(), 0.2)
+
         // $.get("/currentCrimes", {
         //     lat: results[0].geometry.location.lat(),
         //     lng: results[0].geometry.location.lng(),
@@ -499,7 +519,7 @@ function CreateDirections(start, end, method, callback) {
                 originalCenter = map.getCenter();
                 originalZoom = map.getZoom();
             }
-            if (lightsDone) {
+            if (lightsDone && crimeDone) {
                 for (var route in response.routes) {
                     // console.log(response.routes[route])
 
@@ -525,13 +545,13 @@ function CreateDirections(start, end, method, callback) {
                             numLights++;
                         }
                     }
-                    // for (var i in crimeCoordinates) {
-                    //     var location = new google.maps.LatLng(Number(crimeCoordinates[i][0]), Number(crimeCoordinates[i][1]))
-                    //     if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                    //         // console.log("here")
-                    //         numCrimes++;
-                    //     }
-                    // }
+                    for (var i in crimeCoordinates) {
+                        var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
+                        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+                            // console.log("here")
+                            numCrimes++;
+                        }
+                    }
                     var lightPercent = ((numLights * 40) / response.routes[route].legs[0].distance.value) * 100
                     var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                     routeInfo.push({
