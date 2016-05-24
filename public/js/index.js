@@ -160,7 +160,7 @@ function start() {
             var info = $("#routeInfo");
             for (var i in res) {
                 var num = Number(i)+1;
-                info.append("<h4>Route " + num + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p>")
+                info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p></div>")
             }
         });
     }, 1000);
@@ -329,7 +329,9 @@ window.initMap = function() {
 }
 
 
-
+function displayDirections(index){
+    console.log(index)
+}
 
 function getPoints() {
     var latlangLights = []
