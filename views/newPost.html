@@ -1,0 +1,67 @@
+<header>
+</header>
+<nav class="blue darken-3">
+    <div class="nav-wrapper">
+      <a href="/maps#forum" class="brand-logo center yellow-text text-lighten-2" style="padding-right:120px"><b>TRI</b></a>
+      <a href="/maps#forum" class="brand-logo center blue-text text-lighten-3" style="padding-left:40px"><b>TONED</b></a>
+        <ul class="left">
+            <li><a href="/maps#forum"><i class="fa fa-arrow-left fa-2x" aria-hidden="true" style="vertical-align: middle; padding-right: 5px;"></i><span>Back</span></a></li>
+        </ul>
+    </div>
+</nav>
+
+<body class="blue darken-2" id="backgroundIMG">
+    <div class="veil2">
+        <div class="veil">
+            <br>
+            <br>
+            <div class="container paddingTop">
+                <section class="container">
+                    <div id="inner">
+                        <div class="center">
+                            <h3 class="white-text">Create A New Post</h3>
+                            <br>
+                            <form id="send_post">
+                              <div id="myModal" class="modal">
+                                  <div class="modal-content">
+                                      <h4 align="left">Submit Post?</h4>
+                                      <p id="postMessage">Are you sure you want to post: </p>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <input class="modal-action modal-close btn blue darken-3 right subBtn" type="submit" value="Post" rel="nofollow" style="margin-left:20px">
+                                      <a class="modal-action modal-close btn grey lighten-1 right cancelBtn">CANCEL</a>
+                                  </div>
+                              </div>
+                              <div id="errModal" class="modal">
+                                  <div class="modal-footer">
+                                      <a class="modal-action modal-close btn blue darken-3 right" id="okBtn">OK</a>
+                                  </div>
+                              </div>
+                              <div id="errModalmsg" class="modal">
+                                  <div class="modal-content">
+                                      <h4 align="left">Empty post.</h4>
+                                      <p>You must enter a message in order to post.</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <a class="modal-action modal-close btn blue darken-3 right" id="okBtn2">OK</a>
+                                  </div>
+                              </div>
+                            <div class="newPostContainer">
+                              <textarea class="white-text materialize-textarea" id="message_content" placeholder="What's going on at the gym?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding-left:60px" autocomplete="off" required></textarea>
+                            </div>
+                            </form>
+                            <br>
+                            <Button id="submitnewpost" class="btn-large blue darken-4">Create Post</Button>
+                            </center>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+</body>
+<script src="./js/socket.io.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/newPost.js"></script>

@@ -1,0 +1,115 @@
+<nav class="blue darken-3">
+    <div class="nav-wrapper">
+        <a href="#forum" class="brand-logo center yellow-text text-lighten-2" style="padding-right:120px"><b>TRI</b></a>
+        <a href="#forum" class="brand-logo center blue-text text-lighten-3" style="padding-left:40px"><b>TONED</b></a>
+        <ul class="left">
+            <li><a href="#forum"><i class="fa fa-arrow-left fa-2x" aria-hidden="true" style="vertical-align: middle; padding-right: 5px;"></i><span>Back</span></a></li>
+        </ul>
+    </div>
+</nav>
+<body class="blue darken-2" id="backgroundIMG">
+    <div class="veil2">
+
+        <body class="blue darken-2">
+            <br />
+            <br />
+            <div class="container">
+                <br />
+                <br />
+                <center>
+                <img src="./img/logo.png" alt="" height="90px" width="120px" />
+                <h3 class="white-text">Post & Comments</h3>
+                </center>
+                <br>
+                <div class="card">
+                    <div class="card-content black-text">
+                        <div class="user">
+                            <div class="user-image">
+                                <img src="{{user.photo}}" alt="" style="vertical-align: middle;">
+                                <b>{{user.username}}</b><span class="username"> posted about {{gym}} </span>
+                                <span class="posted">{{posted}}</span>
+                            </div>
+                        </div>
+                        <div class="message-content" id="originalPost" postID="{{_id}}">
+                            <h2 class="black-text">{{message}}</h2>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <ul id="comments">
+                    {{#each comments}}
+                    <li class="card blue lighten-4" id="comment{{_id}}">
+                        <div class="card-content black-text">
+                            <div class="user">
+                                <div class="user-image">
+                                    <img src="{{photo}}" alt="" style="vertical-align: middle;">
+                                    <b>{{username}}</b><span class="username"> posted on </span>
+                                    <span class="posted">{{posted}}</span>
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <blockquote style="border-color: #1565C0;"><h5>{{message}}</h5></blockquote>
+                            </div>
+                            <div class="delete" sameUser="{{sameUser}}" commentID="{{_id}}">
+                            </div>
+                            <br>
+                            <br>
+                            <div id="modal{{_id}}" class="modal">
+                                <div class="modal-content">
+                                    <h4>Delete post?</h4>
+                                    <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
+                                    <a class="modal-action modal-close btn blue darken-3 right delBtn" commentID="{{_id}}" onclick="deleteComment('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>
+                                    <a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+                <div id="commentBtnContainer" class="center center-block">
+                </div>
+                <form id="send_comment" action="#" class="center center-block">
+                    <div>
+                        <h5 class="white-text">Type up a comment here:<h5></div>
+        <textarea id="comment_content" class="white-text text-darken-4 container materialize-textarea" placeholder="Type a new comment and click 'Post Comment'!" autocomplete="off" parent="{{_id}}" required></textarea>
+        <!--<input type="submit" value="Submit" class="btn blue darken-4">-->
+
+        <div id="myModal" class = "modal" style="z-index:9999; top:20%">
+            <div class="modal-content">
+                <h4 align="left">Submit Post?</h4>
+                <p id="postMessage">Are you sure you want to post: </p>
+            </div>
+            <div class="modal-footer">
+                <input class="modal-action modal-close btn blue darken-3 right subBtn" id="submitBtn" type="submit" value="Post" rel="nofollow" style="margin-left:20px">
+                <a class="modal-action modal-close btn grey lighten-1 right cancelBtn">CANCEL</a>
+            </div>
+        </div>
+
+        <div id="errModalmsg" class = "modal" style="z-index:9999; top:20%">
+            <div class="modal-content">
+                <h4 align="left">Empty post.</h4>
+                <p>You must enter a message in order to post.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close btn blue darken-3 right" id="okBtn2">OK</a>
+            </div>
+        </div>
+
+    </form>
+
+        <center>
+        <br />
+        <Button id="submitnewcomment" class="btn-large blue darken-4">Post Comment</Button>
+        <center>
+
+<br><br><br>
+</div>
+</div>
+</body>
+<script src="./js/socket.io.min.js"></script>
+
+<script src="./js/jquery.min.js"></script>
+<script src="./js/comment.js"></script>
