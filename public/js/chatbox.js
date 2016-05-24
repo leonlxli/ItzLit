@@ -63,7 +63,7 @@ function placePosts() {
         index = 0;
         while (i < limit && i < data.newsfeed.length) {
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
-            console.log("INSIDE PLACE POSTS OF CHATBOX: "+ data.newsfeed[index]);
+            console.log("INSIDE PLACE POSTS OF CHATBOX: "+ JSON.stringify(data.newsfeed[index]));
             index++;
             i++;
         }
@@ -171,14 +171,13 @@ function messageTemplate(template) {
         '</div>' +
         '</div>' +
         '</div>';*/
-        console.log(template);
     var result =
         '<div class="row center-block" id="post' + template._id + '">' +
         '<div class="col s10 offset-s1">' +
         '<div class="card white">' +
         '<div class="card-content black-text">' +
         // '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.posted + ':</p></span>' +
+        '<b>  ' + template.user.username + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.posted + ':</p></span>' +
         '<div class="card-title">' +
         '<p>' + template.message + '</p>' +
         '</div>' +
