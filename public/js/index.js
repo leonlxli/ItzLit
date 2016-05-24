@@ -75,7 +75,7 @@ function getCrimeImage(type){
         return "../images/shooting.png"
     }
     else if(type=="Theft"){
-        return "../images/teft.png"
+        return "../images/theft.png"
     }
     else if(type=="Vandalism"){
         return "../images/Vandalism.png"
