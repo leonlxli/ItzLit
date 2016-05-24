@@ -39,11 +39,11 @@ var okBtn = document.getElementById("okBtn");
 var okBtn2 = document.getElementById("okBtn2");
 // When the user clicks on the button, open the modal
 btn.onclick = function() {
-        console.log("heloooo");
+        console.log("helloooo");
         var message = $('#message_content').val();
 
         if (message != "") {
-            $('#postMessage').append("'" + message);
+            $('#postMessage').append("'" + message + "'?");
             modal.style.display = "block";
         } else {
             errmodalmsg.style.display = "block";
