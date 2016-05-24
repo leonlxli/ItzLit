@@ -121,7 +121,7 @@ var router = {
     // uberData: require("./routes/uberData"),
     myData: require("./routes/myData"),
     index: require("./routes/index"),
-
+    chat: require("./routes/chat"),
     // commenting routes
     newPost: require("./routes/newPost"),
     comments: require("./routes/comments")
@@ -160,12 +160,14 @@ app.get('/auth/facebook/callback',
     });
 
 // for forum page
+app.get("/chat", router.chat.view);
 app.get("/newPost", router.newPost.view);
 app.post("/newPost", router.newPost.post);
 app.get('/comments', router.comments.view);
 app.get('/comments/get', router.comments.getComments);
 app.post('/comments', router.comments.post);
 app.post('/comments/delete', router.comments.delete);
+app.post('/chat/delete', router.chat.delete);
 
 app.get('/', function(req, res) {
     res.render('index');

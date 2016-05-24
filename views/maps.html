@@ -167,46 +167,45 @@
 
         <section>
 
-                <div id="inner">
-                    <div id="newMessages" class="row center-block"></div>
-                    <div id="messages" class="posts">
-                        {{#each newsfeed}}
-                        <div class="row center-block" id="post{{_id}}">
-                            <div class="col s10 offset-s1">
-                                <div class="card white">
-                                    <div class="card-content black-text">
-                                      <p> TEST CARD </p>
-                                        <img style="vertical-align:middle;" src="{{user.photo}}" />
-                                        <b>  {{user.username}}</b><span class="username"> posted on {{posted}}:</p></span>
-                                        <div class="card-title">
-                                            <p>{{message}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-action">
-                                        <a href="/comments?postID={{_id}}" class="btn blue darken-3 left comments" postID="{{_id}}" value="{{numOfComments}}"></a>
-                                        <div class="delete" sameUser="{{sameUser}}" postID="{{_id}}">
-                                        </div>
-                                    </div>
-                                    <br />
-                                </div>
-                            </div>
-                        </div>
-                        <div id="modal{{_id}}" class="modal">
-                            <div class="modal-content">
-                                <h4>Delete post?</h4>
-                                <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
-                                <a class="modal-action modal-close btn blue darken-3 right delBtn" postID="{{_id}}" onclick="deletePost('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>&nbsp;&nbsp;&nbsp;
-                                <a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>
-                            </div>
-                        </div>
-                        {{/each}}
-                    </div>
-                    <div id="LoadMore" class="row center-block">
-                    </div>
-                </div>
+          <div id="inner">
+              <div id="newMessages" class="row center-block"></div>
+              <div id="messages" class="posts">
+                  {{#each newsfeed}}
+                  <div class="row center-block" id="post{{_id}}">
+                      <div class="col s10 offset-s1">
+                          <div class="card white">
+                              <div class="card-content black-text">
+                                  <img style="vertical-align:middle;" src="{{user.photo}}" />
+                                  <b>  {{user.displayName}}</b><span class="username"> posted on {{posted}}:</p></span>
+                                  <div class="card-title">
+                                      <p>{{message}}</p>
+                                  </div>
+                              </div>
+                              <div class="card-action">
+                                  <a href="/comments?postID={{_id}}" class="btn blue darken-3 left comments" postID="{{_id}}" value="{{numOfComments}}"></a>
+                                  <div class="delete" sameUser="{{sameUser}}" postID="{{_id}}">
+                                  </div>
+                              </div>
+                              <br />
+                          </div>
+                      </div>
+                  </div>
+                  <div id="modal{{_id}}" class="modal">
+                      <div class="modal-content">
+                          <h4>Delete post?</h4>
+                          <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
+                      </div>
+                      <div class="modal-footer">
+                          <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
+                          <a class="modal-action modal-close btn blue darken-3 right delBtn" postID="{{_id}}" onclick="deletePost('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>&nbsp;&nbsp;&nbsp;
+                          <a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>
+                      </div>
+                  </div>
+                  {{/each}}
+              </div>
+              <div id="LoadMore" class="row center-block">
+              </div>
+          </div>
         </section>
 
     </div>
@@ -220,6 +219,7 @@
     <script src="./js/socket.io.min.js"></script>
     <script src="./js/newPost.js"></script>
     <script src="./js/chatbox.js"></script>
+
     <!-- <script src="./js/comment.js"></script> -->
 
 

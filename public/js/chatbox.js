@@ -7,9 +7,8 @@ var index = 0;
 var limit = 0;
 
 $(document).ready(function() {
-    $.get('/chat', {
-        gym: "all"
-    }, function(dat) {
+    $.get('/chat',
+    function(dat) {
         console.log(dat)
         data = dat;
         placePosts();
@@ -64,6 +63,7 @@ function placePosts() {
         index = 0;
         while (i < limit && i < data.newsfeed.length) {
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
+            console.log("INSIDE PLACE POSTS OF CHATBOX: "+ data.newsfeed[index]);
             index++;
             i++;
         }
@@ -76,45 +76,15 @@ function placePosts() {
 
         appendButton();
         $('#newMessages').empty();
-        document.title = "TRITONED";
+        document.title = "ITZ LIT";
     }
 }
 
 function addPosts() {
-    gym = $("#gymvalue").attr("value");
-    console.log(gym)
-    $.get('/chat', {
-        gym: gym
-    }, function(data) {
+    $.get('/chat', function(data) {
         placePosts(data);
     });
 }
-
-$('.gymButton').mouseenter(function() {
-    if (!$(this).hasClass("selected")) {
-        $(this).addClass("hovered");
-    }
-}).mouseleave(function() {
-    $(this).removeClass("hovered");
-}).click(function() {
-    var buttons = $('.gymButton');
-    for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i] != this) {
-            $(buttons[i]).removeClass("selected")
-        } else {
-            console.log($(buttons[i]).attr("me"));
-            $(buttons[i]).addClass("selected")
-            $(buttons[i]).removeClass("hovered")
-            $('#gymvalue').attr("value", $(buttons[i]).attr("me"));
-            $('#newMessages').empty();
-            document.title = "TRITONED";
-            limit = 0;
-            index = 0;
-        }
-    }
-
-
-});
 
 
 function deletePostModal(postID) {
@@ -145,14 +115,12 @@ function deletePost(postID) {
 
 
 function gymChange(e) {
-    var gym = e.getAttribute("value");
-    console.log(gym);
+
     // var data = new FormData();
     // window.location.href = url;
     // data.append('gym', gym);
-    $.get('/chat', {
-        gym: gym
-    }, function(dat) {
+    $.get('/chat',
+    function(dat) {
         console.log(dat);
         $('#messages').empty();
         data = dat;
@@ -203,13 +171,14 @@ function messageTemplate(template) {
         '</div>' +
         '</div>' +
         '</div>';*/
+        console.log(template);
     var result =
         '<div class="row center-block" id="post' + template._id + '">' +
         '<div class="col s10 offset-s1">' +
         '<div class="card white">' +
         '<div class="card-content black-text">' +
-        '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user.username + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.gym + '</i></a> on ' + template.posted + ':</p></span>' +
+        // '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
+        '<b>  ' + template.user + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.posted + ':</p></span>' +
         '<div class="card-title">' +
         '<p>' + template.message + '</p>' +
         '</div>' +
@@ -270,17 +239,14 @@ function messageTemplate(template) {
     socket.on('newsfeed', function(datem) {
         console.log("socket=======");
         if ($("#newMessages").children().length == 0) {
-            console.log($("#gymvalue").attr("value"));
             var dat = JSON.parse(datem);
             console.log(data.newsfeed[0])
             console.log(dat);
-            if ($("#gymvalue").attr("value") == 'all' || $("#gymvalue").attr("value") == dat.post.gym) {
-                data.newsfeed.unshift(dat.post);
-                index = 0;
-                limit = limit - 10;
-                $('#newMessages').append($('<div id="messBtn" class= "col s10 offset-s1">').html('<a id="newMessage" class="btn blue darken-3 row center-block" onclick="addPosts()">Load new posts</a>'));
-                document.title = "TRITONED (new)";
-            }
+            data.newsfeed.unshift(dat.post);
+            index = 0;
+            limit = limit - 10;
+            $('#newMessages').append($('<div id="messBtn" class= "col s10 offset-s1">').html('<a id="newMessage" class="btn blue darken-3 row center-block" onclick="addPosts()">Load new posts</a>'));
+            document.title = "TRITONED (new)";
         }
 
     });

@@ -14,13 +14,15 @@ exports.delete = function(req, res) {
 }
 
 exports.view = function(req, res) {
+  console.log("IN CHAT.JS EXPORTS VIEW");
+  console.log(req.user);
     if (req.user) {
         // console.log(res);
         mongoose.model('Posts').find({}).sort({
             timeSinceE: -1
         }).exec(function(err, posts) {
             for (var i = 0; i < posts.length; i++) {
-                if (posts[i].user.username == req.user.username) {
+                if (posts[i].user.displayName == req.user.displayName) {
                     posts[i].sameUser = true;
                 }
                 posts[i].numOfComments = posts[i].comments.length

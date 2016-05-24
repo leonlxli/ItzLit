@@ -17,7 +17,7 @@ function redirect() {
         }, function(data, success) {
             console.log("I'm emitting")
             socket.emit('newsfeed', data);
-            redirect();
+            // redirect();
         });
     })
 })($);
