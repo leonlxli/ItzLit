@@ -248,7 +248,7 @@ function setLightAndCrimeData() {
                 routeInfo[i].crimes = numCrimes;
             }
             putData()
-        }, 2000);
+        }, 3000);
     }
 }
 
