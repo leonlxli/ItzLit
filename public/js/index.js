@@ -110,19 +110,11 @@ function getCrimeCurr(lat, lng, distance) {
             crimeDone = true;
             setTimeout(function() {
                 console.log("hello")
-                console.log(routeInfo)
                 for (var i in routeInfo) {
-                    console.log("routeInfo")
-                    console.log(routeInfo[i]);
-                    console.log("checking")
                     var numCrimes = getNumCrimes(routeInfo[i].polyline);
-                    console.log(numCrimes)
                     routeInfo[i].crimes = numCrimes;
-                    if (i == routeInfo.length - 1) {
-                        putData();
-                    }
                 }
-            }, 1500)
+            }, 1000)
         }
     })
 }
@@ -151,15 +143,22 @@ function start() {
         });
 
         lightsDone = true
-
-        for (var i in routeInfo) {
-            console.log(routeInfo[i]);
-            var numLights = getNumLights(routeInfo[i].polyline)
-            var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
-            var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
-            routeInfo[i].lights = lightPercent;
-            routeInfo[i].lightPercentText = lightText
-        }
+        console.log("lightsssssssssss")
+        setTimeout(function() {
+            for (var i in routeInfo) {
+                console.log("lights " + i)
+                console.log(routeInfo[i]);
+                var numLights = getNumLights(routeInfo[i].polyline)
+                var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
+                var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+                routeInfo[i].lights = lightPercent;
+                routeInfo[i].lightPercentText = lightText
+                if (i == routeInfo.length - 1) {
+                    console.log("jflkdsjfaslkfk")
+                    putData()
+                }
+            }
+        }, 800)
     });
     var CrimeData;
     $.get("/crimes", function(data) {
@@ -504,39 +503,28 @@ function buildGraph(myData) {
 }
 
 function getNumLights(polyline) {
-    if (lightsDone) {
-        console.log("lights done")
-        var numLights = 0;
-        for (var i in lights) {
-            var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
-            if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
-                numLights++;
-            }
+    console.log("lights done")
+    var numLights = 0;
+    for (var i in lights) {
+        var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
+        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
+            numLights++;
         }
-        return numLights;
-    } else {
-        console.log("lights again")
-        return setTimeout(getNumLights(polyline), 800);
     }
+    return numLights;
+
 }
 
 function getNumCrimes(polyline) {
-    if (crimeDone) {
         console.log("checking crimes now")
         numCrimes = 0;
         for (var i in crimeCoordinates) {
             var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
-            console.log("getting loc")
-            console.log(location)
-            console.log(polyline)
             if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
                 numCrimes++;
             }
         }
         return numCrimes;
-    } else {
-        return setTimeout(getNumCrimes(polyline), 1000);
-    }
 }
 
 function CreateDirections(start, end, method, callback) {
@@ -567,7 +555,6 @@ function CreateDirections(start, end, method, callback) {
                 routeIndex: i
             });
         }
-        console.log(response.routes)
 
         var createPolylines = function() {
             if (originalCenter == null || originalZoom == null) {
