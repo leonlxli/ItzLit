@@ -323,3 +323,9 @@ p.app-description {
     padding: 20px;
     padding-bottom: 10px
 }
+
+.right {
+    position: absolute;
+    right: 0px;
+    padding: 10px;
+}

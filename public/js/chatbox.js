@@ -172,18 +172,18 @@ function messageTemplate(template) {
         '</div>' +
         '</div>';*/
     var result =
-        '<div class="row center-block" id="post' + template._id + '">' +
+        '<div class="row" id="post' + template._id + '" style="padding-top:20px;">' +
         '<div class="col s10 offset-s1">' +
         '<div class="card white">' +
-        '<div class="card-content black-text">' +
+        '<div class="card-content black-text" style="color:black;">' +
         // '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user.username + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.posted + ':</p></span>' +
-        '<div class="card-title">' +
+        '<b>  ' + template.user.username + '</b><span class="username"> posted at <i>' + template.posted + ':</i></p></span>' +
+        '<div class="card-title center-block">' +
         '<p>' + template.message + '</p>' +
         '</div>' +
         '</div>' +
         '<div class="card-action">' +
-        '<a href="/comments?postID=' + template._id + '" class="btn blue darken-3 left comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
+        '<a href="/comments?postID=' + template._id + '" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
         '<div class="delete" sameUser="' + template.sameUser + '" postID="' + template._id + '">' +
         '</div>' +
         '</div>' +
