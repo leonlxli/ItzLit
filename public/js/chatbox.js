@@ -343,6 +343,8 @@ function messageTemplate(template) {
             index = 0;
             limit = limit - 10;
             $('#newMessages').append($('<div id="messBtn" class= "col s10 offset-s1">').html('<a id="newMessage" class="btn blue darken-3 row center-block" onclick="addPosts()">Load new posts</a>'));
+            $('#newMessage').click();
+            $('#message_content').val('');
             document.title = "TRITONED (new)";
         }
 

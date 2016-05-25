@@ -17,11 +17,10 @@ function redirect() {
         }, function(data, success) {
             console.log("I'm emitting")
             socket.emit('newsfeed', data);
-            // $('.cancelBtn').click();
-            // $('.close').click();
-            // $('#newMessage').click();
+            $('.cancelBtn').click();
+            $('.close').click();
             // redirect();
-            window.location.reload();
+            // window.location.reload();
         });
     })
 })($);
