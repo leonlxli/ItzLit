@@ -226,6 +226,8 @@ function setLightAndCrimeData() {
         for (var i in routeInfo) {
             var numCrimes = getNumCrimes(routeInfo[i].polyline);
             var numLights = getNumLights(routeInfo[i].polyline)
+            console.log((numLights * 25))
+            console.log(routeInfo[i].route.legs[0].distance.value)
             var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
             var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
             routeInfo[i].lights = lightPercent;
@@ -239,7 +241,7 @@ function setLightAndCrimeData() {
             for (var i in routeInfo) {
                 var numCrimes = getNumCrimes(routeInfo[i].polyline);
                 var numLights = getNumLights(routeInfo[i].polyline)
-                var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
+                var lightPercent = ((numLights * 15) / routeInfo[i].route.legs[0].distance.value) * 100
                 var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                 routeInfo[i].lights = lightPercent;
                 routeInfo[i].lightPercentText = lightText
