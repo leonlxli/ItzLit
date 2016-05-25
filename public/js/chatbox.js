@@ -6,6 +6,7 @@ var data;
 var index = 0;
 var limit = 0;
 
+/*
 var commentModal =
     '<div id="commentsModal" data-toggle="modal" class="modal fade" role="dialog">' +
         '<div class="modal-dialog">' +
@@ -71,36 +72,32 @@ var commentModal =
                             '<h5 class="white-text">Type up a comment here:<h5></div>'+
                 '<textarea id="comment_content" class="white-text text-darken-4 container" placeholder="Type a new comment and click "Post Comment"!" autocomplete="off" parent="{{_id}}" required></textarea>' +
                 '</div>'+
-                '<div id="myModal" class = "modal" style="z-index:9999; top:20%">' +
-                  '  <div class="modal-content">'+
+                '<div id="myModal" class = "modal" style="z-index:9999; top:20%;">' +
+                  '  <div class="modal-content" style="padding:10px;">'+
                         '<h4 align="left">Submit Post?</h4>'+
                       '  <p id="postMessage">Are you sure you want to post: </p>'+
-                    '</div>'+
-                    '<div class="modal-footer">'+
                         '<input class="modal-action modal-close btn blue darken-3 right subBtn" id="submitBtn" type="submit" value="Post" rel="nofollow" style="margin-left:20px">' +
                         '<a class="modal-action modal-close btn grey lighten-1 right cancelBtn">CANCEL</a>' +
                     '</div>' +
                 '</div>' +
 
-                '<div id="errModalmsg" class = "modal" style="z-index:9999; top:20%">' +
-                    '<div class="modal-content">' +
+                '<div id="errModalmsg" class = "modal" style="z-index:9999; top:20%;">' +
+                    '<div class="modal-content" style="padding:10px;">' +
                         '<h4 align="left">Empty post.</h4>' +
                         '<p>You must enter a message in order to post.</p>'+
-                    '</div>' +
-                    '<div class="modal-footer">'+
                         '<a class="modal-action modal-close btn blue darken-3 right" id="okBtn2">OK</a>'+
                     '</div>'+
                 '</div>'+
 
             '</form>'+
-
                 '<center>'+
                 '<br />'+
-                '<Button id="submitnewcomment" class="btn-large blue darken-4">Post Comment</Button>'+
+                '<Button id="submitnewcomment" class="btn-large">Post Comment</Button>'+
                 '<center>'+
             '</div>'+
         '</div>'+
     '</div>';
+    */
 
 $(document).ready(function() {
     $.get('/chat',
@@ -158,7 +155,7 @@ function placePosts() {
         console.log(index);
         var i = 0;
         index = 0;
-        $('#commentStuff').append($('<div>').html(commentModal));
+        //$('#commentStuff').append($('<div>').html(commentModal));
         while (i < limit && i < data.newsfeed.length) {
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
             console.log("INSIDE PLACE POSTS OF CHATBOX: "+ JSON.stringify(data.newsfeed[index]));
@@ -283,7 +280,8 @@ function messageTemplate(template) {
         '</div>' +
         '<div class="card-action">' +
         //'<a href="/comments?postID=' + template._id + '" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
-        '<a href="#commentsModal" data-toggle="modal">' + template.comments.length + ' comments</a>' +
+        //'<a href="#commentsModal" data-toggle="modal"> ' + template.comments.length + ' comments</a>' +
+        '<a href="#commentsModal" data-toggle="modal" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
         '<div class="delete" sameUser="' + template.sameUser + '" postID="' + template._id + '">' +
         '</div>' +
         '</div>' +
@@ -350,3 +348,42 @@ function messageTemplate(template) {
 
     });
 })($);
+
+
+var comSubPost = document.getElementById('comSubPost');
+var errmodalmsg2 = document.getElementById('errModalmsg2');
+
+// Get the button that opens the modal
+var btn = document.getElementById("submitnewcomment");
+// Get the elements that closes the modal
+var span = document.getElementsByClassName("cancelBtn2")[0];
+var postBtn = document.getElementById("submitBtn2");
+var okBtn3 = document.getElementById("okBtn3");
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+        console.log("submit new comment clicked");
+
+        var message = $('#comment_content').val();
+
+        if (message == "") {
+            errmodalmsg2.style.display = "block";
+        } else {
+            $('#postMessage').append("'" + message + "'?");
+            comSubPost.style.display = "block";
+        }
+
+    }
+    // When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    $('#postMessage').text("Are you sure you want to post: ");
+    comSubPost.style.display = "none";
+}
+okBtn3.onclick = function() {
+    console.log("ok button pressed");
+    errmodalmsg2.style.display = "none";
+}
+postBtn.onclick = function() {
+    console.log("post button pressed");
+    comSubPost.style.display = "none";
+}
