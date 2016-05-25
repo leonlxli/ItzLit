@@ -50,6 +50,68 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- New Post Modal -->
+                    <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Create a New Post</h4>
+                                </div>
+
+                                <!--pop up modals for creating new post-->
+                                <div class="modal-body">
+                                  <form id="send_post">
+                                    <div id="submitModal" class="modal">
+                                        <div class="modal-content" style="padding:10px;">
+                                            <h4 align="left">Submit Post?</h4>
+                                            <p id="postMessage">Are you sure you want to post: </p>
+                                            <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
+                                            <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
+                                        </div>
+                                    </div>
+                                    <div id="errModal" class="modal" style="padding:10px;">
+                                        <div class="modal-footer">
+                                            <a class="modal-action modal-close" id="okBtn">OK</a>
+                                        </div>
+                                    </div>
+                                    <div id="errModalmsg" class="modal">
+                                        <div class="modal-content" style="padding:10px;">
+                                            <h4 align="left">Empty post.</h4>
+                                            <p>You must enter a message in order to post.</p>
+                                            <a class="modal-action modal-close btn" id="okBtn2">OK</a>
+                                        </div>
+                                    </div>
+
+                                  <div class="newPostContainer">
+                                    <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 500px; height: 80px;" autocomplete="off" required></textarea>
+                                  </div>
+                                  </form>
+                                  <br>
+                                  <Button id="submitnewpost" class="btn-large btn">Post</Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comments Modal -->
+                    <div id="commentsModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Comments</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Your route is calculated based on street light and crime data. Blah blah blah.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </center>
                 <div style="margin-left:40px">
                     <p>Starting point:</p>
@@ -79,6 +141,7 @@
                     <!-- <h3 class="landing-description">Graphs and other cool stuff!!!</h3>
                     <hr width="60%">
                     <p class="app-description">LET'S GET VISUAL!</p> -->
+                    <hr width="60%">
                     <center>
                         <div id="stackBarChart"></div>
                     </center>
@@ -94,13 +157,57 @@
         <div class="container" style="padding-top: 5%">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <h1 class="text-center" style="font-size:80px">FORUM</h1>
-                    <h3 class="landing-description">Wao we're gonna have people talk to each other</h3>
+                    <h1 class="text-center" style="font-size:80px; color: #fff">FORUM</h1>
+                    <!--<h3 class="landing-description" style="color: #fff">Wao we're gonna have people talk to each other</h3>-->
                     <hr width="60%">
-                    <p class="app-description">COOL RIGHT???</p>
+                    <a href="#newPostModal" data-toggle="modal"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="vertical-align: middle; padding-right: 5px;"></i><span>Create A New Post</span></a>
                 </div>
             </div>
         </div>
+
+        <section>
+
+          <div id="inner">
+              <div id="newMessages" class="row center-block"></div>
+              <div id="messages" class="posts">
+                  {{#each newsfeed}}
+                  <div class="row center-block" id="post{{_id}}">
+                      <div class="col s10 offset-s1">
+                          <div class="card white">
+                              <div class="card-content black-text">
+                                  <img style="vertical-align:left;" src="{{user.photo}}" />
+                                  <b>  {{user.displayName}}</b><span class="username"> posted on {{posted}}:</p></span>
+                                  <div class="card-title">
+                                      <p>{{message}}</p>
+                                  </div>
+                              </div>
+                              <div class="card-action">
+                                  <a href="/comments?postID={{_id}}" class="btn blue darken-3 left comments" postID="{{_id}}" value="{{numOfComments}}"></a>
+                                  <div class="delete" sameUser="{{sameUser}}" postID="{{_id}}">
+                                  </div>
+                              </div>
+                              <br />
+                          </div>
+                      </div>
+                  </div>
+                  <div id="modal{{_id}}" class="modal">
+                      <div class="modal-content">
+                          <h4>Delete post?</h4>
+                          <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
+                      </div>
+                      <div class="modal-footer">
+                          <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
+                          <a class="modal-action modal-close btn blue darken-3 right delBtn" postID="{{_id}}" onclick="deletePost('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>&nbsp;&nbsp;&nbsp;
+                          <a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>
+                      </div>
+                  </div>
+                  {{/each}}
+              </div>
+              <div id="LoadMore" class="row center-block">
+              </div>
+          </div>
+        </section>
+
     </div>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script src="/js/index.js"></script>
@@ -109,6 +216,13 @@
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="/js/spin.js"></script>
     <script src="/js/barchart.js"></script>
+    <script src="./js/socket.io.min.js"></script>
+    <script src="./js/newPost.js"></script>
+    <script src="./js/chatbox.js"></script>
+
+    <!-- <script src="./js/comment.js"></script> -->
+
+
 </body>
 
 </html>
