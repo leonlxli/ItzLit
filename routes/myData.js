@@ -8,7 +8,6 @@ exports.getCrimes = function(req, res) {
 
 exports.getLights = function(req, res) {
     var data = require('../street_lights.json');
-    console.log(typeof(data))
     // var result = JSON.parse(data);
     // console.log(result)
     res.json(data);
@@ -19,6 +18,7 @@ exports.getCurrentCrimes = function(req, res) {
     var n = d.getTime();
     var sys = require('util');
     var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         sys.puts("State: " + this.readyState);
