@@ -173,13 +173,14 @@ function start() {
     };
 
     var start = getQueryString('starting').replace(/%20/g, " "),
-        end = getQueryString('ending').replace(/%20/g, " ");
+        end = getQueryString('ending').replace(/%20/g, " "),
+        transportation = getQueryString('transportation');
 
     $("#startingp").text(start);
     $("#endingp").text(end);
 
     setTimeout(function() {
-        CreateDirections(start, end, "walking");
+        CreateDirections(start, end, transportation);
     }, 700);
 }
 $(document).ready(function() {
