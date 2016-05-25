@@ -97,7 +97,7 @@
                     </div>
 
                     <!-- Comments Modal -->
-                    <div id="commentsModal" class="modal fade" role="dialog">
+                    <div id="commentsModal" class="modal fade" role="dialog" style="margin-top: 10%;">
                         <div class="modal-dialog">
                             <!-- Modal content-->
                             <div class="modal-content">
@@ -106,13 +106,91 @@
                                     <h4 class="modal-title">Comments</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Your route is calculated based on street light and crime data. Blah blah blah.</p>
+                                    <div class="card">
+                                        <div class="card-content black-text">
+                                            <div class="user">
+                                                <div class="user-image">
+                                                    <img src="{{user.photo}}" alt="" style="vertical-align: middle;">
+                                                    <b>{{user.username}}</b><span class="username"> posted on </span>
+                                                    <span class="posted">{{posted}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="message-content" id="originalPost" postID="{{_id}}">
+                                                <h2 class="black-text">{{message}}</h2>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul id="comments">
+                                        {{#each comments}}
+                                        <li class="card blue lighten-4" id="comment{{_id}}">
+                                            <div class="card-content black-text">
+                                                <div class="user">
+                                                    <div class="user-image">
+                                                        <img src="{{photo}}" alt="" style="vertical-align: middle;">
+                                                        <b>{{username}}</b><span class="username"> posted on </span>
+                                                        <span class="posted">{{posted}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="message-content">
+                                                    <blockquote style="border-color: #1565C0;"><h5>{{message}}</h5></blockquote>
+                                                </div>
+                                                <div class="delete" sameUser="{{sameUser}}" commentID="{{_id}}">
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div id="modal{{_id}}" class="modal">
+                                                    <div class="modal-content">
+                                                        <h4>Delete post?</h4>
+                                                        <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
+                                                        <a class="modal-action modal-close btn blue darken-3 right delBtn" commentID="{{_id}}" onclick="deleteComment('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>
+                                                        <a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                    <div id="commentBtnContainer" class="center center-block">
+                                    </div>
+                                    <form id="send_comment" action="#" class="center center-block">
+                                        <div>
+                                            <h5 class="white-text">Type up a comment here:<h5></div>
+                                            <textarea id="comment_content" class="white-text" placeholder="Type a new comment and click 'POST COMMENT'!" style="padding:10px; width: 500px; height: 80px;" autocomplete="off" parent="{{_id}}" required></textarea>                                </div>
+                                <div id="myModal" class = "modal" style="z-index:9999; top:20%">
+                                    <div class="modal-content">
+                                        <h4 align="left">Submit Post?</h4>
+                                        <p id="postMessage">Are you sure you want to post: </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input class="modal-action modal-close btn blue darken-3 right subBtn" id="submitBtn" type="submit" value="Post" rel="nofollow" style="margin-left:20px">
+                                        <a class="modal-action modal-close btn grey lighten-1 right cancelBtn">CANCEL</a>
+                                    </div>
                                 </div>
+                                    <div id="errModalmsg" class = "modal" style="z-index:9999; top:20%">
+                                        <div class="modal-content">
+                                            <h4 align="left">Empty post.</h4>
+                                            <p>You must enter a message in order to post.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="modal-action modal-close btn blue darken-3 right" id="okBtn2">OK</a>
+                                        </div>
+                                    </div>
+
+                                </form>
+                                    <center>
+                                    <Button id="submitnewcomment" class="btn-large blue darken-4">POST COMMENT</Button>
+                                    <center>
+                                    <br>
                             </div>
                         </div>
                     </div>
-
                 </center>
+
+                <!--Sidebar-->
                 <div style="margin-left:40px">
                     <p>Starting point:</p>
                     <p id="startingp"></p>
@@ -182,7 +260,7 @@
                                   </div>
                               </div>
                               <div class="card-action">
-                                  <a href="/comments?postID={{_id}}" class="btn blue darken-3 left comments" postID="{{_id}}" value="{{numOfComments}}"></a>
+                                  <a href="#commentsModal?postID={{_id}}" class="btn comments" postID="{{_id}}" value="{{numOfComments}}"></a>
                                   <div class="delete" sameUser="{{sameUser}}" postID="{{_id}}">
                                   </div>
                               </div>
