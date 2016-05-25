@@ -6,6 +6,103 @@ var data;
 var index = 0;
 var limit = 0;
 
+var commentModal =
+    '<div id="commentsModal" data-toggle="modal" class="modal fade" role="dialog">' +
+        '<div class="modal-dialog">' +
+            '<!-- Modal content-->' +
+            '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                    '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+                    '<h4 class="modal-title">Comments</h4>' +
+                '</div>' +
+                '<div class="modal-body">' +
+                    '<div class="card">' +
+                        '<div class="card-content black-text">' +
+                            '<div class="user">' +
+                                '<div class="user-image">' +
+                                    // <img src="{{user.photo}}" alt="" style="vertical-align: middle;">
+                                    '<b>{{user}}</b><span class="username"> posted</span>'
+                                    '<span class="posted">{{posted}}</span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="message-content" id="originalPost" postID="{{_id}}">' +
+                                '<h2 class="black-text">{{message}}</h2>' +
+                                '<br>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<ul id="comments">' +
+                        '{{#each comments}}' +
+                        '<li class="card blue lighten-4" id="comment{{_id}}">' +
+                            '<div class="card-content black-text">' +
+                                '<div class="user">' +
+                                    '<div class="user-image">' +
+                                        // <img src="{{photo}}" alt="" style="vertical-align: middle;">
+                                        '<b>{{user}}</b><span class="username"> posted on </span>' +
+                                        '<span class="posted">{{posted}}</span>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="message-content">' +
+                                    '<blockquote style="border-color: #1565C0;"><h5>{{message}}</h5></blockquote>' +
+                                '</div>' +
+                                '<div class="delete" sameUser="{{sameUser}}" commentID="{{_id}}">' +
+                                '</div>'
+                                '<br>'
+                                '<br>'
+                                '<div id="modal{{_id}}" class="modal">' +
+                                    '<div class="modal-content">' +
+                                        '<h4>Delete post?</h4>' +
+                                        '<p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>' +
+                                    '</div>' +
+                                    '<div class="modal-footer">' +
+                                        '<!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->' +
+                                        '<a class="modal-action modal-close btn blue darken-3 right delBtn" commentID="{{_id}}" onclick="deleteComment("{{_id}}")" rel="nofollow" style="margin-left:20px">DELETE</a>' +
+                                        '<a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>' +
+                                    '</div>' +
+                                '</div>'+
+                            '</div>'+
+                        '</li>'+
+                        '{{/each}}'+
+                    '</ul>'+
+                    '<div id="commentBtnContainer" class="center center-block">'+
+                    '</div>'+
+                    '<form id="send_comment" action="#" class="center center-block">'+
+                        '<div>'+
+                            '<h5 class="white-text">Type up a comment here:<h5></div>'+
+                '<textarea id="comment_content" class="white-text text-darken-4 container" placeholder="Type a new comment and click "Post Comment"!" autocomplete="off" parent="{{_id}}" required></textarea>' +
+                '</div>'+
+                '<div id="myModal" class = "modal" style="z-index:9999; top:20%">' +
+                  '  <div class="modal-content">'+
+                        '<h4 align="left">Submit Post?</h4>'+
+                      '  <p id="postMessage">Are you sure you want to post: </p>'+
+                    '</div>'+
+                    '<div class="modal-footer">'+
+                        '<input class="modal-action modal-close btn blue darken-3 right subBtn" id="submitBtn" type="submit" value="Post" rel="nofollow" style="margin-left:20px">' +
+                        '<a class="modal-action modal-close btn grey lighten-1 right cancelBtn">CANCEL</a>' +
+                    '</div>' +
+                '</div>' +
+
+                '<div id="errModalmsg" class = "modal" style="z-index:9999; top:20%">' +
+                    '<div class="modal-content">' +
+                        '<h4 align="left">Empty post.</h4>' +
+                        '<p>You must enter a message in order to post.</p>'+
+                    '</div>' +
+                    '<div class="modal-footer">'+
+                        '<a class="modal-action modal-close btn blue darken-3 right" id="okBtn2">OK</a>'+
+                    '</div>'+
+                '</div>'+
+
+            '</form>'+
+
+                '<center>'+
+                '<br />'+
+                '<Button id="submitnewcomment" class="btn-large blue darken-4">Post Comment</Button>'+
+                '<center>'+
+            '</div>'+
+        '</div>'+
+    '</div>';
+
+
 $(document).ready(function() {
     $.get('/chat',
     function(dat) {
@@ -61,6 +158,7 @@ function placePosts() {
         console.log(index);
         var i = 0;
         index = 0;
+        $('#commentStuff').append($('<div>').html(commentModal));
         while (i < limit && i < data.newsfeed.length) {
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
             console.log("INSIDE PLACE POSTS OF CHATBOX: "+ JSON.stringify(data.newsfeed[index]));
@@ -139,6 +237,7 @@ function gymChange(e) {
 // });
 
 function messageTemplate(template) {
+  console.log("HEY IM IN CHATBOX.JS DIS IS THE TEMPLATE: " + JSON.stringify(template));
     /*var result =
         '<div class="row center-block" id="post{{_id}}">' +
         '<div class="col s12">' +
@@ -177,13 +276,13 @@ function messageTemplate(template) {
         '<div class="card white">' +
         '<div class="card-content black-text">' +
         // '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user.username + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.posted + ':</p></span>' +
+        '<b>'+ template.user.username + '</b><span class="username"> posted about <a class="blue-text"><i>' + template.posted + ':</p></span>' +
         '<div class="card-title">' +
         '<p>' + template.message + '</p>' +
         '</div>' +
         '</div>' +
         '<div class="card-action">' +
-        '<a href="/comments?postID=' + template._id + '" class="btn blue darken-3 left comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
+        '<a href="#commentsModal" data-toggle="modal">' + template.comments.length + ' comments</a>' +
         '<div class="delete" sameUser="' + template.sameUser + '" postID="' + template._id + '">' +
         '</div>' +
         '</div>' +
