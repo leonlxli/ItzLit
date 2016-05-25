@@ -3,7 +3,6 @@ var allData;
 var infoWindow;
 var tooltip;
 var currentCrimes;
-var SDCrimes;
 var lights = [];
 var lightsDone = false;
 var crimes;
@@ -86,12 +85,11 @@ function getCrimeCurr(lat, lng, distance) {
         url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
         dataType: 'jsonp',
         success: function(data) {
-            SDCrimes = data;
-            for (var i in SDCrimes.crimes) {
-                var crimeImg = getCrimeImage(SDCrimes.crimes[i].type);
+            for (var i in data.crimes) {
+                var crimeImg = getCrimeImage(data.crimes[i].type);
                 var myLatLng = {
-                    lat: SDCrimes.crimes[i].lat,
-                    lng: SDCrimes.crimes[i].lon
+                    lat: data.crimes[i].lat,
+                    lng: data.crimes[i].lon
                 }
                 crimeCoordinates.push(myLatLng)
                 var marker = new google.maps.Marker({
@@ -100,7 +98,7 @@ function getCrimeCurr(lat, lng, distance) {
                     icon: crimeImg
                 });
                 marker.addListener('click', function() {
-                    var contentString = "<div><h1>" + SDCrimes.crimes[i].type + "</h1></div>"
+                    var contentString = "<div><h1>" + data.crimes[i].type + "</h1></div>"
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
                     });
@@ -114,7 +112,7 @@ function getCrimeCurr(lat, lng, distance) {
                     var numCrimes = getNumCrimes(routeInfo[i].polyline);
                     routeInfo[i].crimes = numCrimes;
                 }
-            }, 1000)
+            }, 1500)
         }
     })
 }
@@ -129,11 +127,14 @@ function putData() {
         console.log(i)
         info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
     }
+    console.log("routeInfo")
     console.log(routeInfo)
 }
 
 function start() {
-
+    setTimeout(function() {
+        CreateDirections(start, end, transportation);
+    }, 100);
     $.get("/lights", function(data) {
         lights = data.lights;
         heatmap = new google.maps.visualization.HeatmapLayer({
@@ -141,28 +142,19 @@ function start() {
             map: map,
             gradient: gradient
         });
-
         lightsDone = true
-        console.log("lightsssssssssss")
         setTimeout(function() {
             for (var i in routeInfo) {
-                console.log("lights " + i)
-                console.log(routeInfo[i]);
                 var numLights = getNumLights(routeInfo[i].polyline)
                 var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
                 var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                 routeInfo[i].lights = lightPercent;
                 routeInfo[i].lightPercentText = lightText
                 if (i == routeInfo.length - 1) {
-                    console.log("jflkdsjfaslkfk")
                     putData()
                 }
             }
-        }, 800)
-    });
-    var CrimeData;
-    $.get("/crimes", function(data) {
-        crimes = data;
+        }, 700)
     });
 
     var getQueryString = function(field, url) {
@@ -178,25 +170,21 @@ function start() {
 
     $("#startingp").text(start);
     $("#endingp").text(end);
-
-    setTimeout(function() {
-        CreateDirections(start, end, transportation);
-    }, 700);
+    $.get("/crimes", function(data) {
+        crimes = data;
+    });
 }
 $(document).ready(function() {
     var target = document.getElementById('spinner')
     spinner = new Spinner(opts).spin(target);
     target.appendChild(spinner.el)
 });
+
 window.initMap = function() {
     getCrimeCurr(32.8328, -117.2713, 0.2)
     var minZoomLevel = 13;
-    // $.get('/directions', function(data) {
-    //     console.log(data)
-    // })
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: minZoomLevel,
-        // center: new google.maps.LatLng(32.8787, -117.0400),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
         zoomControl: true,
@@ -204,19 +192,6 @@ window.initMap = function() {
         scrollwheel: false
     });
     start();
-
-    // var myLatLng = {
-    //     lat: 32.7157,
-    //     lng: -117.1611
-    // }
-    // crimeCoordinates.push(myLatLng)
-
-    // var marker = new google.maps.Marker({
-    //     position: myLatLng,
-    //     map: map,
-    //     title: 'Hello World!'
-    // });
-    // console.log(marker)
 
     map.data.setStyle(function(feature) {
         var color = feature.getProperty('color');
@@ -228,22 +203,110 @@ window.initMap = function() {
     });
 
     var styleArray = [{
+        "featureType": "all",
+        "elementType": "labels.text.fill",
         "stylers": [{
-            "hue": "#ff1a00"
+            "color": "#ffffff"
         }, {
-            "invert_lightness": true
+            "weight": "0.20"
         }, {
-            "saturation": -100
+            "lightness": "28"
         }, {
-            "lightness": 33
+            "saturation": "23"
         }, {
-            "gamma": 0.5
+            "visibility": "off"
+        }]
+    }, {
+        "featureType": "all",
+        "elementType": "labels.text.stroke",
+        "stylers": [{
+            "color": "#494949"
+        }, {
+            "lightness": 13
+        }, {
+            "visibility": "off"
+        }]
+    }, {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [{
+            "visibility": "off"
+        }]
+    }, {
+        "featureType": "administrative",
+        "elementType": "geometry.fill",
+        "stylers": [{
+            "color": "#000000"
+        }]
+    }, {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [{
+            "color": "#144b53"
+        }, {
+            "lightness": 14
+        }, {
+            "weight": 1.4
+        }]
+    }, {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [{
+            "color": "#08304b"
+        }]
+    }, {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [{
+            "color": "#0c4152"
+        }, {
+            "lightness": 5
+        }]
+    }, {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [{
+            "color": "#000000"
+        }]
+    }, {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [{
+            "color": "#0b434f"
+        }, {
+            "lightness": 25
+        }]
+    }, {
+        "featureType": "road.arterial",
+        "elementType": "geometry.fill",
+        "stylers": [{
+            "color": "#000000"
+        }]
+    }, {
+        "featureType": "road.arterial",
+        "elementType": "geometry.stroke",
+        "stylers": [{
+            "color": "#0b3d51"
+        }, {
+            "lightness": 16
+        }]
+    }, {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [{
+            "color": "#000000"
+        }]
+    }, {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [{
+            "color": "#146474"
         }]
     }, {
         "featureType": "water",
-        "elementType": "geometry",
+        "elementType": "all",
         "stylers": [{
-            "color": "#2D333C"
+            "color": "#021019"
         }]
     }]
 
@@ -313,11 +376,9 @@ window.initMap = function() {
         controlText.innerHTML = 'Center Map';
         controlUI.appendChild(controlText);
 
-        // Setup the click event listeners: simply set the map to Chicago.
         controlUI.addEventListener('click', function() {
             map.setCenter(originalCenter);
             map.setZoom(originalZoom);
-            // map.setZoom(minZoomLevel);
         });
 
     }
@@ -513,19 +574,18 @@ function getNumLights(polyline) {
         }
     }
     return numLights;
-
 }
 
 function getNumCrimes(polyline) {
-        console.log("checking crimes now")
-        numCrimes = 0;
-        for (var i in crimeCoordinates) {
-            var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
-            if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                numCrimes++;
-            }
+    console.log("checking crimes now")
+    numCrimes = 0;
+    for (var i in crimeCoordinates) {
+        var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
+        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+            numCrimes++;
         }
-        return numCrimes;
+    }
+    return numCrimes;
 }
 
 function CreateDirections(start, end, method, callback) {
