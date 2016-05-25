@@ -1,0 +1,13 @@
+function getNumLights() {
+    if (lightsDone) {
+        for (var i in lights) {
+            var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
+            if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
+                numLights++;
+            }
+        }
+    } else {
+        console.log("again")
+        setTimeout(getNumLights, 1000); // check again in a second
+    }
+}
