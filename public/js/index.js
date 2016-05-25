@@ -248,7 +248,7 @@ function setLightAndCrimeData() {
                 routeInfo[i].crimes = numCrimes;
             }
             putData()
-        }, 1000);
+        }, 3000);
     }
 }
 
@@ -268,9 +268,6 @@ function putData() {
 }
 
 function start() {
-    setTimeout(function() {
-        CreateDirections(start, end, transportation);
-    }, 100);
     $.get("/lights", function(data) {
         lights = data.lights;
         heatmap = new google.maps.visualization.HeatmapLayer({
@@ -282,6 +279,9 @@ function start() {
         console.log("done lights")
         lightsDone = true
     });
+    setTimeout(function() {
+        CreateDirections(start, end, transportation);
+    }, 100);
 
     var getQueryString = function(field, url) {
         var href = url ? url : window.location.href;
