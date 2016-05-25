@@ -12,6 +12,8 @@ var crimeDone = false;
 var heatmap;
 var originalCenter;
 var originalZoom;
+var routeInfo = [];
+var spinner;
 
 var opts = {
     lines: 13 // The number of lines to draw
@@ -78,520 +80,534 @@ function getCrimeImage(type) {
 }
 
 function getCrimeCurr(lat, lng, distance) {
-    var d = new Date();
-    var n = d.getTime();
-    $.ajax({
-        url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
-        dataType: 'jsonp',
-        success: function(data) {
-            SDCrimes = data;
-            for (var i in SDCrimes.crimes) {
-                var crimeImg = getCrimeImage(SDCrimes.crimes[i].type);
-                var myLatLng = {
-                    lat: SDCrimes.crimes[i].lat,
-                    lng: SDCrimes.crimes[i].lon
-                }
-                crimeCoordinates.push(myLatLng)
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    icon: crimeImg
-                });
-                marker.addListener('click', function() {
-                    var contentString = "<div><h1>" + SDCrimes.crimes[i].type + "</h1></div>"
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-                    infowindow.open(map, marker);
-                });
-            }
-            crimeDone = true;
-            console.log("setting to true")
+        var d = new Date();
+        var n = d.getTime();
+        $.ajax({
+                url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
+                dataType: 'jsonp',
+                success: function(data) {
+                    SDCrimes = data;
+                    for (var i in SDCrimes.crimes) {
+                        var crimeImg = getCrimeImage(SDCrimes.crimes[i].type);
+                        var myLatLng = {
+                            lat: SDCrimes.crimes[i].lat,
+                            lng: SDCrimes.crimes[i].lon
+                        }
+                        crimeCoordinates.push(myLatLng)
+                        var marker = new google.maps.Marker({
+                            position: myLatLng,
+                            map: map,
+                            icon: crimeImg
+                        });
+                        marker.addListener('click', function() {
+                            var contentString = "<div><h1>" + SDCrimes.crimes[i].type + "</h1></div>"
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+                            infowindow.open(map, marker);
+                        });
+                    }
+                    crimeDone = true;
+                    setTimeout(function() {
+                            console.log("hello")
+                            console.log(routeInfo)
+                            for (var i in routeInfo) {
+                                console.log("routeInfo")
+                                console.log(routeInfo[i]);
+                                console.log("checking")
+                                var numCrimes = getNumCrimes(routeInfo[i].polyline);
+                                console.log(numCrimes)
+                                routeInfo[i].crimes = numCrimes;
+                                if (i == routeInfo.length - 1) {
+                                    putData();
+                                }
+                            }
+                        },1500)
+                    }
+                })
         }
-    })
-}
 
-function start() {
-    var target = document.getElementById('spinner')
-    var spinner = new Spinner(opts).spin(target);
-    target.appendChild(spinner.el)
-
-    $.get("/lights", function(data) {
-        lights = data.lights;
-        heatmap = new google.maps.visualization.HeatmapLayer({
-            data: getPoints(),
-            map: map,
-            gradient: gradient
-        });
-
-        lightsDone = true
-    });
-    var CrimeData;
-    $.get("/crimes", function(data) {
-        crimes = data;
-    });
-
-    var getQueryString = function(field, url) {
-        var href = url ? url : window.location.href;
-        var reg = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
-        var string = reg.exec(href);
-        return string ? string[1] : null;
-    };
-
-    var start = getQueryString('starting').replace(/%20/g, " "),
-        end = getQueryString('ending').replace(/%20/g, " ");
-
-    $("#startingp").text(start);
-    $("#endingp").text(end);
-
-    setTimeout(function() {
-        CreateDirections(start, end, "walking", function(res, err) {
+        function putData() {
+            console.log(routeInfo)
+            console.log("putData")
             spinner.stop();
-            console.log(res)
             var info = $("#routeInfo");
-            for (var i in res) {
+            for (var i in routeInfo) {
                 var num = Number(i) + 1;
-                info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + res[i].lightPercentText + "</p><p>Crimes:" + res[i].crimes + "</p><p>" + res[i].time + "</p>" + "</p><p>" + res[i].distance + "</p></div>")
-            }
-        });
-    }, 400);
-}
-
-window.initMap = function() {
-
-    console.log("hi")
-    var minZoomLevel = 13;
-    // $.get('/directions', function(data) {
-    //     console.log(data)
-    // })
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: minZoomLevel,
-        // center: new google.maps.LatLng(32.8787, -117.0400),
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        streetViewControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        scrollwheel: false
-    });
-    start();
-
-    // var myLatLng = {
-    //     lat: 32.7157,
-    //     lng: -117.1611
-    // }
-    // crimeCoordinates.push(myLatLng)
-
-    // var marker = new google.maps.Marker({
-    //     position: myLatLng,
-    //     map: map,
-    //     title: 'Hello World!'
-    // });
-    // console.log(marker)
-
-    map.data.setStyle(function(feature) {
-        var color = feature.getProperty('color');
-        return ({
-            fillColor: color,
-            fillOpacity: 0.5,
-            strokeWeight: 2
-        });
-    });
-
-    var styleArray = [{
-        "stylers": [{
-            "hue": "#ff1a00"
-        }, {
-            "invert_lightness": true
-        }, {
-            "saturation": -100
-        }, {
-            "lightness": 33
-        }, {
-            "gamma": 0.5
-        }]
-    }, {
-        "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#2D333C"
-        }]
-    }]
-
-    map.setOptions({
-        styles: styleArray
-    });
-
-
-    function ToggleControl(controlDiv, map) {
-
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.borderRadius = '2px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.marginLeft = '20px';
-        controlUI.style.marginTop = '20px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to toggle the heatmap';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '13px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Toggle Heatmap';
-        controlUI.appendChild(controlText);
-
-        // Setup the click event listeners: simply set the map to Chicago.
-        controlUI.addEventListener('click', function() {
-            heatmap.setMap(heatmap.getMap() ? null : map);
-        });
-
-    }
-
-    function CenterControl(controlDiv, map) {
-
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.borderRadius = '2px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.marginLeft = '20px';
-        controlUI.style.marginTop = '20px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to recenter the map';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '13px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Center Map';
-        controlUI.appendChild(controlText);
-
-        // Setup the click event listeners: simply set the map to Chicago.
-        controlUI.addEventListener('click', function() {
-            map.setCenter(originalCenter);
-            map.setZoom(originalZoom);
-            // map.setZoom(minZoomLevel);
-        });
-
-    }
-
-    function meterControl(controlDiv, map) {
-        var controlUI = document.createElement('div');
-        controlUI.style.marginTop = '18px';
-        var meter = new Image();
-        meter.src = '../images/maplegend.png';
-        controlDiv.appendChild(controlUI);
-        controlUI.appendChild(meter);
-    }
-
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
-
-    var ToggleControlDiv = document.createElement('div');
-    var ToggleControl = new ToggleControl(ToggleControlDiv, map);
-    // var meter = new Image();
-    // meter.src = '../images/meter.png';
-
-    var meterDiv = document.createElement('div');
-    var meterControl = new meterControl(meterDiv, map);
-
-    ToggleControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meterDiv);
-
-}
-
-
-function displayDirections(index) {
-    console.log(index)
-}
-
-function getPoints() {
-    var latlangLights = []
-    for (i in lights) {
-        latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
-    }
-    return latlangLights;
-}
-
-
-
-var gradient = [
-    'rgba(185, 185, 70, 0.0)',
-    'rgba(185, 185, 70, 0.8)',
-    'rgba(191, 191, 64, 0.6)',
-    'rgba(198, 198, 57, 0.6)',
-    'rgba(204, 204, 51, 0.8)',
-    'rgba(210, 210, 45, 0.8)',
-    'rgba(217, 217, 38, 0.8)',
-    'rgba(223, 223, 32, 0.8)',
-    'rgba(230, 230, 25, 0.9)',
-    'rgba(236, 236, 19, 1)',
-    'rgba(242, 242, 13, 1)',
-    'rgba(249, 249, 6, 1)',
-    'rgba(255, 255, 0, 1)',
-    'rgba(255, 255, 0, 1)'
-]
-
-
-
-
-$('#d3').hide();
-//var data = [4, 8, 15, 16, 23, 42];
-// Function to create the bar graph
-function buildGraph(myData) {
-    d3.selectAll("svg > *").remove();
-
-    //var obj = allData[i].data['scaled data']; // gets all the scaled data json
-    // var arr = Object.keys(obj).map(function(k) {
-    //     return obj[k]
-    // }); // converts the values to an array
-    //var key = Object.keys(obj); // gets the key of json
-
-    var scale = {
-        //x: d3.scale.ordinal(),
-        y: d3.scale.linear()
-    };
-    var margin = {
-            top: 20,
-            right: 20,
-            bottom: 70,
-            left: 40
-        },
-        width = 600 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
-
-    function mergeArray(keyArray, valueArray) {
-        var result = [];
-        var tmp = [];
-        for (var i = 0; i < keyArray.length; i++) {
-            tmp = [keyArray[i], valueArray[i]];
-            result.push(tmp);
-        }
-        return result;
-    }
-
-    //var dataset = mergeArray(key, arr);
-
-    scale.y.domain([0, 10]);
-    scale.y.range([height, 0]);
-
-    var barWidth = 20;
-
-    var chart = d3.select('.chart')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var xScale = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-    var yScale = d3.scale.linear().range([height, 0]);
-
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom");
-
-
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left")
-        .ticks(10);
-
-    var mapper = [];
-
-    for (var key in myData.data['scaled data']) {
-        mapper.push({
-            'name': key.replace(' scaled', ''),
-            'value': myData.data['scaled data'][key]
-        });
-    }
-
-    xScale.domain(mapper.map(function(d) {
-        return d.name;
-    }));
-    yScale.domain([0, 10]);
-
-    var padding = 1;
-
-    chart
-        .selectAll(".bar")
-        .data(mapper)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d, i) {
-            return xScale(d.name);
-        })
-        .attr("width", xScale.rangeBand())
-        .attr("y", function(d) {
-            return yScale(d.value);
-        })
-        .attr("height", function(d) {
-            return height - yScale(d.value);
-        });
-
-    var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-    var yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-    chart
-        .append("g").attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-18)");;
-
-
-    chart.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -35)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Rankings Compared to Other Regions");
-    return chart;
-}
-
-function getNumLights(polyline) {
-    if (lightsDone) {
-        console.log("lights done")
-        var numLights = 0;
-        for (var i in lights) {
-            var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
-            if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
-                numLights++;
+                console.log(i)
+                info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
             }
         }
-        return numLights;
-    } else {
-        console.log("lights again")
-        return setTimeout(getNumLights(polyline), 1000);
-    }
-}
 
-function getNumCrimes(polyline) {
-    if (crimeDone) {
-        console.log("crimes doing")
-        numCrimes=0;
-        for (var i in crimeCoordinates) {
-            console.log(i)
-            var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
-            if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
-                numCrimes++;
+        function start() {
+            var target = document.getElementById('spinner')
+            spinner = new Spinner(opts).spin(target);
+            target.appendChild(spinner.el)
+
+            $.get("/lights", function(data) {
+                lights = data.lights;
+                heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: getPoints(),
+                    map: map,
+                    gradient: gradient
+                });
+
+                lightsDone = true
+
+                for (var i in routeInfo) {
+                    console.log(routeInfo[i]);
+                    var numLights = getNumLights(routeInfo[i].polyline)
+                    var lightPercent = ((numLights * 25) / response.routes[route].legs[0].distance.value) * 100
+                    var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+                    routeInfo[i].lights = lightPercent;
+                    routeInfo[i].lightPercentText = lightText
+                }
+            });
+            var CrimeData;
+            $.get("/crimes", function(data) {
+                crimes = data;
+            });
+
+            var getQueryString = function(field, url) {
+                var href = url ? url : window.location.href;
+                var reg = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
+                var string = reg.exec(href);
+                return string ? string[1] : null;
+            };
+
+            var start = getQueryString('starting').replace(/%20/g, " "),
+                end = getQueryString('ending').replace(/%20/g, " ");
+
+            $("#startingp").text(start);
+            $("#endingp").text(end);
+
+            setTimeout(function() {
+                CreateDirections(start, end, "walking");
+            }, 700);
+        }
+
+        window.initMap = function() {
+            getCrimeCurr(32.8328, -117.2713, 0.2)
+            var minZoomLevel = 13;
+            // $.get('/directions', function(data) {
+            //     console.log(data)
+            // })
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: minZoomLevel,
+                // center: new google.maps.LatLng(32.8787, -117.0400),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                streetViewControl: false,
+                zoomControl: true,
+                mapTypeControl: false,
+                scrollwheel: false
+            });
+            start();
+
+            // var myLatLng = {
+            //     lat: 32.7157,
+            //     lng: -117.1611
+            // }
+            // crimeCoordinates.push(myLatLng)
+
+            // var marker = new google.maps.Marker({
+            //     position: myLatLng,
+            //     map: map,
+            //     title: 'Hello World!'
+            // });
+            // console.log(marker)
+
+            map.data.setStyle(function(feature) {
+                var color = feature.getProperty('color');
+                return ({
+                    fillColor: color,
+                    fillOpacity: 0.5,
+                    strokeWeight: 2
+                });
+            });
+
+            var styleArray = [{
+                "stylers": [{
+                    "hue": "#ff1a00"
+                }, {
+                    "invert_lightness": true
+                }, {
+                    "saturation": -100
+                }, {
+                    "lightness": 33
+                }, {
+                    "gamma": 0.5
+                }]
+            }, {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#2D333C"
+                }]
+            }]
+
+            map.setOptions({
+                styles: styleArray
+            });
+
+
+            function ToggleControl(controlDiv, map) {
+
+                // Set CSS for the control border.
+                var controlUI = document.createElement('div');
+                controlUI.style.backgroundColor = '#fff';
+                controlUI.style.border = '2px solid #fff';
+                controlUI.style.borderRadius = '2px';
+                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+                controlUI.style.cursor = 'pointer';
+                controlUI.style.marginBottom = '22px';
+                controlUI.style.marginLeft = '20px';
+                controlUI.style.marginTop = '20px';
+                controlUI.style.textAlign = 'center';
+                controlUI.title = 'Click to toggle the heatmap';
+                controlDiv.appendChild(controlUI);
+
+                // Set CSS for the control interior.
+                var controlText = document.createElement('div');
+                controlText.style.color = 'rgb(25,25,25)';
+                controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+                controlText.style.fontSize = '13px';
+                controlText.style.lineHeight = '38px';
+                controlText.style.paddingLeft = '5px';
+                controlText.style.paddingRight = '5px';
+                controlText.innerHTML = 'Toggle Heatmap';
+                controlUI.appendChild(controlText);
+
+                // Setup the click event listeners: simply set the map to Chicago.
+                controlUI.addEventListener('click', function() {
+                    heatmap.setMap(heatmap.getMap() ? null : map);
+                });
+
+            }
+
+            function CenterControl(controlDiv, map) {
+
+                // Set CSS for the control border.
+                var controlUI = document.createElement('div');
+                controlUI.style.backgroundColor = '#fff';
+                controlUI.style.border = '2px solid #fff';
+                controlUI.style.borderRadius = '2px';
+                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+                controlUI.style.cursor = 'pointer';
+                controlUI.style.marginBottom = '22px';
+                controlUI.style.marginLeft = '20px';
+                controlUI.style.marginTop = '20px';
+                controlUI.style.textAlign = 'center';
+                controlUI.title = 'Click to recenter the map';
+                controlDiv.appendChild(controlUI);
+
+                // Set CSS for the control interior.
+                var controlText = document.createElement('div');
+                controlText.style.color = 'rgb(25,25,25)';
+                controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+                controlText.style.fontSize = '13px';
+                controlText.style.lineHeight = '38px';
+                controlText.style.paddingLeft = '5px';
+                controlText.style.paddingRight = '5px';
+                controlText.innerHTML = 'Center Map';
+                controlUI.appendChild(controlText);
+
+                // Setup the click event listeners: simply set the map to Chicago.
+                controlUI.addEventListener('click', function() {
+                    map.setCenter(originalCenter);
+                    map.setZoom(originalZoom);
+                    // map.setZoom(minZoomLevel);
+                });
+
+            }
+
+            function meterControl(controlDiv, map) {
+                var controlUI = document.createElement('div');
+                controlUI.style.marginTop = '18px';
+                var meter = new Image();
+                meter.src = '../images/maplegend.png';
+                controlDiv.appendChild(controlUI);
+                controlUI.appendChild(meter);
+            }
+
+            var centerControlDiv = document.createElement('div');
+            var centerControl = new CenterControl(centerControlDiv, map);
+
+            var ToggleControlDiv = document.createElement('div');
+            var ToggleControl = new ToggleControl(ToggleControlDiv, map);
+            // var meter = new Image();
+            // meter.src = '../images/meter.png';
+
+            var meterDiv = document.createElement('div');
+            var meterControl = new meterControl(meterDiv, map);
+
+            ToggleControlDiv.index = 1;
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meterDiv);
+
+        }
+
+
+        function displayDirections(index) {
+            console.log(index)
+        }
+
+        function getPoints() {
+            var latlangLights = []
+            for (i in lights) {
+                latlangLights.push(new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1])));
+            }
+            return latlangLights;
+        }
+
+
+
+        var gradient = [
+            'rgba(185, 185, 70, 0.0)',
+            'rgba(185, 185, 70, 0.8)',
+            'rgba(191, 191, 64, 0.6)',
+            'rgba(198, 198, 57, 0.6)',
+            'rgba(204, 204, 51, 0.8)',
+            'rgba(210, 210, 45, 0.8)',
+            'rgba(217, 217, 38, 0.8)',
+            'rgba(223, 223, 32, 0.8)',
+            'rgba(230, 230, 25, 0.9)',
+            'rgba(236, 236, 19, 1)',
+            'rgba(242, 242, 13, 1)',
+            'rgba(249, 249, 6, 1)',
+            'rgba(255, 255, 0, 1)',
+            'rgba(255, 255, 0, 1)'
+        ]
+
+
+
+
+        $('#d3').hide();
+        //var data = [4, 8, 15, 16, 23, 42];
+        // Function to create the bar graph
+        function buildGraph(myData) {
+            d3.selectAll("svg > *").remove();
+
+            //var obj = allData[i].data['scaled data']; // gets all the scaled data json
+            // var arr = Object.keys(obj).map(function(k) {
+            //     return obj[k]
+            // }); // converts the values to an array
+            //var key = Object.keys(obj); // gets the key of json
+
+            var scale = {
+                //x: d3.scale.ordinal(),
+                y: d3.scale.linear()
+            };
+            var margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 70,
+                    left: 40
+                },
+                width = 600 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+            function mergeArray(keyArray, valueArray) {
+                var result = [];
+                var tmp = [];
+                for (var i = 0; i < keyArray.length; i++) {
+                    tmp = [keyArray[i], valueArray[i]];
+                    result.push(tmp);
+                }
+                return result;
+            }
+
+            //var dataset = mergeArray(key, arr);
+
+            scale.y.domain([0, 10]);
+            scale.y.range([height, 0]);
+
+            var barWidth = 20;
+
+            var chart = d3.select('.chart')
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var xScale = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+            var yScale = d3.scale.linear().range([height, 0]);
+
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom");
+
+
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+                .ticks(10);
+
+            var mapper = [];
+
+            for (var key in myData.data['scaled data']) {
+                mapper.push({
+                    'name': key.replace(' scaled', ''),
+                    'value': myData.data['scaled data'][key]
+                });
+            }
+
+            xScale.domain(mapper.map(function(d) {
+                return d.name;
+            }));
+            yScale.domain([0, 10]);
+
+            var padding = 1;
+
+            chart
+                .selectAll(".bar")
+                .data(mapper)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function(d, i) {
+                    return xScale(d.name);
+                })
+                .attr("width", xScale.rangeBand())
+                .attr("y", function(d) {
+                    return yScale(d.value);
+                })
+                .attr("height", function(d) {
+                    return height - yScale(d.value);
+                });
+
+            var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+            var yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+            chart
+                .append("g").attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-18)");;
+
+
+            chart.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -35)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Rankings Compared to Other Regions");
+            return chart;
+        }
+
+        function getNumLights(polyline) {
+            if (lightsDone) {
+                console.log("lights done")
+                var numLights = 0;
+                for (var i in lights) {
+                    var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
+                    if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
+                        numLights++;
+                    }
+                }
+                return numLights;
+            } else {
+                console.log("lights again")
+                return setTimeout(getNumLights(polyline), 800);
             }
         }
-        return numCrimes;
-    } else {
-        return setTimeout(getNumCrimes(polyline), 1000);
-    }
-}
 
-function CreateDirections(start, end, method, callback) {
-    getCrimeCurr(32.8328, -117.2713, 0.2)
-    var methodOfTravel;
-    if (method == "driving") {
-        methodOfTravel = google.maps.TravelMode.DRIVING
-    } else if (method == "walking") {
-        methodOfTravel = google.maps.TravelMode.WALKING
-    } else if (method == "transit") {
-        methodOfTravel = google.maps.TravelMode.TRANSIT
-    } else if (method == "bike") {
-        methodOfTravel = google.maps.TravelMode.BICYCLING
-    } else {
-        methodOfTravel = google.maps.TravelMode.WALKING
-    }
-    var directionsService = new google.maps.DirectionsService;
+        function getNumCrimes(polyline) {
+            if (crimeDone) {
+                console.log("checking crimes now")
+                numCrimes = 0;
+                for (var i in crimeCoordinates) {
+                    var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
+                    console.log("getting loc")
+                    console.log(location)
+                    console.log(polyline)
+                    if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+                        numCrimes++;
+                    }
+                }
+                return numCrimes;
+            } else {
+                return setTimeout(getNumCrimes(polyline), 1000);
+            }
+        }
 
-    directionsService.route({
-        origin: start,
-        destination: end,
-        provideRouteAlternatives: true,
-        travelMode: methodOfTravel
-    }, function(response, status) {
-        for (var i = 0, len = response.routes.length; i < len; i++) {
-            new google.maps.DirectionsRenderer({
-                map: map,
-                directions: response,
-                routeIndex: i
+        function CreateDirections(start, end, method, callback) {
+            var methodOfTravel;
+            if (method == "driving") {
+                methodOfTravel = google.maps.TravelMode.DRIVING
+            } else if (method == "walking") {
+                methodOfTravel = google.maps.TravelMode.WALKING
+            } else if (method == "transit") {
+                methodOfTravel = google.maps.TravelMode.TRANSIT
+            } else if (method == "bike") {
+                methodOfTravel = google.maps.TravelMode.BICYCLING
+            } else {
+                methodOfTravel = google.maps.TravelMode.WALKING
+            }
+            var directionsService = new google.maps.DirectionsService;
+
+            directionsService.route({
+                origin: start,
+                destination: end,
+                provideRouteAlternatives: true,
+                travelMode: methodOfTravel
+            }, function(response, status) {
+                for (var i = 0, len = response.routes.length; i < len; i++) {
+                    new google.maps.DirectionsRenderer({
+                        map: map,
+                        directions: response,
+                        routeIndex: i
+                    });
+                }
+                console.log(response.routes)
+
+                var createPolylines = function() {
+                    if (originalCenter == null || originalZoom == null) {
+                        originalCenter = map.getCenter();
+                        originalZoom = map.getZoom();
+                    }
+                    for (var route in response.routes) {
+                        var bounds = response.routes[route].overview_path;
+                        var newBounds = []
+                        for (var i in bounds) {
+                            var point = {}
+                            point.lat = bounds[i].lat()
+                            point.lng = bounds[i].lng()
+                            newBounds.push(point)
+                        }
+                        var polyline = new google.maps.Polyline({
+                            path: newBounds
+                        });
+                        routeInfo.push({
+                            route: response.routes[route],
+                            polyline: polyline,
+                            distance: response.routes[route].legs[0].distance.text,
+                            time: response.routes[route].legs[0].duration.text,
+                        })
+                    }
+                }
+                createPolylines();
             });
         }
-        var routeInfo = []
-        console.log(response.routes)
 
-        var check = function() {
-            if (originalCenter == null || originalZoom == null) {
-                originalCenter = map.getCenter();
-                originalZoom = map.getZoom();
+
+        //navbar animation
+        $("[href^='#']").on("click", function(e) {
+            var target = $(this).attr('href');
+            var scrollTop = $(target).offset().top - $('.header').height() - $('.header').outerHeight();
+
+            if (target == '#home') {
+                scrollTop = 0;
             }
-            for (var route in response.routes) {
-                var bounds = response.routes[route].overview_path;
-                var newBounds = []
-                for (var i in bounds) {
-                    var point = {}
-                    point.lat = bounds[i].lat()
-                    point.lng = bounds[i].lng()
-                    newBounds.push(point)
-                }
-                var polyline = new google.maps.Polyline({
-                    path: newBounds
-                });
+            $("body, html").animate({
+                scrollTop: scrollTop
+            }, 800);
 
-                var numLights = getNumLights(polyline)
-
-                var numCrimes =getNumCrimes(polyline);
-                var lightPercent = ((numLights * 25) / response.routes[route].legs[0].distance.value) * 100
-                var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
-                routeInfo.push({
-                    route: response.routes[route],
-                    crimes: numCrimes,
-                    lights: lightPercent,
-                    lightPercentText: lightText,
-                    distance: response.routes[route].legs[0].distance.text,
-                    time: response.routes[route].legs[0].duration.text,
-                    poyline: polyline
-                })
-            }
-            callback(routeInfo, null);
-
-        }
-        check();
-    });
-}
-
-
-
-//navbar animation
-$("[href^='#']").on("click", function(e) {
-    var target = $(this).attr('href');
-    var scrollTop = $(target).offset().top - $('.header').height() - $('.header').outerHeight();
-
-    if (target == '#home') {
-        scrollTop = 0;
-    }
-    $("body, html").animate({
-        scrollTop: scrollTop
-    }, 800);
-
-    e.preventDefault();
-});
+            e.preventDefault();
+        });
