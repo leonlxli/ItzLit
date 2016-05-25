@@ -20,7 +20,8 @@ $('#destinations-form').submit(function(e) {
     e.preventDefault();
     var starting = $('#starting').val();
     var ending = $('#ending').val();
-    window.location.href = '/maps?starting=' + starting + '&ending=' + ending;
+    var transportation = $('input[name="options"]:checked').val();
+    window.location.href = '/maps?starting=' + starting + '&ending=' + ending + '&transportation=' + transportation;
 });
 
 //Getting starting location

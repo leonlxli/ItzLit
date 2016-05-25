@@ -148,13 +148,14 @@ function start() {
     };
 
     var start = getQueryString('starting').replace(/%20/g, " "),
-        end = getQueryString('ending').replace(/%20/g, " ");
+        end = getQueryString('ending').replace(/%20/g, " "),
+        transportation = getQueryString('transportation');
 
     $("#startingp").text(start);
     $("#endingp").text(end);
 
     setTimeout(function() {
-        CreateDirections(start, end, "walking", function(res, err) {
+        CreateDirections(start, end, transportation, function(res, err) {
             spinner.stop();
             console.log(res)
             var info = $("#routeInfo");
