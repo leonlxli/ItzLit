@@ -13,6 +13,7 @@ var originalCenter;
 var originalZoom;
 var routeInfo = [];
 var spinner;
+var routeInfoDone = false;
 
 var opts = {
     lines: 13 // The number of lines to draw
@@ -105,22 +106,48 @@ function getCrimeCurr(lat, lng, distance) {
                     infowindow.open(map, marker);
                 });
             }
-            crimeDone = true;
-            setTimeout(function() {
-                console.log("hello")
+            console.log("routeinfo")
+            console.log(routeInfo)
+
+            if (routeInfoDone) {
                 for (var i in routeInfo) {
                     var numCrimes = getNumCrimes(routeInfo[i].polyline);
                     routeInfo[i].crimes = numCrimes;
+                    if (i == routeInfo.length - 1) {
+                        console.log("Crime true")
+                        crimeDone = true
+
+                        if (lightsDone) {
+                            console.log("calling from Crime")
+                            putData()
+                        }
+                    }
+
                 }
-            }, 1500)
+            } else {
+                setTimeout(function() {
+                    for (var i in routeInfo) {
+                        var numCrimes = getNumCrimes(routeInfo[i].polyline);
+                        routeInfo[i].crimes = numCrimes;
+                        if (i == routeInfo.length - 1) {
+                            console.log("crimeTrue")
+                            crimeDone = true
+
+                            if (lightsDone) {
+                                console.log("calling from Crime")
+                                putData()
+                            }
+                        }
+                    }
+                }, 2000)
+            }
         }
     })
 }
 
 function putData() {
-    console.log(routeInfo)
-    console.log("putData")
     spinner.stop();
+    routeInfo[0].polyline.setMap(map);
     var info = $("#routeInfo");
     for (var i in routeInfo) {
         var num = Number(i) + 1;
@@ -142,8 +169,7 @@ function start() {
             map: map,
             gradient: gradient
         });
-        lightsDone = true
-        setTimeout(function() {
+        if (routeInfoDone) {
             for (var i in routeInfo) {
                 var numLights = getNumLights(routeInfo[i].polyline)
                 var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
@@ -151,10 +177,33 @@ function start() {
                 routeInfo[i].lights = lightPercent;
                 routeInfo[i].lightPercentText = lightText
                 if (i == routeInfo.length - 1) {
-                    putData()
+                    console.log("lightsDone")
+                    lightsDone = true
+
+                    if (crimeDone) {
+                        console.log("calling from routeInfoDone")
+                        putData()
+                    }
                 }
             }
-        }, 700)
+        } else {
+            for (var i in routeInfo) {
+                var numLights = getNumLights(routeInfo[i].polyline)
+                var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
+                var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+                routeInfo[i].lights = lightPercent;
+                routeInfo[i].lightPercentText = lightText
+                if (i == routeInfo.length - 1) {
+                    console.log("lightsDone")
+                    lightsDone = true
+
+                    if (crimeDone) {
+                        console.log("calling from routeInfoDone")
+                        putData()
+                    }
+                }
+            }
+        }
     });
 
     var getQueryString = function(field, url) {
@@ -412,6 +461,15 @@ window.initMap = function() {
 
 
 function displayDirections(index) {
+    for (var i in routeInfo) {
+        console.log(i + " vs "+ index)
+        if (i == index) {
+            console.log("supposed to set")
+            routeInfo[i].polyline.setMap(map);
+        } else {
+            routeInfo[i].polyline.setMap(null);
+        }
+    }
     console.log(index)
 }
 
@@ -609,8 +667,13 @@ function CreateDirections(start, end, method, callback) {
         provideRouteAlternatives: true,
         travelMode: methodOfTravel
     }, function(response, status) {
+        console.log(response)
         for (var i = 0, len = response.routes.length; i < len; i++) {
             new google.maps.DirectionsRenderer({
+                polylineOptions: {
+                    strokeColor: "gray",
+                    setStrokeWeight: 1000
+                },
                 map: map,
                 directions: response,
                 routeIndex: i
@@ -632,7 +695,8 @@ function CreateDirections(start, end, method, callback) {
                     newBounds.push(point)
                 }
                 var polyline = new google.maps.Polyline({
-                    path: newBounds
+                    path: newBounds,
+                    strokeColor: "#05E9FF"
                 });
                 routeInfo.push({
                     route: response.routes[route],
@@ -640,6 +704,7 @@ function CreateDirections(start, end, method, callback) {
                     distance: response.routes[route].legs[0].distance.text,
                     time: response.routes[route].legs[0].duration.text,
                 })
+                routeInfoDone = true;
             }
         }
         createPolylines();
