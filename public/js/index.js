@@ -248,7 +248,7 @@ function setLightAndCrimeData() {
                 routeInfo[i].crimes = numCrimes;
             }
             putData()
-        }, 3000);
+        }, 2000);
     }
 }
 
@@ -268,17 +268,6 @@ function putData() {
 }
 
 function start() {
-    $.get("/lights", function(data) {
-        lights = data.lights;
-        heatmap = new google.maps.visualization.HeatmapLayer({
-            data: getPoints(),
-            map: map,
-            gradient: gradient,
-            zIndex: 3
-        });
-        console.log("done lights")
-        lightsDone = true
-    });
     setTimeout(function() {
         CreateDirections(start, end, transportation);
     }, 100);
@@ -316,6 +305,17 @@ window.initMap = function() {
         zoomControl: true,
         mapTypeControl: false,
         scrollwheel: false
+    });
+    $.get("/lights", function(data) {
+        lights = data.lights;
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map,
+            gradient: gradient,
+            zIndex: 3
+        });
+        console.log("done lights")
+        lightsDone = true
     });
     start();
 
