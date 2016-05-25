@@ -137,6 +137,7 @@ function getCrimeCurr(lat, lng, distance) {
                 console.log(i)
                 info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
             }
+            console.log(routeInfo)
         }
 
         function start() {
@@ -157,7 +158,7 @@ function getCrimeCurr(lat, lng, distance) {
                 for (var i in routeInfo) {
                     console.log(routeInfo[i]);
                     var numLights = getNumLights(routeInfo[i].polyline)
-                    var lightPercent = ((numLights * 25) / response.routes[route].legs[0].distance.value) * 100
+                    var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
                     var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
                     routeInfo[i].lights = lightPercent;
                     routeInfo[i].lightPercentText = lightText
