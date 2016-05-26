@@ -163,15 +163,16 @@ function putData() {
     for (var i in routeInfo) {
         var num = Number(i) + 1;
         console.log(i)
-        info.append("<div onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>"
-            + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>"
-            + routeInfo[i].crimes + " crimes</p></td>" +
-            "<td style='align: right;'><p>" + routeInfo[i].lightPercentText + 
-            "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>") 
-        info.append("<br><p><u>Directions:</u></p>");
-        for (var j in routeInfo[i].steps) {
-            info.append(routeInfo[i].steps[j].instructions + '<br />');
-        }
+        info.append("<div onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
+            "<td style='align: right;'><p>" + routeInfo[i].lightPercentText +
+            "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>")
+        info.append("<div id='dir" + i + "'></div>");
+    }
+    var info = $("#dir0");
+    info.append("<br><p><u>Directions:</u></p>")
+
+    for (var j in routeInfo[0].steps) {
+        info.append(routeInfo[0].steps[j].instructions + '<br />');
     }
 }
 
@@ -305,15 +306,24 @@ window.initMap = function() {
 
 
 function displayDirections(index) {
-    console.log(routeInfo)
     for (var i in routeInfo) {
         console.log(i + " vs " + index)
         console.log(routeInfo[i]);
+        var info = $("#dir" + i)
         if (i == index) {
-            console.log("supposed to set")
-            console.log(routeInfo[i].polyline)
-            routeInfo[index].polyline.setMap(map);
+            if (info.children().length > 0) {
+                info.empty()
+                routeInfo[index].polyline.setMap(null);
+            } else {
+                info.append("<br><p><u>Directions:</u></p>")
+                for (var j in routeInfo[index].steps) {
+                    info.append(routeInfo[index].steps[j].instructions + '<br />');
+                }
+                routeInfo[index].polyline.setMap(map);
+
+            }
         } else {
+            info.empty();
             routeInfo[i].polyline.setMap(null);
         }
     }
