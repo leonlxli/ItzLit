@@ -140,8 +140,6 @@ function setLightAndCrimeData() {
     for (var i in routeInfo) {
         var numCrimes = getNumCrimes(routeInfo[i].polyline);
         var numLights = getNumLights(routeInfo[i].polyline)
-        console.log((numLights * 25))
-        console.log(routeInfo[i].route.legs[0].distance.value)
         var lightPercent = ((numLights * 15) / routeInfo[i].route.legs[0].distance.value) * 100
         var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
         routeInfo[i].lights = lightPercent;
@@ -155,14 +153,11 @@ function setLightAndCrimeData() {
 
 function putData() {
     spinner.stop();
-    // routeInfo[0].polyline.setMap(map);
-    console.log("putting Data")
-    console.log(routeInfo[0].directionLine)
+
     routeInfo[0].polyline.setMap(map);
     var info = $("#routeInfo");
     for (var i in routeInfo) {
         var num = Number(i) + 1;
-        console.log(i)
         info.append("<div onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
             "<td style='align: right;'><p>" + routeInfo[i].lightPercentText +
             "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>")
@@ -307,8 +302,6 @@ window.initMap = function() {
 
 function displayDirections(index) {
     for (var i in routeInfo) {
-        console.log(i + " vs " + index)
-        console.log(routeInfo[i]);
         var info = $("#dir" + i)
         if (i == index) {
             if (info.children().length > 0) {
@@ -320,14 +313,12 @@ function displayDirections(index) {
                     info.append(routeInfo[index].steps[j].instructions + '<br />');
                 }
                 routeInfo[index].polyline.setMap(map);
-
             }
         } else {
             info.empty();
             routeInfo[i].polyline.setMap(null);
         }
     }
-    console.log(index)
 }
 
 function getPoints() {
@@ -479,7 +470,6 @@ function buildGraph(myData) {
 }
 
 function getNumLights(polyline) {
-    console.log("lights done")
     var numLights = 0;
     for (var i in lights) {
         var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
@@ -491,7 +481,6 @@ function getNumLights(polyline) {
 }
 
 function getNumCrimes(polyline) {
-    console.log("checking crimes now")
     numCrimes = 0;
     for (var i in crimeCoordinates) {
         var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
@@ -523,9 +512,6 @@ function CreateDirections(start, end, method, callback) {
         provideRouteAlternatives: true,
         travelMode: methodOfTravel
     }, function(response, status) {
-        console.log('fuking shit');
-        console.log(response);
-
         var createPolylines = function() {
             if (originalCenter == null || originalZoom == null) {
                 originalCenter = map.getCenter();
