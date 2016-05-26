@@ -215,32 +215,34 @@ function getCrimeCurr(lat, lng, distance) {
                     });
                     infowindow.open(map, marker);
                 });
+                if (i == data.crimes.length - 1) {
+                    crimeDone = true;
+                    if (routeInfoDone && lightsDone) {
+                        setLightAndCrimeData()
+                    }
+                }
             }
-            console.log("done Crime")
-            crimeDone = true;
 
         }
     })
 }
 
 function setLightAndCrimeData() {
-    if (crimeDone && lightsDone) {
-        for (var i in routeInfo) {
-            var numCrimes = getNumCrimes(routeInfo[i].polyline);
-            var numLights = getNumLights(routeInfo[i].polyline)
-            console.log((numLights * 25))
-            console.log(routeInfo[i].route.legs[0].distance.value)
-            var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
-            var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
-            routeInfo[i].lights = lightPercent;
-            routeInfo[i].lightPercentText = lightText
-            routeInfo[i].crimes = numCrimes;
+    for (var i in routeInfo) {
+        var numCrimes = getNumCrimes(routeInfo[i].polyline);
+        var numLights = getNumLights(routeInfo[i].polyline)
+        console.log((numLights * 25))
+        console.log(routeInfo[i].route.legs[0].distance.value)
+        var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
+        var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+        routeInfo[i].lights = lightPercent;
+        routeInfo[i].lightPercentText = lightText
+        routeInfo[i].crimes = numCrimes;
+        if(i==routeInfo.length-1){
+            putData();
         }
-        putData()
     }
-    else{
-        setTimeout(setLightAndCrimeData(),1000);
-    }
+
 }
 
 function putData() {
@@ -253,6 +255,9 @@ function putData() {
         var num = Number(i) + 1;
         console.log(i)
         info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
+        for (var j in routeInfo[i].steps) {
+            info.append(routeInfo[i].steps[j].instructions + '<br />');
+        }
     }
     console.log("routeInfo")
     console.log(routeInfo)
@@ -305,8 +310,10 @@ window.initMap = function() {
             gradient: gradient,
             zIndex: 3
         });
-        console.log("done lights")
-        lightsDone = true
+        lightsDone = true;
+        if (routeInfoDone && crimeDone) {
+            setLightAndCrimeData()
+        }
     });
     start();
 
@@ -388,6 +395,7 @@ function displayDirections(index) {
     console.log(routeInfo)
     for (var i in routeInfo) {
         console.log(i + " vs " + index)
+        console.log(routeInfo[i]);
         if (i == index) {
             console.log("supposed to set")
             console.log(routeInfo[i].polyline)
@@ -593,6 +601,8 @@ function CreateDirections(start, end, method, callback) {
         provideRouteAlternatives: true,
         travelMode: methodOfTravel
     }, function(response, status) {
+        console.log('fuking shit');
+        console.log(response);
 
         var createPolylines = function() {
             if (originalCenter == null || originalZoom == null) {
@@ -610,7 +620,6 @@ function CreateDirections(start, end, method, callback) {
                     routeIndex: Number(route)
                 });
                 dirPolyline.setMap(map);
-                dirPolyline.setPanel(document.getElementById('right-panel'));
                 var bounds = response.routes[route].overview_path;
                 var newBounds = []
                 for (var i in bounds) {
@@ -630,9 +639,15 @@ function CreateDirections(start, end, method, callback) {
                     polyline: polyline,
                     distance: response.routes[route].legs[0].distance.text,
                     time: response.routes[route].legs[0].duration.text,
+                    steps: response.routes[route].legs[0].steps
                 })
+                if (Number(route) == response.routes.length - 1) {
+                    routeInfoDone = true;
+                    if (lightsDone && crimeDone) {
+                        setLightAndCrimeData()
+                    }
+                }
             }
-            setLightAndCrimeData()
         }
         createPolylines();
     });
