@@ -112,19 +112,10 @@ function getCrimeCurr(lat, lng, distance) {
                     lat: data.crimes[i].lat,
                     lng: data.crimes[i].lon
                 }
+
                 crimeCoordinates.push(myLatLng)
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    icon: crimeImg
-                });
-                marker.addListener('click', function() {
-                    var contentString = "<div><h1>" + data.crimes[i].type + "</h1></div>"
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-                    infowindow.open(map, marker);
-                });
+
+                createCrimeMarker(myLatLng, crimeImg, data.crimes[i])
                 if (i == data.crimes.length - 1) {
                     crimeDone = true;
                     if (routeInfoDone && lightsDone) {
@@ -134,6 +125,21 @@ function getCrimeCurr(lat, lng, distance) {
             }
         }
     })
+}
+
+function createCrimeMarker(myLatLng, crimeImg, info) {
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        icon: crimeImg
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+        console.log(info)
+        var contentString = "<div><h1>" + info.type + "</h1><p>date :"+ info.date +"</p></div>"
+        infowindow.setContent(contentString);
+        infowindow.open(map, marker);
+    });
 }
 
 function setLightAndCrimeData() {
@@ -201,7 +207,10 @@ $(document).ready(function() {
 });
 
 window.initMap = function() {
-    var sandiego = {lat: 32.856130, lng:  -117.234485}
+    var sandiego = {
+        lat: 32.856130,
+        lng: -117.234485
+    }
     getCrimeCurr(32.8328, -117.2713, 0.2)
     var minZoomLevel = 13;
     map = new google.maps.Map(document.getElementById('map'), {
@@ -215,11 +224,8 @@ window.initMap = function() {
 
     infowindow = new google.maps.InfoWindow();
     var service = new google.maps.places.PlacesService(map);
-    service.nearbySearch({
-      location: sandiego,
-      radius: 25000,
-      type: ['police']
-    }, createPlacesMarkers);
+
+
 
     $.get("/lights", function(data) {
         lights = data.lights;
@@ -235,6 +241,12 @@ window.initMap = function() {
         }
     });
     start();
+
+    service.nearbySearch({
+        location: sandiego,
+        radius: 25000,
+        type: ['police']
+    }, createPlacesMarkers);
 
     map.data.setStyle(function(feature) {
         var color = feature.getProperty('color');
@@ -312,23 +324,23 @@ window.initMap = function() {
 function createPlacesMarkers(results, status) {
     console.log("*****SWAG*****" + results.length)
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        createMarker(results[i]);
-      }
+        for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+        }
     }
 }
 
 function createMarker(place) {
     var placeLoc = place.geometry.location;
     var marker = new google.maps.Marker({
-      map: map,
-      position: place.geometry.location
+        map: map,
+        position: place.geometry.location
     });
 
 
     google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(place.name);
-      infowindow.open(map, this);
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
     });
 }
 
