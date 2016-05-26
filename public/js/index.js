@@ -162,7 +162,12 @@ function putData() {
     for (var i in routeInfo) {
         var num = Number(i) + 1;
         console.log(i)
-        info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
+        info.append("<div onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>"
+            + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>"
+            + routeInfo[i].crimes + " crimes</p></td>" +
+            "<td style='align: right;'><p>" + routeInfo[i].lightPercentText + 
+            "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>") 
+        info.append("<br><p><u>Directions:</u></p>");
         for (var j in routeInfo[i].steps) {
 
             info.append(routeInfo[i].steps[j].instructions + '<br />');
@@ -190,6 +195,7 @@ function start() {
 
     $("#startingp").text(start);
     $("#endingp").text(end);
+    $("#transportation").text(transportation);
     $.get("/crimes", function(data) {
         crimes = data;
     });
