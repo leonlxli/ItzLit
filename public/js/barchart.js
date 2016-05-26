@@ -141,6 +141,8 @@
                 .style('fill', 'white')
                 .text("Number of Crimes");
 
+
+            
           var hour = stackBarChart.selectAll(".hour")
             .data(data)
             .enter().append("g")
@@ -159,6 +161,35 @@
             .attr("y", function(d) { return yScale(d.y1); })
             .attr("height", function(d) { return yScale(d.y0) - yScale(d.y1); })
             .style("fill", function(d) { return color(d.type); });
+
+
+            
+            stackBarChart.selectAll("rect")
+              .on("mouseover", function(d){
+                // console.log("x", d3.select(this).attr("x"));
+                // console.log("y", d3.select(this).attr("y"));
+                //   var xPos = parseFloat(d3.select(this).attr("x"));
+                //   var yPos = parseFloat(d3.select(this).attr("y"));
+                //   var height = parseFloat(d3.select(this).attr("height"))
+                          
+                  d3.select(this).attr("stroke","yellow").attr("stroke-width",2.0);             
+                  // console.log(xPos);
+                  // console.log(yPos);
+                  stackBarChart.append("text")
+                  // .attr("class","tooltip")
+                  //   .attr("x",xPos)
+                  //   .attr("y",yPos +height/2)
+                    // .attr("x", 50);
+                    // .attry("y", 100);
+                    //.text(Math.floor(d.y_pct.toFixed(2)*100) + "% population of " + d.mystate );    
+                    // .text(d);
+                    // .text("Number of " + function(d) { return d.type; } + "s: " + function(d) { return yScale(d.y0) - yScale(d.y1); });  
+              })
+              .on("mouseout",function(){
+                stackBarChart.select(".tooltip").remove();
+                d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
+                                      
+              })
 
             var legend = stackBarChart.selectAll(".legend")
                 .data(color.domain().slice().reverse())
@@ -179,6 +210,16 @@
                 .style("text-anchor", "end")
                 .text(function(d) { return d; })
                 .style('fill', 'white');
-    });
 
-}) ($);
+            // var tooltip = d3.select("body")
+            //   .append("div")
+            //   .style("position", "absolute")
+            //   .style("z-index", "10")
+            //   .style("visibility", "hidden")
+            //   .text("sample text")
+            // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+            // .on("mousemove", function(){return tooltip.style("top",
+            //     (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+            // .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+    });
+ })($);
