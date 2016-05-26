@@ -156,6 +156,7 @@ function setLightAndCrimeData() {
 function putData() {
     spinner.stop();
     // routeInfo[0].polyline.setMap(map);
+    console.log("putting Data")
     console.log(routeInfo[0].directionLine)
     routeInfo[0].polyline.setMap(map);
     var info = $("#routeInfo");
@@ -169,12 +170,9 @@ function putData() {
             "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>") 
         info.append("<br><p><u>Directions:</u></p>");
         for (var j in routeInfo[i].steps) {
-
             info.append(routeInfo[i].steps[j].instructions + '<br />');
         }
     }
-    console.log("routeInfo")
-    console.log(routeInfo)
 }
 
 function start() {
@@ -562,7 +560,6 @@ function CreateDirections(start, end, method, callback) {
                     }
                 }
             }
-            setLightAndCrimeData()
         }
         createPolylines();
     });
