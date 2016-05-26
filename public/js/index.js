@@ -290,6 +290,7 @@ function start() {
 
     $("#startingp").text(start);
     $("#endingp").text(end);
+    $("#transportationp").text(transportation);
     $.get("/crimes", function(data) {
         crimes = data;
     });
