@@ -2,6 +2,7 @@ html,
 body {
     height: 100%;
     margin: 0 auto;
+    background-color: black;
 }
 
 .scrollFix {
@@ -25,7 +26,7 @@ body {
 }
 
 #forum {
-    background-color: #000000;
+    background-color: black;
     color: blue;
     height: 100%;
 }
@@ -140,6 +141,7 @@ p.app-description {
     height: 100%;
     width: 33%;
     background-color: #BEC2C9;
+    overflow-y: auto;
 }
 
 .row {

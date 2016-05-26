@@ -192,17 +192,20 @@
 
                 <!--Sidebar-->
                 <div style="margin-left:40px">
-                    <p>Starting point:</p>
+                    <p><b>Starting point:</b></p>
                     <p id="startingp"></p>
-                    <p>Ending point:</p>
+                    <p><b>Ending point:</b></p>
                     <p id="endingp"></p>
+                    <p><b>Transportation:</b></p>
+                    <p id="transportation"></p>
                 </div>
                 <center>
-                    <h2 id="uberTypeSelected" class="uber-selection">ROUTE</h2>
+                    <h2 id="uberTypeSelected" class="uber-selection">SELECT YOUR ROUTE:</h2>
                 </center>
                 <div style="margin-left:40px">
                     <div id="routeInfo">
                     </div>
+                    <div id="right-panel"></div>
                 </div>
 
 
@@ -292,13 +295,12 @@
         </section>
 
     </div>
-
+    <script src="/js/spin.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script src="/js/index.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxU3ewOQTPgI7Pf3wvcDZp-N8hv3cYnU
         &libraries=geometry,visualization&callback=initMap"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="/js/spin.js"></script>
     <script src="/js/barchart.js"></script>
     <script src="./js/socket.io.min.js"></script>
     <script src="./js/newPost.js"></script>

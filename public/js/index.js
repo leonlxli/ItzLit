@@ -14,7 +14,27 @@ var originalZoom;
 var routeInfo = [];
 var spinner;
 var routeInfoDone = false;
-
+var dirPolyline;
+var directions;
+var styleArray = [{
+    "stylers": [{
+        "hue": "#ff1a00"
+    }, {
+        "invert_lightness": true
+    }, {
+        "saturation": -100
+    }, {
+        "lightness": 33
+    }, {
+        "gamma": 0.5
+    }]
+}, {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [{
+        "color": "#2D333C"
+    }]
+}]
 var opts = {
     lines: 13 // The number of lines to draw
         ,
@@ -105,106 +125,56 @@ function getCrimeCurr(lat, lng, distance) {
                     });
                     infowindow.open(map, marker);
                 });
-            }
-            console.log("routeinfo")
-            console.log(routeInfo)
-
-            if (routeInfoDone) {
-                for (var i in routeInfo) {
-                    var numCrimes = getNumCrimes(routeInfo[i].polyline);
-                    routeInfo[i].crimes = numCrimes;
-                    if (i == routeInfo.length - 1) {
-                        console.log("Crime true")
-                        crimeDone = true
-
-                        if (lightsDone) {
-                            console.log("calling from Crime")
-                            putData()
-                        }
+                if (i == data.crimes.length - 1) {
+                    crimeDone = true;
+                    if (routeInfoDone && lightsDone) {
+                        setLightAndCrimeData()
                     }
-
                 }
-            } else {
-                setTimeout(function() {
-                    for (var i in routeInfo) {
-                        var numCrimes = getNumCrimes(routeInfo[i].polyline);
-                        routeInfo[i].crimes = numCrimes;
-                        if (i == routeInfo.length - 1) {
-                            console.log("crimeTrue")
-                            crimeDone = true
-
-                            if (lightsDone) {
-                                console.log("calling from Crime")
-                                putData()
-                            }
-                        }
-                    }
-                }, 2000)
             }
         }
     })
 }
 
+function setLightAndCrimeData() {
+    for (var i in routeInfo) {
+        var numCrimes = getNumCrimes(routeInfo[i].polyline);
+        var numLights = getNumLights(routeInfo[i].polyline)
+        var lightPercent = ((numLights * 15) / routeInfo[i].route.legs[0].distance.value) * 100
+        var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+        routeInfo[i].lights = lightPercent;
+        routeInfo[i].lightPercentText = lightText
+        routeInfo[i].crimes = numCrimes;
+        if (i == routeInfo.length - 1) {
+            putData();
+        }
+    }
+}
+
 function putData() {
     spinner.stop();
+
     routeInfo[0].polyline.setMap(map);
     var info = $("#routeInfo");
     for (var i in routeInfo) {
         var num = Number(i) + 1;
-        console.log(i)
-        info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
+        info.append("<div onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
+            "<td style='align: right;'><p>" + routeInfo[i].lightPercentText +
+            "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>")
+        info.append("<div id='dir" + i + "'></div>");
     }
-    console.log("routeInfo")
-    console.log(routeInfo)
+    var info = $("#dir0");
+    info.append("<br><p><u>Directions:</u></p>")
+
+    for (var j in routeInfo[0].steps) {
+        info.append(routeInfo[0].steps[j].instructions + '<br />');
+    }
 }
 
 function start() {
     setTimeout(function() {
         CreateDirections(start, end, transportation);
     }, 100);
-    $.get("/lights", function(data) {
-        lights = data.lights;
-        heatmap = new google.maps.visualization.HeatmapLayer({
-            data: getPoints(),
-            map: map,
-            gradient: gradient
-        });
-        if (routeInfoDone) {
-            for (var i in routeInfo) {
-                var numLights = getNumLights(routeInfo[i].polyline)
-                var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
-                var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
-                routeInfo[i].lights = lightPercent;
-                routeInfo[i].lightPercentText = lightText
-                if (i == routeInfo.length - 1) {
-                    console.log("lightsDone")
-                    lightsDone = true
-
-                    if (crimeDone) {
-                        console.log("calling from routeInfoDone")
-                        putData()
-                    }
-                }
-            }
-        } else {
-            for (var i in routeInfo) {
-                var numLights = getNumLights(routeInfo[i].polyline)
-                var lightPercent = ((numLights * 25) / routeInfo[i].route.legs[0].distance.value) * 100
-                var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
-                routeInfo[i].lights = lightPercent;
-                routeInfo[i].lightPercentText = lightText
-                if (i == routeInfo.length - 1) {
-                    console.log("lightsDone")
-                    lightsDone = true
-
-                    if (crimeDone) {
-                        console.log("calling from routeInfoDone")
-                        putData()
-                    }
-                }
-            }
-        }
-    });
 
     var getQueryString = function(field, url) {
         var href = url ? url : window.location.href;
@@ -219,6 +189,7 @@ function start() {
 
     $("#startingp").text(start);
     $("#endingp").text(end);
+    $("#transportation").text(transportation);
     $.get("/crimes", function(data) {
         crimes = data;
     });
@@ -240,6 +211,19 @@ window.initMap = function() {
         mapTypeControl: false,
         scrollwheel: false
     });
+    $.get("/lights", function(data) {
+        lights = data.lights;
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map,
+            gradient: gradient,
+            zIndex: 3
+        });
+        lightsDone = true;
+        if (routeInfoDone && crimeDone) {
+            setLightAndCrimeData()
+        }
+    });
     start();
 
     map.data.setStyle(function(feature) {
@@ -250,114 +234,6 @@ window.initMap = function() {
             strokeWeight: 2
         });
     });
-
-    var styleArray = [{
-        "featureType": "all",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#ffffff"
-        }, {
-            "weight": "0.20"
-        }, {
-            "lightness": "28"
-        }, {
-            "saturation": "23"
-        }, {
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "all",
-        "elementType": "labels.text.stroke",
-        "stylers": [{
-            "color": "#494949"
-        }, {
-            "lightness": 13
-        }, {
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "all",
-        "elementType": "labels.icon",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "administrative",
-        "elementType": "geometry.fill",
-        "stylers": [{
-            "color": "#000000"
-        }]
-    }, {
-        "featureType": "administrative",
-        "elementType": "geometry.stroke",
-        "stylers": [{
-            "color": "#144b53"
-        }, {
-            "lightness": 14
-        }, {
-            "weight": 1.4
-        }]
-    }, {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [{
-            "color": "#08304b"
-        }]
-    }, {
-        "featureType": "poi",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#0c4152"
-        }, {
-            "lightness": 5
-        }]
-    }, {
-        "featureType": "road.highway",
-        "elementType": "geometry.fill",
-        "stylers": [{
-            "color": "#000000"
-        }]
-    }, {
-        "featureType": "road.highway",
-        "elementType": "geometry.stroke",
-        "stylers": [{
-            "color": "#0b434f"
-        }, {
-            "lightness": 25
-        }]
-    }, {
-        "featureType": "road.arterial",
-        "elementType": "geometry.fill",
-        "stylers": [{
-            "color": "#000000"
-        }]
-    }, {
-        "featureType": "road.arterial",
-        "elementType": "geometry.stroke",
-        "stylers": [{
-            "color": "#0b3d51"
-        }, {
-            "lightness": 16
-        }]
-    }, {
-        "featureType": "road.local",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#000000"
-        }]
-    }, {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [{
-            "color": "#146474"
-        }]
-    }, {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [{
-            "color": "#021019"
-        }]
-    }]
 
     map.setOptions({
         styles: styleArray
@@ -398,39 +274,6 @@ window.initMap = function() {
 
     }
 
-    function CenterControl(controlDiv, map) {
-
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.borderRadius = '2px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.marginLeft = '20px';
-        controlUI.style.marginTop = '20px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to recenter the map';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '13px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Center Map';
-        controlUI.appendChild(controlText);
-
-        controlUI.addEventListener('click', function() {
-            map.setCenter(originalCenter);
-            map.setZoom(originalZoom);
-        });
-
-    }
 
     function meterControl(controlDiv, map) {
         var controlUI = document.createElement('div');
@@ -441,8 +284,6 @@ window.initMap = function() {
         controlUI.appendChild(meter);
     }
 
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
 
     var ToggleControlDiv = document.createElement('div');
     var ToggleControl = new ToggleControl(ToggleControlDiv, map);
@@ -454,7 +295,6 @@ window.initMap = function() {
 
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meterDiv);
 
 }
@@ -462,15 +302,23 @@ window.initMap = function() {
 
 function displayDirections(index) {
     for (var i in routeInfo) {
-        console.log(i + " vs "+ index)
+        var info = $("#dir" + i)
         if (i == index) {
-            console.log("supposed to set")
-            routeInfo[i].polyline.setMap(map);
+            if (info.children().length > 0) {
+                info.empty()
+                routeInfo[index].polyline.setMap(null);
+            } else {
+                info.append("<br><p><u>Directions:</u></p>")
+                for (var j in routeInfo[index].steps) {
+                    info.append(routeInfo[index].steps[j].instructions + '<br />');
+                }
+                routeInfo[index].polyline.setMap(map);
+            }
         } else {
+            info.empty();
             routeInfo[i].polyline.setMap(null);
         }
     }
-    console.log(index)
 }
 
 function getPoints() {
@@ -485,8 +333,7 @@ function getPoints() {
 
 var gradient = [
     'rgba(185, 185, 70, 0.0)',
-    'rgba(185, 185, 70, 0.8)',
-    'rgba(191, 191, 64, 0.6)',
+    'rgba(185, 185, 70, 1)',
     'rgba(198, 198, 57, 0.6)',
     'rgba(204, 204, 51, 0.8)',
     'rgba(210, 210, 45, 0.8)',
@@ -623,7 +470,6 @@ function buildGraph(myData) {
 }
 
 function getNumLights(polyline) {
-    console.log("lights done")
     var numLights = 0;
     for (var i in lights) {
         var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
@@ -635,7 +481,6 @@ function getNumLights(polyline) {
 }
 
 function getNumCrimes(polyline) {
-    console.log("checking crimes now")
     numCrimes = 0;
     for (var i in crimeCoordinates) {
         var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
@@ -667,25 +512,22 @@ function CreateDirections(start, end, method, callback) {
         provideRouteAlternatives: true,
         travelMode: methodOfTravel
     }, function(response, status) {
-        console.log(response)
-        for (var i = 0, len = response.routes.length; i < len; i++) {
-            new google.maps.DirectionsRenderer({
-                polylineOptions: {
-                    strokeColor: "gray",
-                    setStrokeWeight: 1000
-                },
-                map: map,
-                directions: response,
-                routeIndex: i
-            });
-        }
-
         var createPolylines = function() {
             if (originalCenter == null || originalZoom == null) {
                 originalCenter = map.getCenter();
                 originalZoom = map.getZoom();
             }
             for (var route in response.routes) {
+                dirPolyline = new google.maps.DirectionsRenderer({
+                    polylineOptions: {
+                        strokeColor: "gray",
+                        zIndex: 1,
+                    },
+                    map: map,
+                    directions: response,
+                    routeIndex: Number(route)
+                });
+                dirPolyline.setMap(map);
                 var bounds = response.routes[route].overview_path;
                 var newBounds = []
                 for (var i in bounds) {
@@ -696,15 +538,23 @@ function CreateDirections(start, end, method, callback) {
                 }
                 var polyline = new google.maps.Polyline({
                     path: newBounds,
-                    strokeColor: "#05E9FF"
+                    strokeColor: "#05E9FF",
+                    zIndex: 2,
                 });
                 routeInfo.push({
+                    directionLine: dirPolyline,
                     route: response.routes[route],
                     polyline: polyline,
                     distance: response.routes[route].legs[0].distance.text,
                     time: response.routes[route].legs[0].duration.text,
+                    steps: response.routes[route].legs[0].steps
                 })
-                routeInfoDone = true;
+                if (Number(route) == response.routes.length - 1) {
+                    routeInfoDone = true;
+                    if (lightsDone && crimeDone) {
+                        setLightAndCrimeData()
+                    }
+                }
             }
         }
         createPolylines();
