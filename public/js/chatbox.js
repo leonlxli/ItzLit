@@ -157,6 +157,7 @@ function placePosts() {
         index = 0;
         //$('#commentStuff').append($('<div>').html(commentModal));
         while (i < limit && i < data.newsfeed.length) {
+
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
             console.log("INSIDE PLACE POSTS OF CHATBOX: "+ JSON.stringify(data.newsfeed[index]));
             index++;

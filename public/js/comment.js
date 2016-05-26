@@ -42,7 +42,7 @@ function messageTemplate(template) {
         '<div class="user">' +
         '<div class="user-image">' +
         '<img src="' + template.photo + '" alt="" style="vertical-align: middle; padding-right: 3px;">' +
-        '<b>' + template.displayName + '</b><span class="username"> posted on </span>' +
+        '<b>' + template.user.username + '</b><span class="username"> posted on </span>' +
         '<span class="posted">' + template.posted + '</span>' +
         '</div>' +
         '</div>' +
