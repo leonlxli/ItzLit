@@ -233,7 +233,7 @@ window.initMap = function() {
             data: getPoints(),
             map: map,
             gradient: gradient,
-            zIndex: 3
+            zIndex: 1
         });
         lightsDone = true;
         if (routeInfoDone && crimeDone) {
@@ -247,15 +247,6 @@ window.initMap = function() {
         radius: 25000,
         type: ['police']
     }, createPlacesMarkers);
-
-    map.data.setStyle(function(feature) {
-        var color = feature.getProperty('color');
-        return ({
-            fillColor: color,
-            fillOpacity: 0.5,
-            strokeWeight: 2
-        });
-    });
 
     map.setOptions({
         styles: styleArray
@@ -583,6 +574,8 @@ function CreateDirections(start, end, method, callback) {
                 var polyline = new google.maps.Polyline({
                     path: newBounds,
                     strokeColor: "#05E9FF",
+                    strokeOpacity: 0.6,
+                    strokeWeight: 10,
                     zIndex: 2,
                 });
                 routeInfo.push({
