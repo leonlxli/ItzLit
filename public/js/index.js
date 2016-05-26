@@ -14,6 +14,8 @@ var originalZoom;
 var routeInfo = [];
 var spinner;
 var routeInfoDone = false;
+var dirPolyline;
+var directions;
 
 var styleArray = [{
     "featureType": "all",
@@ -609,7 +611,7 @@ function CreateDirections(start, end, method, callback) {
                 originalZoom = map.getZoom();
             }
             for (var route in response.routes) {
-                var dirPolyline = new google.maps.DirectionsRenderer({
+                dirPolyline = new google.maps.DirectionsRenderer({
                     polylineOptions: {
                         strokeColor: "gray",
                         zIndex: 1,
@@ -618,6 +620,8 @@ function CreateDirections(start, end, method, callback) {
                     directions: response,
                     routeIndex: Number(route)
                 });
+                dirPolyline.setMap(map);
+                dirPolyline.setPanel(document.getElementById('right-panel'));
                 var bounds = response.routes[route].overview_path;
                 var newBounds = []
                 for (var i in bounds) {
