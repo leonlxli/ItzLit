@@ -201,6 +201,7 @@ $(document).ready(function() {
 });
 
 window.initMap = function() {
+    var sandiego = {lat: 32.856130, lng:  -117.234485}
     getCrimeCurr(32.8328, -117.2713, 0.2)
     var minZoomLevel = 13;
     map = new google.maps.Map(document.getElementById('map'), {
@@ -211,6 +212,15 @@ window.initMap = function() {
         mapTypeControl: false,
         scrollwheel: false
     });
+
+    infowindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+      location: sandiego,
+      radius: 25000,
+      type: ['police']
+    }, createPlacesMarkers);
+
     $.get("/lights", function(data) {
         lights = data.lights;
         heatmap = new google.maps.visualization.HeatmapLayer({
@@ -299,6 +309,28 @@ window.initMap = function() {
 
 }
 
+function createPlacesMarkers(results, status) {
+    console.log("*****SWAG*****" + results.length)
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        createMarker(results[i]);
+      }
+    }
+}
+
+function createMarker(place) {
+    var placeLoc = place.geometry.location;
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+    });
+
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.setContent(place.name);
+      infowindow.open(map, this);
+    });
+}
 
 function displayDirections(index) {
     for (var i in routeInfo) {
