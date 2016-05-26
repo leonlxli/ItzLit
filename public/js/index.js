@@ -264,6 +264,9 @@ function putData() {
         var num = Number(i) + 1;
         console.log(i)
         info.append("<div onclick='displayDirections(" + i + ")'><h4>Route " + num + "</h4><p>" + routeInfo[i].lightPercentText + "</p><p>Crimes:" + routeInfo[i].crimes + "</p><p>" + routeInfo[i].time + "</p>" + "</p><p>" + routeInfo[i].distance + "</p></div>")
+        for (var j in routeInfo[i].steps) {
+          info.append(routeInfo[i].steps[j].instructions + '<br />');
+        }
     }
     console.log("routeInfo")
     console.log(routeInfo)
@@ -399,6 +402,7 @@ function displayDirections(index) {
     console.log(routeInfo)
     for (var i in routeInfo) {
         console.log(i + " vs " + index)
+        console.log(routeInfo[i]);
         if (i == index) {
             console.log("supposed to set")
             console.log(routeInfo[i].polyline)
@@ -604,6 +608,8 @@ function CreateDirections(start, end, method, callback) {
         provideRouteAlternatives: true,
         travelMode: methodOfTravel
     }, function(response, status) {
+        console.log('fuking shit');
+        console.log(response);
 
         var createPolylines = function() {
             if (originalCenter == null || originalZoom == null) {
@@ -621,7 +627,6 @@ function CreateDirections(start, end, method, callback) {
                     routeIndex: Number(route)
                 });
                 dirPolyline.setMap(map);
-                dirPolyline.setPanel(document.getElementById('right-panel'));
                 var bounds = response.routes[route].overview_path;
                 var newBounds = []
                 for (var i in bounds) {
@@ -641,6 +646,7 @@ function CreateDirections(start, end, method, callback) {
                     polyline: polyline,
                     distance: response.routes[route].legs[0].distance.text,
                     time: response.routes[route].legs[0].duration.text,
+                    steps: response.routes[route].legs[0].steps
                 })
             }
             setLightAndCrimeData()
