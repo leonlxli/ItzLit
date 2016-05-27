@@ -575,7 +575,7 @@ function CreateDirections(start, end, method, callback) {
                 var polyline = new google.maps.Polyline({
                     path: newBounds,
                     strokeColor: "#05E9FF",
-                    strokeOpacity: 0.6,
+                    strokeOpacity: 0.7,
                     strokeWeight: 10,
                     zIndex: 2,
                 });
