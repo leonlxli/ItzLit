@@ -203,11 +203,11 @@ function start() {
     if (transportation == "driving") {
         $("#transportation").append('<img src="/images/driving.png" width="35" height="35">');
     } else if (transportation == "walking") {
-        $("#transportation").append('img src="/images/walking.png" width="35" height="35">')
+        $("#transportation").append('<img src="/images/walking.png" width="35" height="35">')
     } else if (transportation == "bicycling") {
-        $("#transportation").append('img src="/images/bicycling.png" width="35" height="35">')
+        $("#transportation").append('<img src="/images/bicycling.png" width="35" height="35">')
     } else {
-        $("#transportation").append('img src="/images/transit.png" width="35" height="35">')
+        $("#transportation").append('<img src="/images/transit.png" width="35" height="35">')
     }
     $("#startingp").append(start);
     $("#endingp").append(end);
