@@ -164,8 +164,8 @@ function putData() {
     var info = $("#routeInfo");
     for (var i in routeInfo) {
         var num = Number(i) + 1;
-        info.append("<div id=routeDisplay" + i + " class='routeDisplay' onmouseover='inside(" + i + ")' onmouseout='outside(" + i + ")' onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
-            "<td style='align: right;'><p>" + routeInfo[i].lightPercentText +
+        info.append("<div id=routeDisplay" + i + " class='routeDisplay' onmouseover='inside(" + i + ")' onmouseout='outside(" + i + ")' onclick='displayDirections(" + i + ")'><table style='width:90%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
+            "<td style='align: right; float:right;'><p>" + routeInfo[i].lightPercentText +
             "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>")
         info.append("<div class = 'directions' id='dir" + i + "'></div>");
     }
@@ -208,7 +208,6 @@ function start() {
         $("#transportation").append('img src="/images/bicycling.png" width="35" height="35">')
     } else {
         $("#transportation").append('img src="/images/transit.png" width="35" height="35">')
-
     }
     $("#startingp").append(start);
     $("#endingp").append(end);
@@ -250,7 +249,7 @@ window.initMap = function() {
             data: getPoints(),
             map: map,
             gradient: gradient,
-            zIndex: 1
+            zIndex: 10,
         });
         lightsDone = true;
         if (routeInfoDone && crimeDone) {

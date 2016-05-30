@@ -7,7 +7,7 @@ body {
 
 .routeDisplay {
     padding: 25px;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
     background-color: white;
 }
@@ -17,7 +17,7 @@ body {
 }
 
 .hovered {
-    box-shadow: 7px 0px 0px 7px #AAC6EC;
+    box-shadow: 5px 5px 25px 15px #AAC6EC inset
 
 }
 
@@ -32,7 +32,7 @@ body {
 }
 
 .clicked {
-    box-shadow: 5px 0px 0px 5px yellow;
+    box-shadow: 5px 5px 25px 15px yellow inset
 }
 
 .spinner {
