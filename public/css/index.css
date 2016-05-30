@@ -5,17 +5,43 @@ body {
     background-color: black;
 }
 
+.routeDisplay {
+    padding: 25px;
+    border-width: 2px;
+    border-style: solid;
+    background-color: white;
+}
+
+.routeDisplay:active {
+    border-color: yellow;
+}
+
+.hovered {
+    box-shadow: 7px 0px 0px 7px #AAC6EC;
+
+}
+
 .scrollFix {
     line-height: 1.35;
     overflow: hidden;
     white-space: nowrap;
 }
 
+.directions {
+    padding-left: 30px;
+}
+
+.clicked {
+    box-shadow: 5px 0px 0px 5px yellow;
+}
+
 .spinner {
     color: white;
 }
 
-#main, #destinations, #moreInfo {
+#main,
+#destinations,
+#moreInfo {
     height: 100%;
 }
 
@@ -36,19 +62,29 @@ body {
     width: 100%;
     margin: 0 auto;
     color: white;
-    background: black; /* For browsers that do not support gradients*/
-    background: -webkit-linear-gradient(black, #1F2021); /* For Safari 5.1 to 6.0*/
-    background: -o-linear-gradient(black, #1F2021); /* For Opera 11.1 to 12.0*/
-    background: -moz-linear-gradient(black, #1F2021); /* For Firefox 3.6 to 15*/
-    background: linear-gradient(black, #1F2021); /* Standard syntax*/
+    background: black;
+    /* For browsers that do not support gradients*/
+    
+    background: -webkit-linear-gradient(black, #1F2021);
+    /* For Safari 5.1 to 6.0*/
+    
+    background: -o-linear-gradient(black, #1F2021);
+    /* For Opera 11.1 to 12.0*/
+    
+    background: -moz-linear-gradient(black, #1F2021);
+    /* For Firefox 3.6 to 15*/
+    
+    background: linear-gradient(black, #1F2021);
+    /* Standard syntax*/
+    
     font-size: 18px;
-/*
+    /*
     background-color: black;
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing2.jpg');
     background-position: center;
     opacity: 1.6;
 */
-/*
+    /*
     background: black; /* For browsers that do not support gradients
     background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0
     background: -o-linear-gradient(black, #20457F); /* For Opera 11.1 to 12.0
@@ -56,17 +92,23 @@ body {
     background: linear-gradient(black, #20457F); /* Standard syntax
     color: white;
 */
-/*
+    /*
     background-color: #191919;
     color: white;
 */
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Exo';
 }
 
-a, p {
+a,
+p {
     font-family: 'Raleway';
     font-size: 18px;
 }
@@ -241,15 +283,19 @@ p.app-description {
 .btn-primary.btn-outline {
     color: #428bca;
 }
+
 .btn-success.btn-outline {
     color: #5cb85c;
 }
+
 .btn-info.btn-outline {
     color: #5bc0de;
 }
+
 .btn-warning.btn-outline {
     color: #f0ad4e;
 }
+
 .btn-danger.btn-outline {
     color: #d9534f;
 }
@@ -266,29 +312,29 @@ p.app-description {
 }
 
 .btn-dest {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #000000;
-  *background-color: #000000;
-  border-color: #000000 #000000 #000000;
-  border-color: rgba(0, 0, 0, 1) rgba(0, 0, 0, 1) rgba(0, 0, 0, 1);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #000000;
+    *background-color: #000000;
+    border-color: #000000 #000000 #000000;
+    border-color: rgba(0, 0, 0, 1) rgba(0, 0, 0, 1) rgba(0, 0, 0, 1);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 .btn-dest:hover,
 .btn-dest:focus,
 .btn-dest.disabled,
 .btn-dest[disabled] {
-  color: #ffffff;
-  background-color: #fff;
-  *background-color: #fff;
+    color: #ffffff;
+    background-color: #fff;
+    *background-color: #fff;
 }
 
 .btn-dest:active,
 .btn-dest.active {
-  background-color: #7F7F7F;
-  color: #ffffff;
+    background-color: #7F7F7F;
+    color: #ffffff;
 }
 
 #inner {
@@ -296,7 +342,6 @@ p.app-description {
     margin: 0 auto;
     width: 800px
 }
-
 
 #messages {
     margin-top: 30px;
@@ -352,6 +397,7 @@ p.app-description {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+
 #return-to-top i {
     color: black;
     margin: 0;
@@ -365,9 +411,11 @@ p.app-description {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+
 #return-to-top:hover {
     background: grey;
 }
+
 #return-to-top:hover i {
     color: white;
     top: 5px;

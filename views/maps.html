@@ -31,9 +31,9 @@
             </div>
         </div>
     </nav>
-
     <div id="main" class="row" style="padding-top: 50px">
-        <div id="sidebar"> <!--also contains modals for forum-->
+        <div id="sidebar">
+            <!--also contains modals for forum-->
             <div>
                 <center>
                     <h1 class="region-title">YOUR SAFEST TRIP<a href="#myModal" data-toggle="modal"><i class="fa fa-info-circle" aria-hidden="true"></i></a> </h1>
@@ -52,7 +52,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- New Post Modal -->
                     <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">
                         <div class="modal-dialog">
@@ -62,40 +61,37 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Create a New Post</h4>
                                 </div>
-
                                 <!--pop up modals for creating new post-->
                                 <div class="modal-body">
-                                  <form id="send_post">
-                                    <div id="submitModal" class="modal">
-                                        <div class="modal-content" style="padding:10px;">
-                                            <h4 align="left">Submit Post?</h4>
-                                            <p id="postMessage">Are you sure you want to post: </p>
-                                            <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
-                                            <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
+                                    <form id="send_post">
+                                        <div id="submitModal" class="modal">
+                                            <div class="modal-content" style="padding:10px;">
+                                                <h4 align="left">Submit Post?</h4>
+                                                <p id="postMessage">Are you sure you want to post: </p>
+                                                <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
+                                                <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="errModal" class="modal" style="padding:10px;">
+                                        <div id="errModal" class="modal" style="padding:10px;">
                                             <a class="modal-action modal-close" id="okBtn">OK</a>
-                                    </div>
-                                    <div id="errModalmsg" class="modal">
-                                        <div class="modal-content" style="padding:10px;">
-                                            <h4 align="left">Empty post.</h4>
-                                            <p>You must enter a message in order to post.</p>
-                                            <a class="modal-action modal-close btn" id="okBtn2">OK</a>
                                         </div>
-                                    </div>
-
-                                  <div class="newPostContainer">
-                                    <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 500px; height: 80px;" autocomplete="off" required></textarea>
-                                  </div>
-                                  </form>
-                                  <br>
-                                  <Button id="submitnewpost" class="btn-large btn">Post</Button>
+                                        <div id="errModalmsg" class="modal">
+                                            <div class="modal-content" style="padding:10px;">
+                                                <h4 align="left">Empty post.</h4>
+                                                <p>You must enter a message in order to post.</p>
+                                                <a class="modal-action modal-close btn" id="okBtn2">OK</a>
+                                            </div>
+                                        </div>
+                                        <div class="newPostContainer">
+                                            <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 500px; height: 80px;" autocomplete="off" required></textarea>
+                                        </div>
+                                    </form>
+                                    <br>
+                                    <Button id="submitnewpost" class="btn-large btn">Post</Button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <!--Comments Modal -->
                     <div id="commentsModal" class="modal fade" role="dialog" style="margin-top: 10%;">
                         <div class="modal-dialog">
@@ -108,13 +104,12 @@
                                 <div class="modal-body">
                                     <div class="card">
                                         <div class="card-content black-text">
-                                          {{#each newsfeed}}
-
+                                            {{#each newsfeed}}
                                             <div class="user">
                                                 <!-- <div class="user-image"> -->
-                                                    <!-- <img src="{{user.photo}}" alt="" style="vertical-align: middle;"> -->
-                                                    <b>{{user.displayName}}</b><span class="username"> posted at </span>
-                                                    <span class="posted">{{posted}}</span>
+                                                <!-- <img src="{{user.photo}}" alt="" style="vertical-align: middle;"> -->
+                                                <b>{{user.displayName}}</b><span class="username"> posted at </span>
+                                                <span class="posted">{{posted}}</span>
                                                 <!-- </div> -->
                                             </div>
                                             <div class="message-content" id="originalPost" postID="{{_id}}">
@@ -136,7 +131,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="message-content">
-                                                    <blockquote style="border-color: #1565C0;"><h5>{{message}}</h5></blockquote>
+                                                    <blockquote style="border-color: #1565C0;">
+                                                        <h5>{{message}}</h5></blockquote>
                                                 </div>
                                                 <div class="delete" sameUser="{{sameUser}}" commentID="{{_id}}">
                                                 </div>
@@ -192,17 +188,16 @@
 
                 <!--Sidebar-->
                 <div style="margin-left:40px">
-                    <p><b>Starting point:</b></p>
-                    <p id="startingp"></p>
-                    <p><b>Ending point:</b></p>
-                    <p id="endingp"></p>
-                    <p><b>Transportation:</b></p>
-                    <p id="transportation"></p>
+                    <center>
+                    <p id="startingp"><b>Start: </b></p>
+                    <p id="endingp"><b>End: </b></p>
+                    <p id="transportation"><b>Transportation: </b></p>
+                    </center>
                 </div>
                 <center>
                     <h2 id="uberTypeSelected" class="uber-selection">SELECT YOUR ROUTE:</h2>
                 </center>
-                <div style="margin-left:40px">
+                <div>
                     <div id="routeInfo">
                     </div>
                     <div id="right-panel"></div>

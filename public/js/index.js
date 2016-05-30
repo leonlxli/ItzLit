@@ -136,7 +136,7 @@ function createCrimeMarker(myLatLng, crimeImg, info) {
 
     google.maps.event.addListener(marker, 'click', function() {
         console.log(info)
-        var contentString = "<div><h1>" + info.type + "</h1><p>date :"+ info.date +"</p></div>"
+        var contentString = "<div><h1>" + info.type + "</h1><p>date :" + info.date + "</p></div>"
         infowindow.setContent(contentString);
         infowindow.open(map, marker);
     });
@@ -164,17 +164,22 @@ function putData() {
     var info = $("#routeInfo");
     for (var i in routeInfo) {
         var num = Number(i) + 1;
-        info.append("<div onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
+        info.append("<div id=routeDisplay" + i + " class='routeDisplay' onmouseover='inside(" + i + ")' onmouseout='outside(" + i + ")' onclick='displayDirections(" + i + ")'><table style='width:60%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
             "<td style='align: right;'><p>" + routeInfo[i].lightPercentText +
             "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>")
-        info.append("<div id='dir" + i + "'></div>");
+        info.append("<div class = 'directions' id='dir" + i + "'></div>");
     }
+    $("#routeDisplay0").addClass("clicked");
     var info = $("#dir0");
     info.append("<br><p><u>Directions:</u></p>")
 
     for (var j in routeInfo[0].steps) {
         info.append(routeInfo[0].steps[j].instructions + '<br />');
     }
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 function start() {
@@ -193,9 +198,20 @@ function start() {
         end = getQueryString('ending').replace(/%20/g, " "),
         transportation = getQueryString('transportation');
 
-    $("#startingp").text(start);
-    $("#endingp").text(end);
-    $("#transportation").text(transportation);
+    start = start.substring(0, start.indexOf(','));
+    end = end.substring(0, end.indexOf(','));
+    if (transportation == "driving") {
+        $("#transportation").append('<img src="/images/driving.png" width="35" height="35">');
+    } else if (transportation == "walking") {
+        $("#transportation").append('img src="/images/walking.png" width="35" height="35">')
+    } else if (transportation == "bicycling") {
+        $("#transportation").append('img src="/images/bicycling.png" width="35" height="35">')
+    } else {
+        $("#transportation").append('img src="/images/transit.png" width="35" height="35">')
+
+    }
+    $("#startingp").append(start);
+    $("#endingp").append(end);
     $.get("/crimes", function(data) {
         crimes = data;
     });
@@ -205,6 +221,7 @@ $(document).ready(function() {
     spinner = new Spinner(opts).spin(target);
     target.appendChild(spinner.el)
 });
+
 
 window.initMap = function() {
     var sandiego = {
@@ -321,6 +338,7 @@ function createPlacesMarkers(results, status) {
     }
 }
 var flagImage = '../images/flag.png'
+
 function createMarker(place) {
     var placeLoc = place.geometry.location;
     var marker = new google.maps.Marker({
@@ -336,21 +354,42 @@ function createMarker(place) {
     });
 }
 
+function inside(i) {
+    var route = $("#routeDisplay" + i)
+    if (!route.hasClass("clicked")) {
+        route.addClass("hovered");
+    }
+}
+
+function outside(i) {
+    console.log("")
+    var route = $("#routeDisplay" + i)
+    if (route.hasClass("hovered")) {
+        route.removeClass("hovered");
+    }
+}
+
 function displayDirections(index) {
     for (var i in routeInfo) {
         var info = $("#dir" + i)
+        var routeDiv = $("#routeDisplay" + i)
+            //selected div
         if (i == index) {
+            //selected was not empty
             if (info.children().length > 0) {
+                routeDiv.removeClass("clicked");
                 info.empty()
                 routeInfo[index].polyline.setMap(null);
             } else {
                 info.append("<br><p><u>Directions:</u></p>")
+                routeDiv.addClass("clicked");
                 for (var j in routeInfo[index].steps) {
                     info.append(routeInfo[index].steps[j].instructions + '<br />');
                 }
                 routeInfo[index].polyline.setMap(map);
             }
         } else {
+            routeDiv.removeClass("clicked");
             info.empty();
             routeInfo[i].polyline.setMap(null);
         }
@@ -386,124 +425,6 @@ var gradient = [
 
 
 
-$('#d3').hide();
-//var data = [4, 8, 15, 16, 23, 42];
-// Function to create the bar graph
-function buildGraph(myData) {
-    d3.selectAll("svg > *").remove();
-
-    //var obj = allData[i].data['scaled data']; // gets all the scaled data json
-    // var arr = Object.keys(obj).map(function(k) {
-    //     return obj[k]
-    // }); // converts the values to an array
-    //var key = Object.keys(obj); // gets the key of json
-
-    var scale = {
-        //x: d3.scale.ordinal(),
-        y: d3.scale.linear()
-    };
-    var margin = {
-            top: 20,
-            right: 20,
-            bottom: 70,
-            left: 40
-        },
-        width = 600 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
-
-    function mergeArray(keyArray, valueArray) {
-        var result = [];
-        var tmp = [];
-        for (var i = 0; i < keyArray.length; i++) {
-            tmp = [keyArray[i], valueArray[i]];
-            result.push(tmp);
-        }
-        return result;
-    }
-
-    //var dataset = mergeArray(key, arr);
-
-    scale.y.domain([0, 10]);
-    scale.y.range([height, 0]);
-
-    var barWidth = 20;
-
-    var chart = d3.select('.chart')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var xScale = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-    var yScale = d3.scale.linear().range([height, 0]);
-
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom");
-
-
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left")
-        .ticks(10);
-
-    var mapper = [];
-
-    for (var key in myData.data['scaled data']) {
-        mapper.push({
-            'name': key.replace(' scaled', ''),
-            'value': myData.data['scaled data'][key]
-        });
-    }
-
-    xScale.domain(mapper.map(function(d) {
-        return d.name;
-    }));
-    yScale.domain([0, 10]);
-
-    var padding = 1;
-
-    chart
-        .selectAll(".bar")
-        .data(mapper)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d, i) {
-            return xScale(d.name);
-        })
-        .attr("width", xScale.rangeBand())
-        .attr("y", function(d) {
-            return yScale(d.value);
-        })
-        .attr("height", function(d) {
-            return height - yScale(d.value);
-        });
-
-    var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-    var yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-    chart
-        .append("g").attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-18)");;
-
-
-    chart.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -35)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Rankings Compared to Other Regions");
-    return chart;
-}
 
 function getNumLights(polyline) {
     var numLights = 0;
@@ -598,6 +519,8 @@ function CreateDirections(start, end, method, callback) {
         createPolylines();
     });
 }
+
+
 
 
 //navbar animation
