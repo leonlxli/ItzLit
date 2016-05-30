@@ -6,10 +6,11 @@ body {
 }
 
 .routeDisplay {
-    padding: 25px;
+    padding: 5px 5px 5px 25px;
     border-width: 1px;
     border-style: solid;
     background-color: white;
+    border-radius: 5px;
 }
 
 .routeDisplay:active {
@@ -29,6 +30,7 @@ body {
 
 .directions {
     padding-left: 30px;
+    background-color: white;
 }
 
 .clicked {
@@ -182,7 +184,7 @@ p.app-description {
     float: left;
     height: 100%;
     width: 33%;
-    background-color: #ECEFF3;
+    background-color: #DEDFE6;
     overflow-y: auto;
 }
 

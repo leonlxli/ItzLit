@@ -166,12 +166,12 @@ function putData() {
         var num = Number(i) + 1;
         info.append("<div id=routeDisplay" + i + " class='routeDisplay' onmouseover='inside(" + i + ")' onmouseout='outside(" + i + ")' onclick='displayDirections(" + i + ")'><table style='width:90%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
             "<td style='align: right; float:right;'><p>" + routeInfo[i].lightPercentText +
-            "</p><img src='/images/lightbulb.png' style='width:80px; height:80px'></td></tr></table></div>")
+            "</p><img src='/images/lightbulb.png' style='width:70px; height:70px'></td></tr></table></div>")
         info.append("<div class = 'directions' id='dir" + i + "'></div>");
     }
     $("#routeDisplay0").addClass("clicked");
     var info = $("#dir0");
-    info.append("<br><p><u>Directions:</u></p>")
+    info.append("<p><u><b>Directions:</b></u></p>")
 
     for (var j in routeInfo[0].steps) {
         info.append(routeInfo[0].steps[j].instructions + '<br />');
@@ -307,6 +307,7 @@ window.initMap = function() {
     function meterControl(controlDiv, map) {
         var controlUI = document.createElement('div');
         controlUI.style.marginTop = '18px';
+        controlUI.style.marginRight = '18px';
         var meter = new Image();
         meter.src = '../images/maplegend.png';
         controlDiv.appendChild(controlUI);
@@ -380,7 +381,7 @@ function displayDirections(index) {
                 info.empty()
                 routeInfo[index].polyline.setMap(null);
             } else {
-                info.append("<br><p><u>Directions:</u></p>")
+                info.append("<p><b><u>Directions:</u></b></p>")
                 routeDiv.addClass("clicked");
                 for (var j in routeInfo[index].steps) {
                     info.append(routeInfo[index].steps[j].instructions + '<br />');
