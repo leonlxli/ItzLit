@@ -438,3 +438,26 @@ p.app-description {
     color: white;
     top: 5px;
 }
+
+/*.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}*/
+
+.selectmenu {
+    color: black;
+}

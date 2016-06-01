@@ -283,8 +283,21 @@
                     <hr width="60%">
                     <p class="app-description">LET'S GET VISUAL!</p> -->
                     <hr width="60%">
+                    <select class="selectmenu" onchange="loadData()" id="crimeName">
+                        <option selected="selected" disabled = "disabled" class="hideoption">Select a crime</option>
+                       <option>Arson</option>
+                       <option>Assault</option>
+                       <option>Child Abuse</option>
+                       <option>DUI</option>
+                       <option>Drunk in Public</option>
+                       <option>Possession of Substance</option>
+                       <option>Possession of Weapon</option>
+                       <option>Rape</option>
+                       <option>Theft</option>
+                       <option>Vandalism</option>
+                    </select>
                     <center>
-                        <div id="stackBarChart"></div>
+                        <div id="barChart"></div>
                     </center>
 
                     <a href="#newPostModal" data-toggle="modal"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i><span>Testing: Post An Update</span></a>

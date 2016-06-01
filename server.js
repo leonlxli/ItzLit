@@ -191,7 +191,16 @@ app.get('/currentCrimes', router.myData.getCurrentCrimes);
 app.get('/getAllCrimeData', router.index.getAllCrimeData);
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
 app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
-app.get('/getTimeBarCrimeData', router.index.getTimeBarCrimeData);
+app.get('/getTimeBarCrimeDataArson', router.index.getTimeBarCrimeDataArson);
+app.get('/getTimeBarCrimeDataAssault', router.index.getTimeBarCrimeDataAssault);
+app.get('/getTimeBarCrimeDataChildAbuse', router.index.getTimeBarCrimeDataChildAbuse);
+app.get('/getTimeBarCrimeDataDUI', router.index.getTimeBarCrimeDataDUI);
+app.get('/getTimeBarCrimeDataDrunkinPublic', router.index.getTimeBarCrimeDataDrunkinPublic);
+app.get('/getTimeBarCrimeDataPossessionofSubstance', router.index.getTimeBarCrimeDataPossessionofSubstance);
+app.get('/getTimeBarCrimeDataPossessionofWeapon', router.index.getTimeBarCrimeDataPossessionofWeapon);
+app.get('/getTimeBarCrimeDataRape', router.index.getTimeBarCrimeDataRape);
+app.get('/getTimeBarCrimeDataTheft', router.index.getTimeBarCrimeDataTheft);
+app.get('/getTimeBarCrimeDataVandalism', router.index.getTimeBarCrimeDataVandalism);
 
 
 // server side socket io
