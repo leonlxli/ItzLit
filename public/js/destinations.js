@@ -31,6 +31,26 @@ $("#currLocation").click(function() {
     return false;
 });
 
+$("#starting").keyup(function() {
+  var str = $("#starting").val();
+  str = str.replace(/\s+/g, '');
+
+  var strarr = str.split(',');
+
+  (strarr[1] == ('' || 'SanDiego' || 'SanDiegoCounty')) ? $("#starting-err").text('')
+                                                        : $("#starting-err").text('Starting destination must be in San Diego!');
+});
+
+$("#ending").keyup(function() {
+  var str = $("#ending").val();
+  str = str.replace(/\s+/g, '');
+
+  var strarr = str.split(',');
+
+  (strarr[1] == ('' || 'SanDiego' || 'SanDiegoCounty')) ? $("#ending-err").text('')
+                                                        : $("#ending-err").text('Ending destination must be in San Diego!');
+});
+
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(successFunction, errorFunction);

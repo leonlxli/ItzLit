@@ -53,6 +53,10 @@ body {
     color: white;
 }
 
+#starting-err, #ending-err {
+  color: red;
+}
+
 #main,
 #destinations,
 #moreInfo {
