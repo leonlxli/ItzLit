@@ -280,7 +280,7 @@ function messageTemplate(template) {
         '</div>' +
         '</div>';*/
     var result =
-        '<div class="row" id="post' + template._id + '" style="padding-top:20px;">' +
+        '<div class="row" id="post' + template._id + '" style="padding-top:5px;">' +
         '<div class="col s10 offset-s1">' +
         '<div class="card white">' +
         '<div class="card-content black-text" style="color:black;">' +
@@ -293,7 +293,7 @@ function messageTemplate(template) {
         '<div class="card-action">' +
         //'<a href="/comments?postID=' + template._id + '" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
         //'<a href="#commentsModal" data-toggle="modal"> ' + template.comments.length + ' comments</a>' +
-        '<a href="#commentsModal" data-toggle="modal" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
+        //'<a href="#commentsModal" data-toggle="modal" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
         '<div class="delete" sameUser="' + template.sameUser + '" postID="' + template._id + '">' +
         '</div>' +
         '</div>' +
@@ -315,6 +315,7 @@ function messageTemplate(template) {
 }
 
 (function($) {
+
     "use strict";
 
     $('#send_message').submit(function(e) {
