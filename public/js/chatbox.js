@@ -99,13 +99,24 @@ var commentModal =
     '</div>';
     */
 
+function showRoutes() {
+    console.log("routes")
+    $("#routeInfoDiv").css("display", "block")
+    $("#postsDiv").css("display", "none")
+}
+
+function showFeed() {
+    console.log("feed")
+    $("#routeInfoDiv").css("display", "none")
+    $("#postsDiv").css("display", "block")
+}
 $(document).ready(function() {
     $.get('/chat',
-    function(dat) {
-        console.log(dat)
-        data = dat;
-        placePosts();
-    });
+        function(dat) {
+            console.log(dat)
+            data = dat;
+            placePosts();
+        });
 
     appendButton();
     formatComments();
@@ -159,7 +170,7 @@ function placePosts() {
         while (i < limit && i < data.newsfeed.length) {
 
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
-            console.log("INSIDE PLACE POSTS OF CHATBOX: "+ JSON.stringify(data.newsfeed[index]));
+            console.log("INSIDE PLACE POSTS OF CHATBOX: " + JSON.stringify(data.newsfeed[index]));
             index++;
             i++;
         }
@@ -216,12 +227,12 @@ function gymChange(e) {
     // window.location.href = url;
     // data.append('gym', gym);
     $.get('/chat',
-    function(dat) {
-        console.log(dat);
-        $('#messages').empty();
-        data = dat;
-        placePosts();
-    });
+        function(dat) {
+            console.log(dat);
+            $('#messages').empty();
+            data = dat;
+            placePosts();
+        });
 }
 
 // $(".comments").click(function() {
@@ -392,15 +403,15 @@ postBtn.onclick = function() {
 }
 
 $(window).scroll(function() {
-    if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
-        $('#return-to-top').fadeIn(200);    // Fade in the arrow
+    if ($(this).scrollTop() >= 50) { // If page is scrolled more than 50px
+        $('#return-to-top').fadeIn(200); // Fade in the arrow
     } else {
-        $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+        $('#return-to-top').fadeOut(200); // Else fade out the arrow
     }
 });
 
-$('#return-to-top').click(function() {      // When arrow is clicked
+$('#return-to-top').click(function() { // When arrow is clicked
     $('body,html').animate({
-        scrollTop : 0                       // Scroll to top of body
+        scrollTop: 0 // Scroll to top of body
     }, 500);
 })
