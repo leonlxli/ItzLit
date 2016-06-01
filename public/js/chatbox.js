@@ -113,6 +113,7 @@ function showFeed() {
 $(document).ready(function() {
     $.get('/chat',
         function(dat) {
+            console.log("fdasfsfsfa")
             console.log(dat)
             data = dat;
             placePosts();
@@ -221,30 +222,6 @@ function deletePost(postID) {
 }
 
 
-function gymChange(e) {
-
-    // var data = new FormData();
-    // window.location.href = url;
-    // data.append('gym', gym);
-    $.get('/chat',
-        function(dat) {
-            console.log(dat);
-            $('#messages').empty();
-            data = dat;
-            placePosts();
-        });
-}
-
-// $(".comments").click(function() {
-//     var postID = $(this).attr("postID");
-//     $.get('/comments', {
-//         postID: postID
-//     }, function(html, succ){
-//         //
-//     });
-
-// });
-
 function messageTemplate(template) {
     console.log("HEY IM IN CHATBOX.JS DIS IS THE TEMPLATE: " + JSON.stringify(template));
     /*var result =
@@ -320,7 +297,7 @@ function messageTemplate(template) {
 
     $('#send_message').submit(function(e) {
         e.preventDefault();
-
+        console.log("fdlsjflkasdkslfljdlasjfljlskfsklfdsl")
         var $user_input = $('#user_input')
         socket.emit('newsfeed', $user_input.val());
         // $user_input.val('');
@@ -376,19 +353,7 @@ var postBtn = document.getElementById("submitBtn2");
 var okBtn3 = document.getElementById("okBtn3");
 
 // When the user clicks on the button, open the modal
-btn.onclick = function() {
-        console.log("submit new comment clicked");
 
-        var message = $('#comment_content').val();
-
-        if (message == "") {
-            errmodalmsg2.style.display = "block";
-        } else {
-            $('#postMessage').append("'" + message + "'?");
-            comSubPost.style.display = "block";
-        }
-
-    }
     // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     $('#postMessage').text("Are you sure you want to post: ");
