@@ -30,7 +30,8 @@ body {
 }
 
 .hovered {
-    box-shadow: 5px 5px 25px 15px #AAC6EC inset
+    background-color: #AAC6EC;
+    /*box-shadow: 5px 5px 25px 15px #AAC6EC inset*/
 
 }
 
@@ -42,11 +43,12 @@ body {
 
 .directions {
     padding-left: 30px;
-    background-color: white;
+    background-color: #FAF6E3;
 }
 
 .clicked {
-    box-shadow: 5px 5px 25px 15px yellow inset
+    background-color: #FAF6C5;
+    /*box-shadow: 5px 5px 25px 15px yellow inset*/
 }
 
 .spinner {
@@ -76,32 +78,31 @@ body {
 }
 
 #destinations {
+    /*text-shadow: 0px 0px 3px yellow;*/
+    letter-spacing: 2px;
+    font-size: 18px;
     height: 100%;
     width: 100%;
     margin: 0 auto;
     color: white;
+    /*
     background: black;
-    /* For browsers that do not support gradients*/
-
+    /* For browsers that do not support gradients
     background: -webkit-linear-gradient(black, #1F2021);
-    /* For Safari 5.1 to 6.0*/
-
+    /* For Safari 5.1 to 6.0
     background: -o-linear-gradient(black, #1F2021);
-    /* For Opera 11.1 to 12.0*/
-
+    /* For Opera 11.1 to 12.0
     background: -moz-linear-gradient(black, #1F2021);
-    /* For Firefox 3.6 to 15*/
-
+    /* For Firefox 3.6 to 15
     background: linear-gradient(black, #1F2021);
     /* Standard syntax*/
 
-    font-size: 18px;
-    /*
     background-color: black;
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing2.jpg');
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing3.jpg');
     background-position: center;
+    background-size: 100%;
     opacity: 1.6;
-*/
+
     /*
     background: black; /* For browsers that do not support gradients
     background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0
@@ -129,6 +130,10 @@ a,
 p {
     font-family: 'Raleway';
     font-size: 18px;
+}
+
+.view:hover {
+    text-shadow: 0px 0px 100px yellow;
 }
 
 h1.text-center {
@@ -461,3 +466,4 @@ p.app-description {
 .selectmenu {
     color: black;
 }
+
