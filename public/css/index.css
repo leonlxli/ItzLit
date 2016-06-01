@@ -354,7 +354,7 @@ p.app-description {
 #inner {
     display: table;
     margin: 0 auto;
-    width: 800px
+    width:100%;
 }
 
 #messages {
