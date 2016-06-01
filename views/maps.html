@@ -21,9 +21,10 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
+                    <li><a href="/destinations">CHANGE TRIP</a></li>
                     <li><a href="#main">MAP</a></li>
                     <li><a href="#moreInfo">MORE INFO</a></li>
-                    <li><a href="#forum">FORUM</a></li>
+                    <!--<li><a href="#forum">FORUM</a></li>-->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -38,13 +39,15 @@
                 <div style="padding-right:0px" class="container-fluid">
                     <ul style="width:100%" class="nav navbar-nav">
                         <li onclick="showRoutes()" style="width:50%; text-align: center;"><a>My Routes</a></li>
-                        <li onclick="showFeed()" style="width:50%;text-align: center;"><a>Live Feed</a></li>
+                        <li onclick="showFeed()" style="width:50%;text-align: center;"><a>Live Updates</a></li>
                     </ul>
                 </div>
             </nav>
+
             <div style="display: block;" id="routeInfoDiv">
                 <center>
                     <h1 class="region-title">YOUR SAFEST TRIP<a href="#myModal" data-toggle="modal"><i class="fa fa-info-circle" aria-hidden="true"></i></a> </h1>
+
                     <!-- Info Modal by title -->
                     <div id="myModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -55,140 +58,8 @@
                                     <h4 class="modal-title">MORE INFO</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Your route is calculated based on street light and crime data. Blah blah blah.</p>
+                                    <p>The routes provided will take into account your start and ending destinations. Routes that are shorter and take less time will appear first. You can pick whether or not it is worth it to utilize that route based on the amount of light and crimes near that route in comparison to other routes provided.</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- New Post Modal -->
-                    <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Create a New Post</h4>
-                                </div>
-                                <!--pop up modals for creating new post-->
-                                <div class="modal-body">
-                                    <form id="send_post">
-                                        <div id="submitModal" class="modal">
-                                            <div class="modal-content" style="padding:10px;">
-                                                <h4 align="left">Submit Post?</h4>
-                                                <p id="postMessage">Are you sure you want to post: </p>
-                                                <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
-                                                <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
-                                            </div>
-                                        </div>
-                                        <div id="errModal" class="modal" style="padding:10px;">
-                                            <a class="modal-action modal-close" id="okBtn">OK</a>
-                                        </div>
-                                        <div id="errModalmsg" class="modal">
-                                            <div class="modal-content" style="padding:10px;">
-                                                <h4 align="left">Empty post.</h4>
-                                                <p>You must enter a message in order to post.</p>
-                                                <a class="modal-action modal-close btn" id="okBtn2">OK</a>
-                                            </div>
-                                        </div>
-                                        <div class="newPostContainer">
-                                            <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 500px; height: 80px;" autocomplete="off" required></textarea>
-                                        </div>
-                                    </form>
-                                    <br>
-                                    <Button id="submitnewpost" class="btn-large btn">Post</Button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Comments Modal -->
-                    <div id="commentsModal" class="modal fade" role="dialog" style="margin-top: 10%;">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Comments</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card">
-                                        <div class="card-content black-text">
-                                            {{#each newsfeed}}
-                                            <div class="user">
-                                                <!-- <div class="user-image"> -->
-                                                <!-- <img src="{{user.photo}}" alt="" style="vertical-align: middle;"> -->
-                                                <b>{{user.displayName}}</b><span class="username"> posted at </span>
-                                                <span class="posted">{{posted}}</span>
-                                                <!-- </div> -->
-                                            </div>
-                                            <div class="message-content" id="originalPost" postID="{{_id}}">
-                                                <h2 class="black-text">{{message}}</h2>
-                                                <br>
-                                            </div>
-                                            {{/each}}
-                                        </div>
-                                    </div>
-                                    <ul id="comments">
-                                        {{#each comments}}
-                                        <li class="card blue lighten-4" id="comment{{_id}}">
-                                            <div class="card-content black-text">
-                                                <div class="user">
-                                                    <div class="user-image">
-                                                        <img src="{{photo}}" alt="" style="vertical-align: middle;">
-                                                        <b>{{username}}</b><span class="username"> posted at </span>
-                                                        <span class="posted">{{posted}}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="message-content">
-                                                    <blockquote style="border-color: #1565C0;">
-                                                        <h5>{{message}}</h5></blockquote>
-                                                </div>
-                                                <div class="delete" sameUser="{{sameUser}}" commentID="{{_id}}">
-                                                </div>
-                                                <br>
-                                                <br>
-                                                <div id="modal{{_id}}" class="modal">
-                                                    <div class="modal-content">
-                                                        <h4>Delete post?</h4>
-                                                        <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
-                                                        <a class="modal-action modal-close btn right delBtn" commentID="{{_id}}" onclick="deleteComment('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>
-                                                        <a class="modal-action modal-close btn right">CANCEL</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        {{/each}}
-                                    </ul>
-                                    <div id="commentBtnContainer" class="center center-block">
-                                    </div>
-                                    <form id="send_comment" action="#" class="center center-block">
-                                        <div>
-                                            <h5 class="white-text">Type up a comment here:<h5></div>
-                                            <textarea id="comment_content" class="white-text" placeholder="Type a new comment and click 'POST COMMENT'!" style="padding:10px; width: 500px; height: 80px;" autocomplete="off" parent="{{_id}}" required></textarea>
-                                        </div>
-                                <div id="comSubPost" class = "modal" style="z-index:9999; top:20%;">
-                                    <div class="modal-content" style="padding:10px;">
-                                        <h4 align="left">Submit Post?</h4>
-                                        <p id="postMessage">Are you sure you want to post: </p>
-                                        <input class="modal-action modal-close btn subBtn" id="submitBtn2" type="submit" value="POST" rel="nofollow">
-                                        <a class="modal-action modal-close btn cancelBtn2">CANCEL</a>
-                                    </div>
-                                </div>
-                                    <div id="errModalmsg2" class = "modal" style="z-index:9999; top:20%;">
-                                        <div class="modal-content" style="padding:10px;">
-                                            <h4 align="left">Empty post.</h4>
-                                            <p>You must enter a message in order to post.</p>
-                                            <a class="modal-action modal-close btn" id="okBtn3">OK</a>
-                                        </div>
-                                    </div>
-
-                                </form>
-                                    <center>
-                                    <Button id="submitnewcomment" class="btn-large blue darken-4">POST COMMENT</Button>
-                                    <center>
-                                    <br>
                             </div>
                         </div>
                     </div>
@@ -210,9 +81,147 @@
                     <div id="right-panel"></div>
                 </div>
             </div>
+            <!-- LIVE UPDATES TAB -->
             <div id="postsDiv" style="display: none;">
                 <div id="forum" class="text-center">
-                        <a href="#newPostModal" data-toggle="modal"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i><span>Create A New Post</span></a>
+                        <br>
+                        <a href="#newPostModal" data-toggle="modal"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i><span>Post An Update</span></a>
+
+                        <!-- New Post Modal
+                        <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">-->
+                        <div id="newPostModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Create a New Post</h4>
+                                    </div>
+                                    <!--pop up modals for creating new post-->
+                                    <div class="modal-body">
+                                        <form id="send_post">
+                                            <div id="submitModal" class="modal">
+                                                <div class="modal-content" style="padding:10px;">
+                                                    <h4 align="left">Submit Post?</h4>
+                                                    <p id="postMessage">Are you sure you want to post: </p>
+                                                    <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
+                                                    <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
+                                                </div>
+                                            </div>
+                                            <div id="errModal" class="modal" style="padding:10px;">
+                                                <a class="modal-action modal-close" id="okBtn">OK</a>
+                                            </div>
+                                            <div id="errModalmsg" class="modal">
+                                                <div class="modal-content" style="padding:10px;">
+                                                    <h4 align="left">Empty post.</h4>
+                                                    <p>You must enter a message in order to post.</p>
+                                                    <a class="modal-action modal-close btn" id="okBtn2">OK</a>
+                                                </div>
+                                            </div>
+                                            <div class="newPostContainer">
+                                                <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 500px; height: 80px;" autocomplete="off" required></textarea>
+                                            </div>
+                                        </form>
+                                        <br>
+                                        <Button id="submitnewpost" class="btn-large btn">Post</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Comments Modal -->
+                        <div id="commentsModal" class="modal fade" role="dialog" style="margin-top: 10%;">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Comments</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card">
+                                            <div class="card-content black-text">
+                                                {{#each newsfeed}}
+                                                <div class="user">
+                                                    <!-- <div class="user-image"> -->
+                                                    <!-- <img src="{{user.photo}}" alt="" style="vertical-align: middle;"> -->
+                                                    <b>{{user.displayName}}</b><span class="username"> posted at </span>
+                                                    <span class="posted">{{posted}}</span>
+                                                    <!-- </div> -->
+                                                </div>
+                                                <div class="message-content" id="originalPost" postID="{{_id}}">
+                                                    <h2 class="black-text">{{message}}</h2>
+                                                    <br>
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                        </div>
+                                        <ul id="comments">
+                                            {{#each comments}}
+                                            <li class="card" id="comment{{_id}}">
+                                                <div class="card-content black-text">
+                                                    <div class="user">
+                                                        <div class="user-image">
+                                                            <img src="{{photo}}" alt="" style="vertical-align: middle;">
+                                                            <b>{{username}}</b><span class="username"> posted at </span>
+                                                            <span class="posted">{{posted}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="message-content">
+                                                        <blockquote style="border-color: #1565C0;">
+                                                            <h5>{{message}}</h5></blockquote>
+                                                    </div>
+                                                    <div class="delete" sameUser="{{sameUser}}" commentID="{{_id}}">
+                                                    </div>
+                                                    <br>
+                                                    <br>
+                                                    <div id="modal{{_id}}" class="modal">
+                                                        <div class="modal-content">
+                                                            <h4>Delete post?</h4>
+                                                            <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
+                                                            <a class="modal-action modal-close btn right delBtn" commentID="{{_id}}" onclick="deleteComment('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>
+                                                            <a class="modal-action modal-close btn right">CANCEL</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {{/each}}
+                                        </ul>
+                                        <div id="commentBtnContainer" class="center center-block">
+                                        </div>
+                                        <form id="send_comment" action="#" class="center center-block">
+                                            <div>
+                                                <h5 class="white-text">Type up a comment here:<h5></div>
+                                                <textarea id="comment_content" class="white-text" placeholder="Type a new comment and click 'POST COMMENT'!" style="padding:10px; width: 500px; height: 80px;" autocomplete="off" parent="{{_id}}" required></textarea>
+                                            </div>
+                                    <div id="comSubPost" class = "modal" style="z-index:9999; top:20%;">
+                                        <div class="modal-content" style="padding:10px;">
+                                            <h4 align="left">Submit Post?</h4>
+                                            <p id="postMessage">Are you sure you want to post: </p>
+                                            <input class="modal-action modal-close btn subBtn" id="submitBtn2" type="submit" value="POST" rel="nofollow">
+                                            <a class="modal-action modal-close btn cancelBtn2">CANCEL</a>
+                                        </div>
+                                    </div>
+                                        <div id="errModalmsg2" class = "modal" style="z-index:9999; top:20%;">
+                                            <div class="modal-content" style="padding:10px;">
+                                                <h4 align="left">Empty post.</h4>
+                                                <p>You must enter a message in order to post.</p>
+                                                <a class="modal-action modal-close btn" id="okBtn3">OK</a>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                        <center>
+                                        <Button id="submitnewcomment" class="btn-large">POST COMMENT</Button>
+                                        <center>
+                                        <br>
+                                </div>
+                            </div>
+                        </div>
+
                     <section>
                         <div id="inner">
                             <div id="newMessages" class="row center-block"></div>
@@ -228,26 +237,29 @@
                                                     <p>{{message}}</p>
                                                 </div>
                                             </div>
+                                            <!--
                                             <div class="card-action">
                                                 <a href="#commentsModal?postID={{_id}}" class="btn comments" postID="{{_id}}" value="{{numOfComments}}"></a>
                                                 <div class="delete" sameUser="{{sameUser}}" postID="{{_id}}">
                                                 </div>
                                             </div>
                                             <br />
+                                        -->
                                         </div>
                                     </div>
                                 </div>
+                                <!--
                                 <div id="modal{{_id}}" class="modal">
                                     <div class="modal-content">
                                         <h4>Delete post?</h4>
                                         <p>Are you sure you want to delete this post? Click "DELETE" below to delete this post or cancel to go back.</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <!--a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a-->
-                                        <a class="modal-action modal-close btn blue darken-3 right delBtn" postID="{{_id}}" onclick="deletePost('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>&nbsp;&nbsp;&nbsp;
+                                        <a class="modal-action modal-close btn right delBtn" postID="{{_id}}" onclick="deletePost('{{_id}}')" rel="nofollow" style="margin-left:20px">DELETE</a>&nbsp;&nbsp;&nbsp;
                                         <a class="modal-action modal-close btn grey lighten-1 right">CANCEL</a>
                                     </div>
                                 </div>
+                            -->
                                 {{/each}}
                             </div>
                             <div id="LoadMore" class="row center-block">
@@ -259,6 +271,7 @@
             <br>
             <ul id="rankings" class="list-group"></ul>
         </div>
+
         <div id="map"></div>
         <div id="spinner" class="spinner"></div>
     </div>
@@ -274,14 +287,21 @@
                     <center>
                         <div id="stackBarChart"></div>
                     </center>
+
+                    <a href="#newPostModal" data-toggle="modal"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i><span>Testing: Post An Update</span></a>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <!--
     <div id="d3">
         <svg class="chart">
         </svg>
     </div>
+-->
+
     <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
     <script src="/js/spin.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
