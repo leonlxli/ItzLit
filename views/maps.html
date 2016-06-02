@@ -81,22 +81,23 @@
             <!-- LIVE UPDATES TAB -->
             <div id="postsDiv" style="display: none;">
                 <div id="forum" class="text-center">
+                <div style="background-color: #FAF6C5;">
                     <br>
                     <!-- modal -->
                     <form id="send_post">
                         <div id="submitModal" class="modal">
-                            <div class="modal-content" style="padding:10px;">
+                            <div class="modal-content" style="padding:10px; width:25%; margin-top:10%; margin-left:65px;">
                                 <h4 align="left">Submit Post?</h4>
                                 <p id="postMessage">Are you sure you want to post: </p>
                                 <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
                                 <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
                             </div>
                         </div>
-                        <div id="errModal" class="modal" style="padding:10px;">
+                        <div id="errModal" class="modal" style="padding:10px; width:25%; margin-top:10%; margin-left:65px;">
                             <a class="modal-action modal-close" id="okBtn">OK</a>
                         </div>
                         <div id="errModalmsg" class="modal">
-                            <div class="modal-content" style="padding:10px;">
+                            <div class="modal-content" style="padding:10px; width:25%; margin-top:10%; margin-left:65px;">
                                 <h4 align="left">Empty post.</h4>
                                 <p>You must enter a message in order to post.</p>
                                 <a class="modal-action modal-close btn" id="okBtn2">OK</a>
@@ -104,11 +105,11 @@
                         </div>
                         <!--display info-->
                         <center>
-                            <h2>Live updates</h2>
+                            <h2>LIVE UPDATES</h2>
                             <h4>Write a new post</h4>
                         </center>
                         <div class="newPostContainer">
-                            <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 90%; height: 80px;" autocomplete="off" required></textarea>
+                            <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; background-color:white; padding:10px; width: 90%; height: 80px;" autocomplete="off" required></textarea>
                             <center>
                                 <input style="width:90%; padding:10px;" type="text" class="form-control" id="loc" placeholder="Where is this happening" required>
                             </center>
@@ -116,11 +117,14 @@
                     </form>
                     <br>
                     <Button id="submitnewpost" class="btn-large btn">Post</Button>
+                    <br>
+                    <br>
+                </div>
                     <!-- New Post Modal
                         <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">-->
                     <section>
                         <center>
-                            <h4>Newsfeed</h4>
+                            <h4>NEWSFEED</h4>
                         </center>
                         <div id="inner">
                             <div id="newMessages" class="row center-block"></div>
