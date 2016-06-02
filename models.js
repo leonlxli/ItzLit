@@ -4,7 +4,8 @@ var dateFormat = require('dateformat');
 var UserSchema = new mongoose.Schema({
     "facebookID": String,
     "token": String,
-    "name": String
+    "name": String,
+    "photo": String
 });
 
 

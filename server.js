@@ -97,6 +97,7 @@ passport.use(new FacebookStrategy({
                 return done(err);
             }
             if (!user) {
+                console.log("new user")
                 // (2) since the user is not found, create new user.
                 // Refer to Assignment 0 to how create a new instance of a model
                 var newUser = new models.User({

@@ -261,16 +261,14 @@ function messageTemplate(template) {
         '<div class="col s10 offset-s1">' +
         '<div class="card white">' +
         '<div class="card-content black-text" style="color:black;">' +
-        // '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user.username + '</b><span class="username"> posted at <i>' + template.posted + ':</i></p></span>' +
+        '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
+        '<b>  ' + template.user.username + '</b><span class="username"> posted at <i>' + template.posted + ':</i></span>' +
+        '<span class="username"> at <i>' + template.location + ':</i></span>'+
         '<div class="card-title center-block">' +
         '<p>' + template.message + '</p>' +
         '</div>' +
         '</div>' +
         '<div class="card-action">' +
-        //'<a href="/comments?postID=' + template._id + '" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
-        //'<a href="#commentsModal" data-toggle="modal"> ' + template.comments.length + ' comments</a>' +
-        //'<a href="#commentsModal" data-toggle="modal" class="btn comments" postID="' + template._id + '">' + template.comments.length + ' comments</a>' +
         '<div class="delete" sameUser="' + template.sameUser + '" postID="' + template._id + '">' +
         '</div>' +
         '</div>' +
