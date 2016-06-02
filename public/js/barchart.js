@@ -31,7 +31,6 @@
     }
 
 Promise.all(promises).then(function(){
-          console.log("Data", data);
 
           data.sort(compare);
 
@@ -67,7 +66,6 @@ Promise.all(promises).then(function(){
             var y0 = 0;
 
             d.rates = [];
-            console.log("rates", d.rates);
             // d.rates = color.domain().map(function (type) {
             d.rates = color.domain().map(function (type) {
               var temp;
@@ -84,10 +82,6 @@ Promise.all(promises).then(function(){
               };
             })
             d.total = d.rates[d.rates.length - 1].y1;
-            console.log("rates",d.rates);
-            console.log("d.rates.length-1", d.rates.length-1);
-            console.log("d.rates[d.rates.length-1]", d.rates[d.rates.length-1]);
-            console.log("total", d.total);
 
             // d.rates.forEach(function (d) { // Leave these 4 lines out
             //   d.y0 /= y0;
@@ -196,7 +190,6 @@ window.loadData = function update(error, data) {
     }
  
     Promise.all(promises).then(function(){
-          console.log("Data", data);
 
           data.sort(compare);
 
@@ -232,7 +225,6 @@ window.loadData = function update(error, data) {
             var y0 = 0;
 
             d.rates = [];
-            console.log("rates", d.rates);
             // d.rates = color.domain().map(function (type) {
             d.rates = color.domain().map(function (type) {
               var temp;
@@ -249,10 +241,6 @@ window.loadData = function update(error, data) {
               };
             })
             d.total = d.rates[d.rates.length - 1].y1;
-            console.log("rates",d.rates);
-            console.log("d.rates.length-1", d.rates.length-1);
-            console.log("d.rates[d.rates.length-1]", d.rates[d.rates.length-1]);
-            console.log("total", d.total);
 
             // d.rates.forEach(function (d) { // Leave these 4 lines out
             //   d.y0 /= y0;

@@ -184,9 +184,6 @@ String.prototype.capitalizeFirstLetter = function() {
 
 function start() {
     setTimeout(function() {
-        var start = getQueryString('starting').replace(/%20/g, " "),
-            end = getQueryString('ending').replace(/%20/g, " "),
-            transportation = getQueryString('transportation');
         CreateDirections(start, end, transportation);
     }, 100);
 
@@ -200,9 +197,15 @@ function start() {
     var start = getQueryString('starting').replace(/%20/g, " "),
         end = getQueryString('ending').replace(/%20/g, " "),
         transportation = getQueryString('transportation');
-
-    start = start.substring(0, start.indexOf(','));
-    end = end.substring(0, end.indexOf(','));
+    console.log(end)
+    var startstr = start.substring(0, start.indexOf(','));
+    var endstr = end.substring(0, end.indexOf(','));
+    if(endstr==""){
+        endstr=end
+    }
+    if(startstr==""){
+        startstr=start
+    }
     if (transportation == "driving") {
         $("#transportation").append('<img src="/images/driving.png" width="35" height="35">');
     } else if (transportation == "walking") {
@@ -212,8 +215,10 @@ function start() {
     } else {
         $("#transportation").append('<img src="/images/transit.png" width="35" height="35">')
     }
-    $("#startingp").append(start);
-    $("#endingp").append(end);
+    console.log(startstr)
+    console.log(endstr)
+    $("#startingp").append(startstr);
+    $("#endingp").append(endstr);
     $.get("/crimes", function(data) {
         crimes = data;
     });
