@@ -29,6 +29,7 @@ body {
     border-color: yellow;
 }
 
+
 .hovered {
     background-color: #AAC6EC;
     /*box-shadow: 5px 5px 25px 15px #AAC6EC inset*/
@@ -363,7 +364,7 @@ p.app-description {
 #inner {
     display: table;
     margin: 0 auto;
-    width:100%;
+    width:90%;
 }
 
 #messages {
