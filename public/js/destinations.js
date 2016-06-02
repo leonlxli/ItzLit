@@ -21,7 +21,22 @@ $('#destinations-form').submit(function(e) {
     var starting = $('#starting').val();
     var ending = $('#ending').val();
     var transportation = $('input[name="options"]:checked').val();
-    window.location.href = '/maps?starting=' + starting + '&ending=' + ending + '&transportation=' + transportation;
+
+    var startingErrFlag = startingErr(),
+        endingErrFlag = endingErr();
+
+    if (startingErrFlag || endingErrFlag) {
+      (startingErrFlag) ? $("#starting-err").text('Starting destination must be in San Diego!')
+                        : $("#starting-err").text('');
+
+      (endingErrFlag) ? $("#ending-err").text('Ending destination must be in San Diego!')
+                      : $("#ending-err").text('');
+    }
+    else {
+      $("#starting-err").text('');
+      $("#ending-err").text('');
+      window.location.href = '/maps?starting=' + starting + '&ending=' + ending + '&transportation=' + transportation;
+    }
 });
 
 //Getting starting location
@@ -31,25 +46,27 @@ $("#currLocation").click(function() {
     return false;
 });
 
-$("#starting").keyup(function() {
+function startingErr() {
   var str = $("#starting").val();
   str = str.replace(/\s+/g, '');
 
   var strarr = str.split(',');
 
-  (strarr[1] == ('' || 'SanDiego' || 'SanDiegoCounty')) ? $("#starting-err").text('')
-                                                        : $("#starting-err").text('Starting destination must be in San Diego!');
-});
+  console.log(strarr[1]);
 
-$("#ending").keyup(function() {
+  // return true if address not in San Diego area
+  return !(strarr[1] == ('SanDiego' || 'SanDiegoCounty' || 'LaJolla'));
+}
+
+function endingErr() {
   var str = $("#ending").val();
   str = str.replace(/\s+/g, '');
 
   var strarr = str.split(',');
 
-  (strarr[1] == ('' || 'SanDiego' || 'SanDiegoCounty')) ? $("#ending-err").text('')
-                                                        : $("#ending-err").text('Ending destination must be in San Diego!');
-});
+  // return true if address not in San Diego area
+  return !(strarr[1] == ('SanDiego' || 'SanDiegoCounty' || 'LaJolla'));
+}
 
 function getLocation() {
     if (navigator.geolocation) {

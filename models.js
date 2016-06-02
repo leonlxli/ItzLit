@@ -4,7 +4,8 @@ var dateFormat = require('dateformat');
 var UserSchema = new mongoose.Schema({
     "facebookID": String,
     "token": String,
-    "name": String
+    "name": String,
+    "photo": String
 });
 
 
@@ -20,6 +21,7 @@ var postSchema = mongoose.Schema({
     },
     'message': String,
     'posted': String,
+    'location': String,
     'comments': [{
         "timeSinceE": Number,
         'sameUser': {

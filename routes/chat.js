@@ -14,10 +14,8 @@ exports.delete = function(req, res) {
 }
 
 exports.view = function(req, res) {
-  console.log("IN CHAT.JS EXPORTS VIEW");
   console.log(req.user);
     if (req.user) {
-        // console.log(res);
         mongoose.model('Posts').find({}).sort({
             timeSinceE: -1
         }).exec(function(err, posts) {

@@ -21,34 +21,27 @@ exports.view = function(req, res) {
 
 exports.post = function(req, res) {
     var now = new Date();
-    console.log(now);
     var seconds = now.getTime()/1000;
-    console.log("seconds");
-    console.log(seconds);
     var date = dateFormat(now, "h:MM TT, dddd, mmmm dS, yyyy");
-    console.log(date);
     if (req.user) {
         var newPost = new models.Posts({
             'timeSinceE':seconds,
             'message': req.body.message,
+            'location': req.body.location,
             'user': {
-                'username': req.user.displayName
+                'username': req.user.displayName,
+                'photo': req.user.photos[0].value
             },
             'posted': date,
             'comments': [],
         });
         newPost.save(function(err, suc) {
             if (err) {
-                // console.log("errr========");
-                // console.log(err);
-                // socket.emit('newsfeed', err);
                 res.json({
                     'user': req.user,
                     'error': err
                 })
             } else {
-                // console.log(suc);
-                // socket.emit('newsfeed', suc);
                 res.json({
                     'post': suc
                 })

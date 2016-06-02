@@ -12,15 +12,17 @@ function redirect() {
         e.preventDefault();
         console.log("sendingggggg");
         var message = $('#message_content').val();
+        var location = $('#loc').val();
         $.post('/newPost', {
             message: message,
+            location: location
         }, function(data, success) {
+            $('#loc').val('');
             console.log("I'm emitting")
+            console.log(data)
             socket.emit('newsfeed', data);
             $('.cancelBtn').click();
             $('.close').click();
-            // redirect();
-            // window.location.reload();
         });
     })
 })($);

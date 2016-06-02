@@ -83,8 +83,11 @@ passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_SECRET,
         callbackURL: "/auth/facebook/callback",
+        profileFields: ['id', 'displayName', 'name', 'photos']
     },
     function(accessToken, refreshToken, profile, done) {
+        console.log("Profile")
+        console.log(profile.photos[0].value)
         // What goes here? Refer to step 4.
         models.User.findOne({
             facebookID: profile.id
@@ -94,17 +97,20 @@ passport.use(new FacebookStrategy({
                 return done(err);
             }
             if (!user) {
+                console.log("new user")
                 // (2) since the user is not found, create new user.
                 // Refer to Assignment 0 to how create a new instance of a model
                 var newUser = new models.User({
                     "facebookID": profile.id,
                     "token": accessToken,
-                    "name": profile.displayName
+                    "name": profile.displayName,
+                    "picture": profile.photos[0].value
                 });
                 newUser.save();
                 return done(null, profile);
             } else {
-              console.log(user);
+                console.log("user")
+                console.log(user);
                 process.nextTick(function() {
                     user.facebookID = profile.id;
                     user.token = accessToken;
@@ -216,15 +222,15 @@ io.on('connection', function(socket) {
         online: currentlyOnline
     }));
     socket.on('disconnect', function() {
-            if (currentlyOnline > 0) {
-                currentlyOnline -= 1;
-                io.emit('online', JSON.stringify({
-                    online: currentlyOnline
-                }));
-            }
+        if (currentlyOnline > 0) {
+            currentlyOnline -= 1;
+            io.emit('online', JSON.stringify({
+                online: currentlyOnline
+            }));
+        }
 
-        })
-        socket.on('comment', function(msg) {
+    })
+    socket.on('comment', function(msg) {
         var user = socket.request.session.passport.user;
         console.log('comment========');
         console.log(msg)

@@ -223,6 +223,11 @@ $(document).ready(function() {
 
 
 window.initMap = function() {
+    var autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */
+        (document.getElementById('loc')), {
+            types: ['geocode']
+        });
     var sandiego = {
         lat: 32.856130,
         lng: -117.234485
