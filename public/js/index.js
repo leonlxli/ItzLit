@@ -103,7 +103,7 @@ function getCrimeCurr(lat, lng, distance) {
     var d = new Date();
     var n = d.getTime();
     $.ajax({
-        url: "http://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
+        url: "https://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
         dataType: 'jsonp',
         success: function(data) {
             for (var i in data.crimes) {
