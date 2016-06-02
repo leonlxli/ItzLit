@@ -197,9 +197,15 @@ function start() {
     var start = getQueryString('starting').replace(/%20/g, " "),
         end = getQueryString('ending').replace(/%20/g, " "),
         transportation = getQueryString('transportation');
-
-    start = start.substring(0, start.indexOf(','));
-    end = end.substring(0, end.indexOf(','));
+    console.log(end)
+    var startstr = start.substring(0, start.indexOf(','));
+    var endstr = end.substring(0, end.indexOf(','));
+    if(endstr==""){
+        endstr=end
+    }
+    if(startstr==""){
+        startstr=start
+    }
     if (transportation == "driving") {
         $("#transportation").append('<img src="/images/driving.png" width="35" height="35">');
     } else if (transportation == "walking") {
@@ -209,8 +215,10 @@ function start() {
     } else {
         $("#transportation").append('<img src="/images/transit.png" width="35" height="35">')
     }
-    $("#startingp").append(start);
-    $("#endingp").append(end);
+    console.log(startstr)
+    console.log(endstr)
+    $("#startingp").append(startstr);
+    $("#endingp").append(endstr);
     $.get("/crimes", function(data) {
         crimes = data;
     });
@@ -413,18 +421,18 @@ function getPoints() {
 
 var gradient = [
     'rgba(185, 185, 70, 0.0)',
-    'rgba(185, 185, 70, 1)',
-    'rgba(198, 198, 57, 0.6)',
-    'rgba(204, 204, 51, 0.8)',
-    'rgba(210, 210, 45, 0.8)',
-    'rgba(217, 217, 38, 0.8)',
-    'rgba(223, 223, 32, 0.8)',
-    'rgba(230, 230, 25, 0.9)',
-    'rgba(236, 236, 19, 1)',
-    'rgba(242, 242, 13, 1)',
-    'rgba(249, 249, 6, 1)',
-    'rgba(255, 255, 0, 1)',
-    'rgba(255, 255, 0, 1)'
+    'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 0.9)',
+    'rgba(253, 201, 51, 0.9)',
+    'rgba(253, 199, 0, 1)',
+    'rgba(253, 185, 0, 1)',
+    'rgba(253, 165, 0, 0.9)',
+    'rgba(253, 131, 0, 0.9)',
+    'rgba(254, 116, 0, 1)',
+    'rgba(254, 98, 0, 1)',
+    'rgba(254, 52, 0, 1)',
+    'rgba(255, 3, 0, 1)',
+    'rgba(255, 0, 0, 1)'
 ]
 
 

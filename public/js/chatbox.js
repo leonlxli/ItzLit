@@ -100,21 +100,17 @@ var commentModal =
     */
 
 function showRoutes() {
-    console.log("routes")
     $("#routeInfoDiv").css("display", "block")
     $("#postsDiv").css("display", "none")
 }
 
 function showFeed() {
-    console.log("feed")
     $("#routeInfoDiv").css("display", "none")
     $("#postsDiv").css("display", "block")
 }
 $(document).ready(function() {
     $.get('/chat',
         function(dat) {
-            console.log("fdasfsfsfa")
-            console.log(dat)
             data = dat;
             placePosts();
         });
@@ -158,20 +154,15 @@ function appendButton() {
 }
 
 function placePosts() {
-    console.log("Before")
     if (index < data.newsfeed.length) {
         limit += 10;
-        console.log("in")
         $('#messages').empty();
-        console.log("before");
-        console.log(index);
         var i = 0;
         index = 0;
         //$('#commentStuff').append($('<div>').html(commentModal));
         while (i < limit && i < data.newsfeed.length) {
 
             $('#messages').append($('<div>').html(messageTemplate(data.newsfeed[index])));
-            console.log("INSIDE PLACE POSTS OF CHATBOX: " + JSON.stringify(data.newsfeed[index]));
             index++;
             i++;
         }
@@ -206,14 +197,8 @@ function deletePost(postID) {
     }, function(dat, succ) {
         if (dat.succ) {
             for (var i = 0; i < data.newsfeed.length; i++) {
-                console.log("helooooo");
                 if (data.newsfeed[i]._id == postID) {
-                    console.log(i);
-                    console.log(postID)
-                    console.log(data.newsfeed[i]._id)
                     data.newsfeed.splice(i, 1);
-                    console.log(postID)
-                    console.log(data.newsfeed[i]._id)
                 }
             }
             $("#post" + postID).remove();
@@ -223,7 +208,6 @@ function deletePost(postID) {
 
 
 function messageTemplate(template) {
-    console.log("HEY IM IN CHATBOX.JS DIS IS THE TEMPLATE: " + JSON.stringify(template));
     /*var result =
         '<div class="row center-block" id="post{{_id}}">' +
         '<div class="col s12">' +
@@ -257,7 +241,6 @@ function messageTemplate(template) {
         '</div>' +
         '</div>';*/
     var newDate = template.posted.replace(", 2016", "");
-    console.log(newDate)
     var result =
         '<div class="row" id="post' + template._id + '" style="padding-top:5px;">' +
         '<div class="col s10 offset-s1">' +
@@ -296,7 +279,6 @@ function messageTemplate(template) {
 
     $('#send_message').submit(function(e) {
         e.preventDefault();
-        console.log("fdlsjflkasdkslfljdlasjfljlskfsklfdsl")
         var $user_input = $('#user_input')
         socket.emit('newsfeed', $user_input.val());
         // $user_input.val('');
@@ -354,12 +336,8 @@ var okBtn3 = document.getElementById("okBtn3");
 // When the user clicks on the button, open the modal
 
 // When the user clicks on <span> (x), close the modal
-okBtn3.onclick = function() {
-    console.log("ok button pressed");
-    errmodalmsg2.style.display = "none";
-}
+
 postBtn.onclick = function() {
-    console.log("post button pressed");
     comSubPost.style.display = "none";
 }
 
