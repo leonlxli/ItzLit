@@ -266,7 +266,7 @@ function messageTemplate(template) {
         '<div id="postHeaders"><div style="float:left;width:16%"><img style="vertical-align:middle;" src="' + template.user.photo + '" /></div>' +
         '<div style="width:84%; float:right" id = "userInfoHeader"><b>  ' + template.user.username + '</b> posted <i>' + newDate + '</i><br><img src="../images/place.png"> <i>' + template.location + ':</i></div></div>' +
         '<div class="card-title center-block">' +
-        '<div class="message" style="display:inline:block; text-align:left"><p>&nbsp</p><p>' + template.message + '</p></div>' +
+        '<div class="message" style="padding-left: 10px;display:inline:block; text-align:left"><p>&nbsp</p><p>' + template.message + '</p></div>' +
         '</div>' +
         '</div><hr>' +
         '<div class="card-action">' +
