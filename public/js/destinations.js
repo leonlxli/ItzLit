@@ -26,16 +26,13 @@ $('#destinations-form').submit(function(e) {
         endingErrFlag = endingErr();
 
     if (startingErrFlag || endingErrFlag) {
-      (startingErrFlag) ? $("#starting-err").text('Starting destination must be in San Diego!')
-                        : $("#starting-err").text('');
+        (startingErrFlag) ? $("#starting-err").text('Starting destination must be in San Diego!'): $("#starting-err").text('');
 
-      (endingErrFlag) ? $("#ending-err").text('Ending destination must be in San Diego!')
-                      : $("#ending-err").text('');
-    }
-    else {
-      $("#starting-err").text('');
-      $("#ending-err").text('');
-      window.location.href = '/maps?starting=' + starting + '&ending=' + ending + '&transportation=' + transportation;
+        (endingErrFlag) ? $("#ending-err").text('Ending destination must be in San Diego!'): $("#ending-err").text('');
+    } else {
+        $("#starting-err").text('');
+        $("#ending-err").text('');
+        window.location.href = '/maps?starting=' + starting + '&ending=' + ending + '&transportation=' + transportation;
     }
 });
 
@@ -46,26 +43,26 @@ $("#currLocation").click(function() {
     return false;
 });
 
+
 function startingErr() {
-  var str = $("#starting").val();
-  str = str.replace(/\s+/g, '');
-
-  var strarr = str.split(',');
-
-  console.log(strarr[1]);
-
-  // return true if address not in San Diego area
-  return !(strarr[1] == ('SanDiego' || 'SanDiegoCounty' || 'LaJolla'));
+    var str = $("#starting").val().toLowerCase();
+    if (str.indexOf('ucsd') == -1 && str.indexOf('diego') == -1 && str.indexOf('jolla') == -1) {
+      console.log("return true")
+      console.log(str.indexOf('diego'))
+        return true;
+    } else {
+      console.log("return false")
+        return false;
+    }
 }
 
 function endingErr() {
-  var str = $("#ending").val();
-  str = str.replace(/\s+/g, '');
-
-  var strarr = str.split(',');
-
-  // return true if address not in San Diego area
-  return !(strarr[1] == ('SanDiego' || 'SanDiegoCounty' || 'LaJolla'));
+    var str = $("#ending").val().toLowerCase();
+    if (str.indexOf('ucsd') == -1 && str.indexOf('diego') == -1 && str.indexOf('jolla') == -1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function getLocation() {
