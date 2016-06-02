@@ -354,10 +354,6 @@ var okBtn3 = document.getElementById("okBtn3");
 // When the user clicks on the button, open the modal
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    $('#postMessage').text("Are you sure you want to post: ");
-    comSubPost.style.display = "none";
-}
 okBtn3.onclick = function() {
     console.log("ok button pressed");
     errmodalmsg2.style.display = "none";
