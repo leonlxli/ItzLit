@@ -184,6 +184,9 @@ String.prototype.capitalizeFirstLetter = function() {
 
 function start() {
     setTimeout(function() {
+        var start = getQueryString('starting').replace(/%20/g, " "),
+            end = getQueryString('ending').replace(/%20/g, " "),
+            transportation = getQueryString('transportation');
         CreateDirections(start, end, transportation);
     }, 100);
 

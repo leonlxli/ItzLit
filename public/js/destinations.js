@@ -48,7 +48,7 @@ function startingErr() {
     var str = $("#starting").val().toLowerCase();
     if (str.indexOf('ucsd') == -1 && str.indexOf('diego') == -1 && str.indexOf('jolla') == -1) {
       console.log("return true")
-      console.log(str.indexOf('diego'))
+      console.log(str.indexOf('ucsd'))
         return true;
     } else {
       console.log("return false")
