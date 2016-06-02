@@ -14,7 +14,7 @@ exports.delete = function(req, res) {
 }
 
 exports.view = function(req, res) {
-  console.log(req.user);
+    console.log(req.user);
     if (req.user) {
         mongoose.model('Posts').find({}).sort({
             timeSinceE: -1
@@ -26,8 +26,13 @@ exports.view = function(req, res) {
                 posts[i].numOfComments = posts[i].comments.length
             }
             if (err) {
+                console.log("i have an err")
+
                 console.log(err);
-            }  else {
+            } else {
+                                console.log("postssss")
+
+                console.log(posts)
                 res.json({
                     'newsfeed': posts
                 });
