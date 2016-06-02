@@ -164,11 +164,91 @@ function putData() {
     var info = $("#routeInfo");
     for (var i in routeInfo) {
         var num = Number(i) + 1;
+        var lightbulbNum = "lightbulb";
+
+        //get lightbulb pic
+        if (routeInfo[i].lights < 1) {
+            lightbulbNum = "lightbulb";
+        }
+        else if (routeInfo[i].lights < 2) {
+            lightbulbNum = "lightbulb1";
+        }
+        else if (routeInfo[i].lights < 4) {
+            lightbulbNum = "lightbulb2";
+        }
+        else if (routeInfo[i].lights < 6) {
+            lightbulbNum = "lightbulb4";
+        }
+        else if (routeInfo[i].lights < 8) {
+            lightbulbNum = "lightbulb6";
+        }
+        else if (routeInfo[i].lights < 10) {
+            lightbulbNum = "lightbulb8";
+        }
+        else if (routeInfo[i].lights < 15) {
+            lightbulbNum = "lightbulb10";
+        }
+        else if (routeInfo[i].lights < 20) {
+            lightbulbNum = "lightbulb15";
+        }
+        else if (routeInfo[i].lights < 25) {
+            lightbulbNum = "lightbulb20";
+        }
+        else if (routeInfo[i].lights < 30) {
+            lightbulbNum = "lightbulb25";
+        }
+        else if (routeInfo[i].lights < 35) {
+            lightbulbNum = "lightbulb30";
+        }
+        else if (routeInfo[i].lights < 40) {
+            lightbulbNum = "lightbulb35";
+        }
+        else if (routeInfo[i].lights < 45) {
+            lightbulbNum = "lightbulb40";
+        }
+        else if (routeInfo[i].lights < 50) {
+            lightbulbNum = "lightbulb45";
+        }
+        else if (routeInfo[i].lights < 55) {
+            lightbulbNum = "lightbulb50";
+        }
+        else if (routeInfo[i].lights< 60) {
+            lightbulbNum = "lightbulb55";
+        }
+        else if (routeInfo[i].lights < 65) {
+            lightbulbNum = "lightbulb60";
+        }
+        else if (routeInfo[i].lights < 70) {
+            lightbulbNum = "lightbulb65";
+        }
+        else if (routeInfo[i].lights < 75) {
+            lightbulbNum = "lightbulb70";
+        }
+        else if (routeInfo[i].lights < 80) {
+            lightbulbNum = "lightbulb75";
+        }
+        else if (routeInfo[i].lights < 85) {
+            lightbulbNum = "lightbulb80";
+        }
+        else if (routeInfo[i].lights < 90) {
+            lightbulbNum = "lightbulb85";
+        }
+        else if (routeInfo[i].lights < 95) {
+            lightbulbNum = "lightbulb90";
+        }
+        else if (routeInfo[i].lights < 100) {
+            lightbulbNum = "lightbulb95";
+        }
+        else {
+            lightbulbNum = "lightbulb100";
+        }
+
         info.append("<div id=routeDisplay" + i + " class='routeDisplay' onmouseover='inside(" + i + ")' onmouseout='outside(" + i + ")' onclick='displayDirections(" + i + ")'><table style='width:90%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
             "<td style='align: right; float:right;'><p>" + routeInfo[i].lightPercentText +
-            "</p><img src='/images/lightbulb.png' style='width:70px; height:70px'></td></tr></table></div>")
+            "</p><img src='/images/" + lightbulbNum + ".png' style='width:70px; height:70px'></td></tr></table></div>")
         info.append("<div class = 'directions' id='dir" + i + "'></div>");
     }
+
     $("#routeDisplay0").addClass("clicked");
     var info = $("#dir0");
     info.append("<p><u><b>Directions:</b></u></p>")
