@@ -256,17 +256,19 @@ function messageTemplate(template) {
         '</div>' +
         '</div>' +
         '</div>';*/
+    var newDate = template.posted.replace(", 2016", "");
+    console.log(newDate)
     var result =
         '<div class="row" id="post' + template._id + '" style="padding-top:5px;">' +
         '<div class="col s10 offset-s1">' +
         '<div class="card white">' +
-        '<div class="card-content black-text" style="color:black;">' +
-        '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user.username + '</b><span style="clear:right" class="username"> posted at <i>' + template.posted + '</i></span>&nbsp<img src="../images/place.png"> <i>' + template.location + ':</i>' +
+        '<div class="card-content black-text" style="color:black;text-align:left;">' +
+        '<div id="postHeaders"><div style="float:left;width:16%"><img style="vertical-align:middle;" src="' + template.user.photo + '" /></div>' +
+        '<div style="width:84%; float:right" id = "userInfoHeader"><b>  ' + template.user.username + '</b> posted <i>' + newDate + '</i><br><img src="../images/place.png"> <i>' + template.location + ':</i></div></div>' +
         '<div class="card-title center-block">' +
-        '<p>' + template.message + '</p>' +
+        '<div class="message" style="padding-left: 10px;display:inline:block; text-align:left"><p>&nbsp</p><p>' + template.message + '</p></div>' +
         '</div>' +
-        '</div>' +
+        '</div><hr>' +
         '<div class="card-action">' +
         '<div class="delete" sameUser="' + template.sameUser + '" postID="' + template._id + '">' +
         '</div>' +
@@ -351,7 +353,7 @@ var okBtn3 = document.getElementById("okBtn3");
 
 // When the user clicks on the button, open the modal
 
-    // When the user clicks on <span> (x), close the modal
+// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     $('#postMessage').text("Are you sure you want to post: ");
     comSubPost.style.display = "none";
