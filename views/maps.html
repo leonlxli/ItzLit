@@ -81,6 +81,7 @@
             <!-- LIVE UPDATES TAB -->
             <div id="postsDiv" style="display: none;">
                 <div id="forum" class="text-center">
+                <div style="background-color: #FAF6C5;">
                     <br>
                     <!-- modal -->
                     <form id="send_post">
@@ -104,11 +105,11 @@
                         </div>
                         <!--display info-->
                         <center>
-                            <h2>Live updates</h2>
+                            <h2>LIVE UPDATES</h2>
                             <h4>Write a new post</h4>
                         </center>
                         <div class="newPostContainer">
-                            <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 90%; height: 80px;" autocomplete="off" required></textarea>
+                            <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; background-color:white; padding:10px; width: 90%; height: 80px;" autocomplete="off" required></textarea>
                             <center>
                                 <input style="width:90%; padding:10px;" type="text" class="form-control" id="loc" placeholder="Where is this happening" required>
                             </center>
@@ -116,11 +117,13 @@
                     </form>
                     <br>
                     <Button id="submitnewpost" class="btn-large btn">Post</Button>
+                    <br>
+                </div>
                     <!-- New Post Modal
                         <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">-->
                     <section>
                         <center>
-                            <h4>Newsfeed</h4>
+                            <h4>NEWSFEED</h4>
                         </center>
                         <div id="inner">
                             <div id="newMessages" class="row center-block"></div>
