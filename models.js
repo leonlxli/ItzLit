@@ -22,8 +22,6 @@ var postSchema = mongoose.Schema({
     'message': String,
     'posted': String,
     'location': String,
-    'lat': Number,
-    'lng': Number,
     'comments': [{
         "timeSinceE": Number,
         'sameUser': {

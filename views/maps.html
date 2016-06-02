@@ -102,14 +102,16 @@
                                 <a class="modal-action modal-close btn" id="okBtn2">OK</a>
                             </div>
                         </div>
-
                         <!--display info-->
                         <center>
-                            <h2>Feed</h2>
+                            <h2>Live updates</h2>
+                            <h4>Write a new post</h4>
                         </center>
                         <div class="newPostContainer">
                             <textarea class="white-text" id="message_content" placeholder="What's happening on your route?" style="background: url('{{profPic}}') no-repeat scroll 0px -1px; padding:10px; width: 500px; height: 80px;" autocomplete="off" required></textarea>
-                            <input type="text" class="form-control" id="loc" placeholder="Where is this happening" required>
+                            <center>
+                                <input style="width:500px; padding:10px;" type="text" class="form-control" id="loc" placeholder="Where is this happening" required>
+                            </center>
                         </div>
                     </form>
                     <br>
@@ -117,6 +119,9 @@
                     <!-- New Post Modal
                         <div id="newPostModal" class="modal fade" role="dialog" style="margin-top:10%;">-->
                     <section>
+                        <center>
+                            <h4>Newsfeed</h4>
+                        </center>
                         <div id="inner">
                             <div id="newMessages" class="row center-block"></div>
                             <div id="messages" class="posts">
