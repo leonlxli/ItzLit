@@ -1,6 +1,6 @@
 (function($) {
   "use strict";
-    
+
     var data = [];
 
     // var functionNames = ['getTimeBarCrimeData1', 'getTimeBarCrimeData2', 'getTimeBarCrimeData3', 'getTimeBarCrimeData4', 'getTimeBarCrimeData5', 'getTimeBarCrimeData6', 'getTimeBarCrimeData7', 'getTimeBarCrimeData8', 'getTimeBarCrimeData9', 'getTimeBarCrimeData10'];
@@ -26,7 +26,7 @@
         return -1;
       else if (Number(a.hour) > Number(b.hour))
         return 1;
-      else 
+      else
         return 0;
     }
 
@@ -113,7 +113,7 @@ Promise.all(promises).then(function(){
             .attr("width", xScale.rangeBand())
             .attr("y", function(d) { return yScale(d.total); })
             .attr("height", function(d) { return height - yScale(d.total); });
-            
+
           // Orient the x and y axis
           var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
           var yAxis = d3.svg.axis().scale(yScale).orient("left");
@@ -194,7 +194,7 @@ window.loadData = function update(error, data) {
     for(var i=0; i<24; i++) {
       promises.push(getHourData(fnPath, i, data));
     }
- 
+
     Promise.all(promises).then(function(){
           console.log("Data", data);
 
@@ -278,7 +278,7 @@ window.loadData = function update(error, data) {
             .attr("width", xScale.rangeBand())
             .attr("y", function(d) { return yScale(d.total); })
             .attr("height", function(d) { return height - yScale(d.total); });
-            
+
           // Orient the x and y axis
           var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
           var yAxis = d3.svg.axis().scale(yScale).orient("left");
@@ -342,3 +342,17 @@ window.loadData = function update(error, data) {
     });
 }
 }) ($);
+
+$(window).scroll(function() {
+    if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+        $('#return-to-top').fadeIn(200);    // Fade in the arrow
+    } else {
+        $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+    }
+});
+
+$('#return-to-top').click(function() {      // When arrow is clicked
+    $('body,html').animate({
+        scrollTop : 0                       // Scroll to top of body
+    }, 500);
+})
