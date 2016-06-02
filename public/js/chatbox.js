@@ -262,8 +262,7 @@ function messageTemplate(template) {
         '<div class="card white">' +
         '<div class="card-content black-text" style="color:black;">' +
         '<img style="vertical-align:middle;" src="' + template.user.photo + '" />' +
-        '<b>  ' + template.user.username + '</b><span class="username"> posted at <i>' + template.posted + ':</i></span>' +
-        '<span class="username"> at <i>' + template.location + ':</i></span>'+
+        '<b>  ' + template.user.username + '</b><span style="clear:right" class="username"> posted at <i>' + template.posted + '</i></span>&nbsp<img src="../images/place.png"> <i>' + template.location + ':</i>' +
         '<div class="card-title center-block">' +
         '<p>' + template.message + '</p>' +
         '</div>' +

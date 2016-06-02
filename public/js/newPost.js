@@ -13,6 +13,7 @@ function redirect() {
         console.log("sendingggggg");
         var message = $('#message_content').val();
         var location = $('#loc').val();
+        location = location.substring(0, location.indexOf(','));
         $.post('/newPost', {
             message: message,
             location: location
