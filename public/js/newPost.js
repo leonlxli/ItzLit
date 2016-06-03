@@ -26,10 +26,8 @@ var okBtn = document.getElementById("okBtn");
 var okBtn2 = document.getElementById("okBtn2");
 // When the user clicks on the button, open the modal
 btn.onclick = function(e) {
-        checkDat();
-
-
-    }
+    checkDat();
+}
     // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     $('#postMessage').text("Are you sure you want to post: ");
@@ -44,8 +42,16 @@ okBtn2.onclick = function() {
     errmodalmsg.style.display = "none";
 }
 
+function checkEnter(e){
+ e = e || event;
+ var txtArea = /textarea/i.test((e.target || e.srcElement).tagName);
+ return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
+}
+
+document.querySelector('form').onkeypress = checkEnter;
+
+
 function checkDat() {
-  console.log("helloooo");
 
   var str = $('#loc').val().toLowerCase();
 
