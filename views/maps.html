@@ -89,7 +89,7 @@
                             <div class="modal-content" style="padding:10px; width:25%; margin-top:10%; margin-left:65px;">
                                 <h4 align="left">Submit Post?</h4>
                                 <p id="postMessage">Are you sure you want to post: </p>
-                                <input class="modal-action modal-close btn subBtn" type="submit" value="POST" rel="nofollow" style="margin-left:20px">
+                                <button class="modal-action modal-close btn subBtn" onclick="submitDat()" rel="nofollow" style="margin-left:20px">POST</button>
                                 <a class="modal-action modal-close btn cancelBtn">CANCEL</a>
                             </div>
                         </div>
@@ -115,6 +115,7 @@
                             </center>
                         </div>
                     </form>
+                    <b id="locErr"></b>
                     <br>
                     <Button id="submitnewpost" class="btn-large btn">Post</Button>
                     <br>

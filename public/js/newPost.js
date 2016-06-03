@@ -10,21 +10,6 @@ function redirect() {
 
     $('#send_post').submit(function(e) {
         e.preventDefault();
-        console.log("sendingggggg");
-        var message = $('#message_content').val();
-        var location = $('#loc').val();
-        location = location.substring(0, location.indexOf(','));
-        $.post('/newPost', {
-            message: message,
-            location: location
-        }, function(data, success) {
-            $('#loc').val('');
-            console.log("I'm emitting")
-            console.log(data)
-            socket.emit('newsfeed', data);
-            $('.cancelBtn').click();
-            $('.close').click();
-        });
     })
 })($);
 
@@ -40,16 +25,10 @@ var span = document.getElementsByClassName("cancelBtn")[0];
 var okBtn = document.getElementById("okBtn");
 var okBtn2 = document.getElementById("okBtn2");
 // When the user clicks on the button, open the modal
-btn.onclick = function() {
-        console.log("helloooo");
-        var message = $('#message_content').val();
+btn.onclick = function(e) {
+        checkDat();
 
-        if (message != "") {
-            $('#postMessage').append("'" + message + "'?");
-            modal.style.display = "block";
-        } else {
-            errmodalmsg.style.display = "block";
-        }
+
     }
     // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
@@ -63,4 +42,46 @@ okBtn.onclick = function() {
 okBtn2.onclick = function() {
     console.log("ok button pressed");
     errmodalmsg.style.display = "none";
+}
+
+function checkDat() {
+  console.log("helloooo");
+
+  var str = $('#loc').val().toLowerCase();
+
+  if (str.indexOf('ucsd') == -1 && str.indexOf('diego') == -1 && str.indexOf('jolla') == -1) {
+    console.log("return true")
+    console.log(str.indexOf('ucsd'))
+    $('#locErr').text('Your location must be in San Diego!');
+  }
+  else {
+    $('#locErr').text('');
+
+    var message = $('#message_content').val();
+
+    if (message != "") {
+        $('#postMessage').append("'" + message + "'?");
+        modal.style.display = "block";
+    } else {
+        errmodalmsg.style.display = "block";
+    }
+  }
+}
+
+function submitDat() {
+  console.log("sendingggggg");
+  var message = $('#message_content').val();
+  var location = $('#loc').val();
+  location = location.substring(0, location.indexOf(','));
+  $.post('/newPost', {
+      message: message,
+      location: location
+  }, function(data, success) {
+      $('#loc').val('');
+      console.log("I'm emitting")
+      console.log(data)
+      socket.emit('newsfeed', data);
+      $('.cancelBtn').click();
+      $('.close').click();
+  });
 }

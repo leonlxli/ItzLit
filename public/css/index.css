@@ -56,7 +56,7 @@ body {
     color: white;
 }
 
-#starting-err, #ending-err {
+#starting-err, #ending-err, #locErr {
   color: red;
 }
 
@@ -470,4 +470,3 @@ p.app-description {
 .selectmenu {
     color: black;
 }
-
