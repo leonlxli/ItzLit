@@ -196,6 +196,7 @@ app.get('/currentCrimes', router.myData.getCurrentCrimes);
 
 app.get('/getAllCrimeData', router.index.getAllCrimeData);
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
+app.get('/getCountCrimeData', router.index.getCountCrimeData);
 app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
 app.get('/getTimeBarCrimeDataArson', router.index.getTimeBarCrimeDataArson);
 app.get('/getTimeBarCrimeDataAssault', router.index.getTimeBarCrimeDataAssault);
