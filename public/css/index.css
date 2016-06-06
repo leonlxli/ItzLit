@@ -19,17 +19,17 @@ body {
   fill: none;
   pointer-events: all;
 }
-div.tooltip {   
-    position: absolute;         
-    text-align: center;         
-    width: 60px;                    
-    height: 30px;                   
-    padding: 2px;               
-    font: 12px sans-serif;      
-    background: lightsteelblue; 
-    border: 0px;        
-    border-radius: 8px;         
-    pointer-events: none;           
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 30px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
 }
 #facebook-button:hover {
   color: #337ab7;
@@ -138,6 +138,21 @@ div.tooltip {
 */
 }
 
+#route-me {
+  background-color: #ffc34d;
+  outline-color: #ffc34d;
+  color: black;
+}
+
+#route-me:hover {
+  background-color: #ffd480;
+  outline-color: #ffd480;
+}
+
+#destinations-note {
+  font-size: 14px;
+}
+
 h1,
 h2,
 h3,
@@ -228,6 +243,16 @@ p.app-description {
     width: 33%;
     background-color: #DEDFE6;
     overflow-y: auto;
+}
+
+.sidebar-tabs {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.sidebar-tabs:active {
+  background-color: #DEDFE6;
 }
 
 .row {
