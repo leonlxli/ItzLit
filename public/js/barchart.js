@@ -147,7 +147,7 @@
             .style("text-anchor", "end")
             .style("stroke", "white")
             .style("fill", "white")
-            .text("Quantity of Crimes");
+            .text("Frequency of Crimes");
 
 
         var hour = barChart.selectAll(".hour")
@@ -183,7 +183,7 @@
             .style("fill", "white")
             .style("font-size", "30px")
             .style("text-decoration", "underline")
-            .text(title+ " frequency over time");
+            .text(title + " frequency over time");
 
         barChart.selectAll("dot")
             .data(data)
@@ -202,13 +202,17 @@
                     .duration(200)
                     .style("opacity", .9);
 
-                var crimeText;
-                if (d.total == 1) {
-                    crimeText = d.total + " Crime"
+                var crimeTime;
+                if (d.hour == 0) {
+                    crimeTime = "12AM"
+                } else if (d.hour == 12) {
+                    crimeTime == "12PM"
+                } else if (d.hour > 12) {
+                    crimeTime = d.hour % 12 + "PM"
                 } else {
-                    crimeText = d.total + " Crimes"
+                    crimeTime = d.hour + "AM"
                 }
-                div.html(crimeText)
+                div.html(d.total + " at " + crimeTime)
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
             })
@@ -313,7 +317,7 @@
                 .style("fill", "white")
                 .style("font-size", "30px")
                 .style("text-decoration", "underline")
-                .text(title+ " frequency over time");
+                .text(title + " frequency over time");
 
 
             color.domain(d3.keys(data[0]).filter(function(key) {
@@ -441,13 +445,17 @@
                         .duration(200)
                         .style("opacity", .9);
 
-                    var crimeText;
-                    if (d.total == 1) {
-                        crimeText = d.total + " Crime"
+                    var crimeTime;
+                    if (d.hour == 0) {
+                        crimeTime = "12AM"
+                    } else if (d.hour == 12) {
+                        crimeTime == "12PM"
+                    } else if (d.hour > 12) {
+                        crimeTime = d.hour % 12 + "PM"
                     } else {
-                        crimeText = d.total + " Crimes"
+                        crimeTime = d.hour + "AM"
                     }
-                    div.html(crimeText)
+                    div.html(d.total + " at " + crimeTime)
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
