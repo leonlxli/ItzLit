@@ -182,8 +182,7 @@
             .attr("text-anchor", "middle")
             .style("fill", "white")
             .style("font-size", "30px")
-            .style("text-decoration", "underline")
-            .text(title + " frequency over time");
+            .text("\"" + title + "\" frequency over time");
 
         barChart.selectAll("dot")
             .data(data)
@@ -316,8 +315,7 @@
                 .attr("text-anchor", "middle")
                 .style("fill", "white")
                 .style("font-size", "30px")
-                .style("text-decoration", "underline")
-                .text(title + " frequency over time");
+                .text("\"" + title + "\" frequency over time");
 
 
             color.domain(d3.keys(data[0]).filter(function(key) {
