@@ -16,7 +16,7 @@
 
     var promises = [];
     for (var i = 0; i < 24; i++) {
-        promises.push(getHourData("/getTimeBarCrimeDataArson?time=", i, data));
+        promises.push(getHourData("/getTimeBarCrimeDataDUI?time=", i, data));
     }
 
 
