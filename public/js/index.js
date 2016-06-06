@@ -407,18 +407,29 @@ window.initMap = function() {
         controlUI.appendChild(meter);
     }
 
+    function lightMeterControl(controlDiv, map) {
+        var controlUI = document.createElement('div');
+        controlUI.style.marginBottom = '12px';
+        var lightmeter = new Image();
+        lightmeter.src = '../images/lightmeter.png';
+        controlDiv.appendChild(controlUI);
+        controlUI.appendChild(lightmeter);
+    }
 
     var ToggleControlDiv = document.createElement('div');
     var ToggleControl = new ToggleControl(ToggleControlDiv, map);
-    // var meter = new Image();
-    // meter.src = '../images/meter.png';
+
 
     var meterDiv = document.createElement('div');
     var meterControl = new meterControl(meterDiv, map);
 
+    var lightMeterDiv = document.createElement('div');
+    var lightMeterControl = new  lightMeterControl(lightMeterDiv,map);
+
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(meterDiv);
+    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(lightMeterDiv);
 
 }
 
@@ -499,22 +510,36 @@ function getPoints() {
 
 
 
+// var gradient = [
+//     'rgba(185, 185, 70, 0.0)',
+//     'rgba(252, 243, 0, 1)',
+//     'rgba(252, 243, 0, 0.9)',
+//     'rgba(253, 201, 51, 0.9)',
+//     'rgba(253, 199, 0, 1)',
+//     'rgba(253, 185, 0, 1)',
+//     'rgba(253, 165, 0, 0.9)',
+//     'rgba(253, 131, 0, 0.9)',
+//     'rgba(254, 116, 0, 1)',
+//     'rgba(254, 98, 0, 1)',
+//     'rgba(254, 52, 0, 1)',
+//     'rgba(255, 3, 0, 1)',
+//     'rgba(255, 0, 0, 1)'
+// ]
 var gradient = [
     'rgba(185, 185, 70, 0.0)',
     'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 0.8)',
+    'rgba(252, 243, 0, 0.8)',
     'rgba(252, 243, 0, 0.9)',
-    'rgba(253, 201, 51, 0.9)',
-    'rgba(253, 199, 0, 1)',
-    'rgba(253, 185, 0, 1)',
-    'rgba(253, 165, 0, 0.9)',
-    'rgba(253, 131, 0, 0.9)',
-    'rgba(254, 116, 0, 1)',
-    'rgba(254, 98, 0, 1)',
-    'rgba(254, 52, 0, 1)',
-    'rgba(255, 3, 0, 1)',
-    'rgba(255, 0, 0, 1)'
+    'rgba(252, 243, 0, 0.9)',
+    'rgba(252, 243, 0, 0.9)',
+    'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 1)',
+    'rgba(252, 243, 0, 1)',
 ]
-
 
 
 
