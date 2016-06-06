@@ -205,13 +205,13 @@
                 if (d.hour == 0) {
                     crimeTime = "12AM"
                 } else if (d.hour == 12) {
-                    crimeTime == "12PM"
+                    crimeTime = "12PM"
                 } else if (d.hour > 12) {
                     crimeTime = d.hour % 12 + "PM"
                 } else {
                     crimeTime = d.hour + "AM"
                 }
-                div.html(d.total + " at " + crimeTime)
+                div.html(d.total + " reported at " + crimeTime)
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
             })
