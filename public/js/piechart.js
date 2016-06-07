@@ -67,7 +67,7 @@ var color = d3.scale.category20();
             // .style("text-decoration", "underline")  
             .text("Breakdown of Crimes")
           .append('svg')
-          .attr('width', width + 235)
+          .attr('width', width + 240)
           .attr('height', height + 60)
           .style('text-align', "center")
           // .style('padding', 20)

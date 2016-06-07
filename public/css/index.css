@@ -556,6 +556,7 @@ p.app-description {
     font-size: 16px;
     background: #f1f0f1 !important;
     color: #333 !important;
+    font-family: 'Exo';
 }
 
 #pieChart {                                                 
@@ -565,41 +566,22 @@ p.app-description {
     margin-top: 40px;                              
 }         
 
-#pieChartTip {                                                   
-    background: #f1f0f1 !important;                                         
-    box-shadow: 0 0 5px #999999 !important;                              
-    color: #333 !important;                                           
-    opacity: 0;                                                
-    font-size: 18px !important; 
-    left: 180px!important;                                                   
-    padding: 10px!important;                                                 
-    position: absolute!important;                                            
-    text-align: center!important;                                       
-    top: 250px!important;                                                     
-    width: 150px !important;   
-    min-height: 95px !important;    
-    max-height: 120px !important;                                           
-    z-index: 10!important;            
-    vertical-align: middle !important;                                       
-} 
->>>>>>> c095658c936395d20b5eeb9fef389bcda557b675
-
 #pieChartTip {
     background: #f1f0f1 !important;
     box-shadow: 0 0 5px #999999 !important;
     color: #333 !important;
     opacity: 0;
     font-size: 18px !important;
-    left: 185px!important;
+    font-family: 'Exo';
+    left: 180px!important;
     padding: 10px!important;
     position: absolute!important;
     text-align: center!important;
     top: 240px!important;
     width: 150px !important;
-    min-height: 95px !important;
+    min-height: 110px !important;
     max-height: 120px !important;
     z-index: 10!important;
-    vertical-align: middle !important;
 }
 /*div.tooltip-inner {
     max-width: 150px !important;
