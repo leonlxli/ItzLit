@@ -579,3 +579,7 @@ p.app-description {
     font-size: 16px !important; 
     white-space: pre-wrap !important;
 }
+
+#description {
+    font-size: 16px !important;
+}
