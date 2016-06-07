@@ -9,11 +9,18 @@ var limit = 0;
 function showRoutes() {
     $("#routeInfoDiv").css("display", "block")
     $("#postsDiv").css("display", "none")
+    $("#routeTabs").css("background-color", "#DEDFE6")
+    $("#feedTab").css("background-color", "#F8F9FA")
+
 }
 
 function showFeed() {
     $("#routeInfoDiv").css("display", "none")
     $("#postsDiv").css("display", "block")
+    $("#feedTab").css("background-color", "#DEDFE6")
+    $("#routeTabs").css("background-color", "#F8F9FA")
+
+
 }
 $(document).ready(function() {
     $.get('/chat',

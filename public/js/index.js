@@ -169,77 +169,53 @@ function putData() {
         //get lightbulb pic
         if (routeInfo[i].lights < 1) {
             lightbulbNum = "lightbulb";
-        }
-        else if (routeInfo[i].lights < 2) {
+        } else if (routeInfo[i].lights < 2) {
             lightbulbNum = "lightbulb1";
-        }
-        else if (routeInfo[i].lights < 4) {
+        } else if (routeInfo[i].lights < 4) {
             lightbulbNum = "lightbulb2";
-        }
-        else if (routeInfo[i].lights < 6) {
+        } else if (routeInfo[i].lights < 6) {
             lightbulbNum = "lightbulb4";
-        }
-        else if (routeInfo[i].lights < 8) {
+        } else if (routeInfo[i].lights < 8) {
             lightbulbNum = "lightbulb6";
-        }
-        else if (routeInfo[i].lights < 10) {
+        } else if (routeInfo[i].lights < 10) {
             lightbulbNum = "lightbulb8";
-        }
-        else if (routeInfo[i].lights < 15) {
+        } else if (routeInfo[i].lights < 15) {
             lightbulbNum = "lightbulb10";
-        }
-        else if (routeInfo[i].lights < 20) {
+        } else if (routeInfo[i].lights < 20) {
             lightbulbNum = "lightbulb15";
-        }
-        else if (routeInfo[i].lights < 25) {
+        } else if (routeInfo[i].lights < 25) {
             lightbulbNum = "lightbulb20";
-        }
-        else if (routeInfo[i].lights < 30) {
+        } else if (routeInfo[i].lights < 30) {
             lightbulbNum = "lightbulb25";
-        }
-        else if (routeInfo[i].lights < 35) {
+        } else if (routeInfo[i].lights < 35) {
             lightbulbNum = "lightbulb30";
-        }
-        else if (routeInfo[i].lights < 40) {
+        } else if (routeInfo[i].lights < 40) {
             lightbulbNum = "lightbulb35";
-        }
-        else if (routeInfo[i].lights < 45) {
+        } else if (routeInfo[i].lights < 45) {
             lightbulbNum = "lightbulb40";
-        }
-        else if (routeInfo[i].lights < 50) {
+        } else if (routeInfo[i].lights < 50) {
             lightbulbNum = "lightbulb45";
-        }
-        else if (routeInfo[i].lights < 55) {
+        } else if (routeInfo[i].lights < 55) {
             lightbulbNum = "lightbulb50";
-        }
-        else if (routeInfo[i].lights< 60) {
+        } else if (routeInfo[i].lights < 60) {
             lightbulbNum = "lightbulb55";
-        }
-        else if (routeInfo[i].lights < 65) {
+        } else if (routeInfo[i].lights < 65) {
             lightbulbNum = "lightbulb60";
-        }
-        else if (routeInfo[i].lights < 70) {
+        } else if (routeInfo[i].lights < 70) {
             lightbulbNum = "lightbulb65";
-        }
-        else if (routeInfo[i].lights < 75) {
+        } else if (routeInfo[i].lights < 75) {
             lightbulbNum = "lightbulb70";
-        }
-        else if (routeInfo[i].lights < 80) {
+        } else if (routeInfo[i].lights < 80) {
             lightbulbNum = "lightbulb75";
-        }
-        else if (routeInfo[i].lights < 85) {
+        } else if (routeInfo[i].lights < 85) {
             lightbulbNum = "lightbulb80";
-        }
-        else if (routeInfo[i].lights < 90) {
+        } else if (routeInfo[i].lights < 90) {
             lightbulbNum = "lightbulb85";
-        }
-        else if (routeInfo[i].lights < 95) {
+        } else if (routeInfo[i].lights < 95) {
             lightbulbNum = "lightbulb90";
-        }
-        else if (routeInfo[i].lights < 100) {
+        } else if (routeInfo[i].lights < 100) {
             lightbulbNum = "lightbulb95";
-        }
-        else {
+        } else {
             lightbulbNum = "lightbulb100";
         }
 
@@ -280,11 +256,11 @@ function start() {
     console.log(end)
     var startstr = start.substring(0, start.indexOf(','));
     var endstr = end.substring(0, end.indexOf(','));
-    if(endstr==""){
-        endstr=end
+    if (endstr == "") {
+        endstr = end
     }
-    if(startstr==""){
-        startstr=start
+    if (startstr == "") {
+        startstr = start
     }
     if (transportation == "driving") {
         $("#transportation").append('<img src="/images/driving.png" width="35" height="35">');
@@ -307,6 +283,8 @@ $(document).ready(function() {
     var target = document.getElementById('spinner')
     spinner = new Spinner(opts).spin(target);
     target.appendChild(spinner.el)
+    $("#routeTabs").css("background-color", "#DEDFE6")
+
 });
 
 
@@ -424,7 +402,7 @@ window.initMap = function() {
     var meterControl = new meterControl(meterDiv, map);
 
     var lightMeterDiv = document.createElement('div');
-    var lightMeterControl = new  lightMeterControl(lightMeterDiv,map);
+    var lightMeterControl = new lightMeterControl(lightMeterDiv, map);
 
     ToggleControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(ToggleControlDiv);
@@ -466,7 +444,6 @@ function inside(i) {
 }
 
 function outside(i) {
-    console.log("")
     var route = $("#routeDisplay" + i)
     if (route.hasClass("hovered")) {
         route.removeClass("hovered");
