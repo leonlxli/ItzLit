@@ -44,15 +44,17 @@
           console.log("each pie",pie_data[a]);
         }
               var margin = {top: 20, right: 40, bottom: 120, left: 80},
-      width = 600 - margin.right - margin.left,
-    height = 600 - margin.top - margin.bottom;
+                    width = 600 - margin.right - margin.left,
+                    height = 600 - margin.top - margin.bottom;
               var radius = Math.min(width, height) / 2;
               var donutWidth = 95; 
+              var legendRectSize = 18;
+              var legendSpacing = 4;
 
             // var color = d3.scale.ordinal()
             //     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-var color = d3.scale.category10();
+var color = d3.scale.category20();
 
         var svg = d3.select('#pieChart')
             .append("text")
@@ -65,7 +67,7 @@ var color = d3.scale.category10();
             // .style("text-decoration", "underline")  
             .text("Breakdown of Crimes")
           .append('svg')
-          .attr('width', width + 20)
+          .attr('width', width + 220)
           .attr('height', height + 60)
           .style('text-align', "center")
           // .style('padding', 20)
@@ -178,6 +180,32 @@ var color = d3.scale.category10();
                     // tooltip.style('display', 'none'); 
                     tooltip.style("opacity", 0);                   
                   });
+
+        var legend = svg.selectAll('.legend')
+            .data(color.domain())
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', function(d, i) {
+              var height = legendRectSize + legendSpacing;
+              var offset =  height * color.domain().length / 2;
+              // var horz = -2 * legendRectSize;
+              var horz = width/2 + 20;
+              var vert = i * height - offset;
+              return 'translate(' + horz + ',' + vert + ')';
+            });
+
+          legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)                                   
+            .style('fill', color)
+            .style('stroke', color);
+            
+          legend.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .style("font-size", "16px")
+            .text(function(d) { return d; });
 
         })
 }) ($);

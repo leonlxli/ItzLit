@@ -30,7 +30,7 @@
     }
 
     Promise.all(promises).then(function() {
-
+        console.log("PLSDATA", data);
         data.sort(compare);
 
         var margin = {
@@ -130,6 +130,7 @@
             .attr("y", 30)
             .attr("x", width)
             .attr("dy", ".71em")
+            .style("font-size", "14px")
             .style("text-anchor", "end")
             .style("stroke", "white")
             .style("fill", "white")
@@ -145,6 +146,7 @@
             .attr("transform", "rotate(-90)")
             .attr("y", 6)
             .attr("dy", ".5em")
+            .style("font-size", "14px")
             .style("text-anchor", "end")
             .style("stroke", "white")
             .style("fill", "white")
@@ -268,7 +270,7 @@
         }
 
         Promise.all(promises).then(function() {
-
+console.log("PLSDATA", data);
             data.sort(compare);
 
             var margin = {
@@ -329,8 +331,10 @@
                 d.rates = [];
                 // d.rates = color.domain().map(function (type) {
                 d.rates = color.domain().map(function(type) {
+
                     var temp;
                     if (d[type] == undefined) {
+                        console.log("I got here!!");
                         temp = 0;
                     } else {
                         temp = +d[type];
@@ -342,7 +346,13 @@
                         y1: y0 += temp
                     };
                 })
-                d.total = d.rates[d.rates.length - 1].y1;
+                console.log("rates", d.rates);
+                if (d.rates.length > 0){
+                    d.total = d.rates[d.rates.length - 1].y1;
+                }
+                else {
+                    d.total = 0;
+                }
 
                 // d.rates.forEach(function (d) { // Leave these 4 lines out
                 //   d.y0 /= y0;
@@ -479,4 +489,4 @@ $('#return-to-top').click(function() { // When arrow is clicked
     $('body,html').animate({
         scrollTop: 0 // Scroll to top of body
     }, 500);
-})
+});
