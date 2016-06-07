@@ -144,10 +144,16 @@ function createCrimeMarker(myLatLng, crimeImg, info) {
 
 function setLightAndCrimeData() {
     for (var i in routeInfo) {
+        console.log(routeInfo[i].route)
         var numCrimes = getNumCrimes(routeInfo[i].polyline);
         var numLights = getNumLights(routeInfo[i].polyline)
-        var lightPercent = ((numLights * 15) / routeInfo[i].route.legs[0].distance.value) * 100
-        var lightText = (Math.round(lightPercent * 100) / 100) + "% lit"
+        var lightPercent = ((numLights * 20) / routeInfo[i].route.legs[0].distance.value) * 100
+        var light = (Math.round(lightPercent * 100) / 100)
+        if (light > 100) {
+            lightText = 100 + "% lit"
+        } else {
+            lightText = light + "% lit"
+        }
         routeInfo[i].lights = lightPercent;
         routeInfo[i].lightPercentText = lightText
         routeInfo[i].crimes = numCrimes;
@@ -221,7 +227,7 @@ function putData() {
 
         info.append("<div id=routeDisplay" + i + " class='routeDisplay' onmouseover='inside(" + i + ")' onmouseout='outside(" + i + ")' onclick='displayDirections(" + i + ")'><table style='width:90%'><tr><td><h4><b>Route " + num + " </b></h4><p><i>" + routeInfo[i].time + ",</i>    " + routeInfo[i].distance + "</p><p>" + routeInfo[i].crimes + " crimes</p></td>" +
             "<td style='align: right; float:right;'><p>" + routeInfo[i].lightPercentText +
-            "</p><img src='/images/" + lightbulbNum + ".png' style='width:70px; height:70px'></td></tr></table></div>")
+            "</p><img class='bulb' src='/images/" + lightbulbNum + ".png' style='width:70px; height:70px'></td></tr></table></div>")
         info.append("<div class = 'directions' id='dir" + i + "'></div>");
     }
 
@@ -523,10 +529,21 @@ var gradient = [
 
 function getNumLights(polyline) {
     var numLights = 0;
+    var lastY;
     for (var i in lights) {
         var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
         if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
             numLights++;
+            lastY = lights[i][1];
+        } else {
+            if (lastY) {
+                if (Math.abs(lastY - lights[i][1]) > 0.02) {
+                    console.log("breaking")
+                    console.log(lights[i][1])
+                    console.log(lastY);
+                    break;
+                }
+            }
         }
     }
     return numLights;

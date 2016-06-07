@@ -6,10 +6,18 @@ exports.getCrimes = function(req, res) {
     res.json(data);
 }
 
+function Comparator(a, b) {
+    if (a[1] < b[1]) return 1;
+    if (a[1] > b[1]) return -1;
+    return 0;
+}
+
 exports.getLights = function(req, res) {
     var data = require('../street_lights.json');
-    // var result = JSON.parse(data);
-    // console.log(result)
+    // console.log(data.lights)
+    // var lightsDat = data.lights.sort(Comparator);
+    // var obj = {"lights": lightsDat}
+    // console.log(JSON.stringify(obj))
     res.json(data);
 }
 

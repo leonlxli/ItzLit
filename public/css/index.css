@@ -6,19 +6,22 @@ body {
 }
 
 #facebook-button {
-  color: white;
-  background-color: #337ab7;
-  border-color: #337ab7;
+    color: white;
+    background-color: #337ab7;
+    border-color: #337ab7;
 }
+
 .line {
-  fill: none;
-  stroke: #FFF303;
-  stroke-width: 3px;
+    fill: none;
+    stroke: #FFF303;
+    stroke-width: 3px;
 }
+
 .overlay {
-  fill: none;
-  pointer-events: all;
+    fill: none;
+    pointer-events: all;
 }
+
 div.tooltip {
     position: absolute;
     text-align: center;
@@ -31,10 +34,11 @@ div.tooltip {
     border-radius: 8px;
     pointer-events: none;
 }
+
 #facebook-button:hover {
-  color: #337ab7;
-  background-color: white;
-  border-color: white;
+    color: #337ab7;
+    background-color: white;
+    border-color: white;
 }
 
 .routeDisplay {
@@ -49,11 +53,9 @@ div.tooltip {
     border-color: yellow;
 }
 
-
 .hovered {
     background-color: #AAC6EC;
     /*box-shadow: 5px 5px 25px 15px #AAC6EC inset*/
-
 }
 
 .scrollFix {
@@ -72,12 +74,19 @@ div.tooltip {
     /*box-shadow: 5px 5px 25px 15px yellow inset*/
 }
 
+.bulb {
+    -webkit-filter: drop-shadow(3px 3px 5 yellow) drop-shadow(-3px -3px 5 yellow);
+    filter: drop-shadow(1px 1px 5 yellow) drop-shadow(-1px -1px 5 yellow);
+}
+
 .spinner {
     color: white;
 }
 
-#starting-err, #ending-err, #locErr {
-  color: red;
+#starting-err,
+#ending-err,
+#locErr {
+    color: red;
 }
 
 #main,
@@ -102,6 +111,7 @@ div.tooltip {
 
 #destinations {
     /*text-shadow: 0px 0px 3px yellow;*/
+    
     letter-spacing: 2px;
     font-size: 18px;
     height: 100%;
@@ -119,13 +129,12 @@ div.tooltip {
     /* For Firefox 3.6 to 15
     background: linear-gradient(black, #1F2021);
     /* Standard syntax*/
-
+    
     background-color: black;
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing3.jpg');
     background-position: center;
     background-size: 100%;
     opacity: 1.6;
-
     /*
     background: black; /* For browsers that do not support gradients
     background: -webkit-linear-gradient(black, #20457F); /* For Safari 5.1 to 6.0
@@ -141,18 +150,18 @@ div.tooltip {
 }
 
 #route-me {
-  background-color: #ffc34d;
-  outline-color: #ffc34d;
-  color: black;
+    background-color: #ffc34d;
+    outline-color: #ffc34d;
+    color: black;
 }
 
 #route-me:hover {
-  background-color: #ffd480;
-  outline-color: #ffd480;
+    background-color: #ffd480;
+    outline-color: #ffd480;
 }
 
 #destinations-note {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 h1,
@@ -248,20 +257,19 @@ p.app-description {
 }
 
 .sidebar-tabs {
-  background-color: rgba(255, 255, 255, 0.8);
-  border-color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
 }
 
 .sidebar-tabs:active {
-  background-color: #DEDFE6;
+    background-color: #DEDFE6;
 }
 
 .row {
     font-family: 'Exo';
     margin-right: 0;
-        margin-left: 0;
-
+    margin-left: 0;
     /*padding-left: 67px;*/
 }
 
@@ -410,13 +418,15 @@ p.app-description {
     background-color: #7F7F7F;
     color: #ffffff;
 }
+
 #feed {
-    padding-left:20px;
+    padding-left: 20px;
 }
+
 #inner {
     display: table;
     margin: 0 auto;
-    width:90%;
+    width: 90%;
 }
 
 #messages {
@@ -424,6 +434,7 @@ p.app-description {
     background-color: #fafafa;
     /*border: 1px #a4ccd5 solid;
     border-radius: 3px;*/
+    
     list-style-type: none;
     padding: 0;
     padding-left: 20px;
@@ -497,7 +508,6 @@ p.app-description {
     color: white;
     top: 5px;
 }
-
 /*.bar {
   fill: steelblue;
 }
@@ -517,17 +527,22 @@ p.app-description {
 .selectmenu {
     color: black;
 }
+
 .slider-size {
-    height: 700px; /* slider height */
+    height: 700px;
+    /* slider height */
     /*background-size: cover !important;*/
 }
+
 .carousel {
-    width:100% !important; 
-    margin:0 auto !important; /* center your carousel if other than 100% */ 
+    width: 100% !important;
+    margin: 0 auto !important;
+    /* center your carousel if other than 100% */
 }
 
 .carousel-indicators {
-    position: absolute; !important;
+    position: absolute;
+    !important;
 }
 
 .carousel-inner {
@@ -543,40 +558,40 @@ p.app-description {
     color: #333 !important;
 }
 
-#pieChart {                                                 
-    height: 600px;                                             
-    position: relative;                                       
-    width: 560px;   
-    margin-top: 40px;                              
-}         
+#pieChart {
+    height: 600px;
+    position: relative;
+    width: 560px;
+    margin-top: 40px;
+}
 
-#pieChartTip {                                                   
-    background: #f1f0f1 !important;                                         
-    box-shadow: 0 0 5px #999999 !important;                              
-    color: #333 !important;                                           
-    opacity: 0;                                                
-    font-size: 18px !important; 
-    left: 185px!important;                                                   
-    padding: 10px!important;                                                 
-    position: absolute!important;                                            
-    text-align: center!important;                                       
-    top: 240px!important;                                                     
-    width: 150px !important;   
-    min-height: 95px !important;    
-    max-height: 120px !important;                                           
-    z-index: 10!important;            
-    vertical-align: middle !important;                                       
-} 
-
+#pieChartTip {
+    background: #f1f0f1 !important;
+    box-shadow: 0 0 5px #999999 !important;
+    color: #333 !important;
+    opacity: 0;
+    font-size: 18px !important;
+    left: 185px!important;
+    padding: 10px!important;
+    position: absolute!important;
+    text-align: center!important;
+    top: 240px!important;
+    width: 150px !important;
+    min-height: 95px !important;
+    max-height: 120px !important;
+    z-index: 10!important;
+    vertical-align: middle !important;
+}
 /*div.tooltip-inner {
     max-width: 150px !important;
     width: auto !important;
     max-height: 120px !important;
 }
 */
+
 .label {
     color: #333 !important;
-    font-size: 16px !important; 
+    font-size: 16px !important;
     white-space: pre-wrap !important;
 }
 
