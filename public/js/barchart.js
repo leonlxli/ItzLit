@@ -52,6 +52,7 @@
         var color = d3.scale.category10(); // Preset category of colors
         var div = d3.select("body").append("div")
             .attr("class", "tooltip")
+            .attr("id", "barChartTip")
             .style("opacity", 0);
 
         var barChart = d3

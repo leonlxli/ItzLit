@@ -534,6 +534,8 @@ p.app-description {
     width: 120px !important;
     padding: 7px 7px 7px 7px !important;
     font-size: 16px;
+    background: #f1f0f1 !important;
+    color: #333 !important;
 }
 
 #pieChart {                                                 
