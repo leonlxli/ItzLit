@@ -146,20 +146,25 @@ function setLightAndCrimeData() {
         var numCrimes = getNumCrimes(routeInfo[i].polyline);
         var numLights = getNumLights(routeInfo[i].polyline)
         var lightPercent;
-        var distance = routeInfo[i].route.legs[0].distance.value; 
-        if(distance <= numLights * 60&&distance >= numLights*40){
+        var distance = routeInfo[i].route.legs[0].distance.value;
+        console.log(distance)
+        console.log(numLights)
+        if (distance <= numLights * 60 && distance >= numLights * 40) {
             console.log("40,60")
-            lightPercent  = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value*2.25)) * 100
-        }
-        else if(distance <= numLights * 40&&distance >= numLights*20){
-                        console.log("20,40")
+            lightPercent = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value * 2.25)) * 100
+        } else if (distance <= numLights * 40 && distance >= numLights * 20) {
+            console.log("20,40")
 
-            lightPercent  = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value*1.25)) * 100
+            lightPercent = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value * 1.25)) * 100
+        } else if (distance > numLights * 9) {
+            console.log("<9")
+            lightPercent = ((numLights * 35) / (routeInfo[i].route.legs[0].distance.value)) * 100
+
+        } else {
+            console.log("<20")
+            lightPercent = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value * 1)) * 100
         }
-        else{
-            lightPercent  = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value*1)) * 100
-        }
-    
+
         var light = (Math.round(lightPercent * 100) / 100)
         if (light > 100) {
             lightText = 100 + "% lit"
