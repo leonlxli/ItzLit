@@ -135,7 +135,6 @@ function createCrimeMarker(myLatLng, crimeImg, info) {
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-        console.log(info)
         var contentString = "<div><h1>" + info.type + "</h1><p>date :" + info.date + "</p></div>"
         infowindow.setContent(contentString);
         infowindow.open(map, marker);
@@ -144,10 +143,23 @@ function createCrimeMarker(myLatLng, crimeImg, info) {
 
 function setLightAndCrimeData() {
     for (var i in routeInfo) {
-        console.log(routeInfo[i].route)
         var numCrimes = getNumCrimes(routeInfo[i].polyline);
         var numLights = getNumLights(routeInfo[i].polyline)
-        var lightPercent = ((numLights * 20) / routeInfo[i].route.legs[0].distance.value) * 100
+        var lightPercent;
+        var distance = routeInfo[i].route.legs[0].distance.value; 
+        if(distance <= numLights * 60&&distance >= numLights*40){
+            console.log("40,60")
+            lightPercent  = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value*2.25)) * 100
+        }
+        else if(distance <= numLights * 40&&distance >= numLights*20){
+                        console.log("20,40")
+
+            lightPercent  = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value*1.25)) * 100
+        }
+        else{
+            lightPercent  = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value*1)) * 100
+        }
+    
         var light = (Math.round(lightPercent * 100) / 100)
         if (light > 100) {
             lightText = 100 + "% lit"
@@ -259,7 +271,6 @@ function start() {
     var start = getQueryString('starting').replace(/%20/g, " "),
         end = getQueryString('ending').replace(/%20/g, " "),
         transportation = getQueryString('transportation');
-    console.log(end)
     var startstr = start.substring(0, start.indexOf(','));
     var endstr = end.substring(0, end.indexOf(','));
     if (endstr == "") {
@@ -277,8 +288,6 @@ function start() {
     } else {
         $("#transportation").append('<img src="/images/transit.png" width="35" height="35">')
     }
-    console.log(startstr)
-    console.log(endstr)
     $("#startingp").append(startstr);
     $("#endingp").append(endstr);
     $.get("/crimes", function(data) {
@@ -418,7 +427,6 @@ window.initMap = function() {
 }
 
 function createPlacesMarkers(results, status) {
-    console.log("*****SWAG*****" + results.length)
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
@@ -538,9 +546,6 @@ function getNumLights(polyline) {
         } else {
             if (lastY) {
                 if (Math.abs(lastY - lights[i][1]) > 0.02) {
-                    console.log("breaking")
-                    console.log(lights[i][1])
-                    console.log(lastY);
                     break;
                 }
             }
