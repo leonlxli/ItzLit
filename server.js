@@ -198,6 +198,7 @@ app.get('/getAllCrimeData', router.index.getAllCrimeData);
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
 app.get('/getCountCrimeData', router.index.getCountCrimeData);
 app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
+app.get('/getTimeBarCrimeData', router.index.getTimeBarCrimeData);
 app.get('/getTimeBarCrimeDataArson', router.index.getTimeBarCrimeDataArson);
 app.get('/getTimeBarCrimeDataAssault', router.index.getTimeBarCrimeDataAssault);
 app.get('/getTimeBarCrimeDataChildAbuse', router.index.getTimeBarCrimeDataChildAbuse);
