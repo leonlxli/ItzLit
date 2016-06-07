@@ -83,6 +83,8 @@ div.tooltip {
 #main,
 #destinations,
 #moreInfo {
+    margin-left: 0px;
+    margin-right: 0px;
     height: 100%;
 }
 
@@ -257,6 +259,9 @@ p.app-description {
 
 .row {
     font-family: 'Exo';
+    margin-right: 0;
+        margin-left: 0;
+
     /*padding-left: 67px;*/
 }
 
