@@ -147,24 +147,28 @@ function setLightAndCrimeData() {
         var numLights = getNumLights(routeInfo[i].polyline)
         var lightPercent;
         var distance = routeInfo[i].route.legs[0].distance.value;
-        console.log(distance)
-        console.log(numLights)
         if (distance <= numLights * 60 && distance >= numLights * 40) {
-            console.log("40,60")
-            lightPercent = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value * 2.25)) * 100
-        } else if (distance <= numLights * 40 && distance >= numLights * 20) {
-            console.log("20,40")
+            console.log(" route "+ i+ "60,40")
 
-            lightPercent = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value * 1.25)) * 100
-        } else if (distance > numLights * 9) {
-            console.log("<9")
             lightPercent = ((numLights * 35) / (routeInfo[i].route.legs[0].distance.value)) * 100
-
-        } else {
-            console.log("<20")
-            lightPercent = ((numLights * 20) / (routeInfo[i].route.legs[0].distance.value * 1)) * 100
+        } else if (distance <= numLights * 40 && distance >= numLights * 20) {
+            console.log(" route "+ i+ " 20,40")
+            lightPercent = ((numLights * 18) / (routeInfo[i].route.legs[0].distance.value )) * 100
         }
-
+        else if (distance <= numLights * 20 && distance >= numLights * 10) {
+            console.log(" route "+ i+ "20,10")
+            lightPercent = ((numLights * 8) / (routeInfo[i].route.legs[0].distance.value)) * 100
+        } else if (distance < numLights * 10) {
+            console.log(" route "+ i+ "<10")
+            lightPercent = ((numLights * 5) / (routeInfo[i].route.legs[0].distance.value)) * 100
+        }
+        else{
+            console.log(" route "+ i+ "overload")
+            lightPercent = ((numLights * 45) / (routeInfo[i].route.legs[0].distance.value)) * 100
+        }
+         console.log(distance)
+        console.log(numLights)
+        console.log("==================")
         var light = (Math.round(lightPercent * 100) / 100)
         if (light > 100) {
             lightText = 100 + "% lit"
@@ -542,15 +546,15 @@ var gradient = [
 
 function getNumLights(polyline) {
     var numLights = 0;
-    var lastY;
+    var lastcoord;
     for (var i in lights) {
         var location = new google.maps.LatLng(Number(lights[i][0]), Number(lights[i][1]))
-        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0001)) {
+        if (google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.0015)) {
             numLights++;
-            lastY = lights[i][1];
+            lastcoord = lights[i];
         } else {
-            if (lastY) {
-                if (Math.abs(lastY - lights[i][1]) > 0.02) {
+            if (lastcoord) {
+                if (Math.abs(lastcoord[1] - lights[i][1]) > 0.02) {
                     break;
                 }
             }
@@ -563,7 +567,7 @@ function getNumCrimes(polyline) {
     numCrimes = 0;
     for (var i in crimeCoordinates) {
         var location = new google.maps.LatLng(crimeCoordinates[i].lat, crimeCoordinates[i].lng)
-        if (google.maps.geometry.poly.containsLocation(location, polyline) || google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.001)) {
+        if (google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.002)) {
             numCrimes++;
         }
     }
