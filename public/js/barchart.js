@@ -62,7 +62,7 @@
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+            .attr("transform", "translate(" + 120 + "," + margin.right + ")");
 
         color.domain(d3.keys(data[0]).filter(function(key) {
             return key !== "hour";
@@ -302,7 +302,8 @@ console.log("PLSDATA", data);
                 .attr("width", width + margin.right + margin.left)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+                // .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+                .attr("transform", "translate(" + 120 + "," + margin.right + ")");
 
             var title;
             var keys = Object.keys(data[0])
