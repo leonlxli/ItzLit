@@ -30,7 +30,6 @@
     }
 
     Promise.all(promises).then(function() {
-        console.log("PLSDATA", data);
         data.sort(compare);
 
         var margin = {
@@ -90,7 +89,6 @@
             d.total = d.rates[d.rates.length - 1].y1;
 
         });
-        console.log(data)
 
         // var x = d3.scale.linear().domain([0, data.length]).range([0, w]);
 
@@ -199,7 +197,6 @@
                 return yScale(d.total);
             })
             .on("mouseover", function(d) {
-                console.log(d)
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
@@ -270,7 +267,6 @@
         }
 
         Promise.all(promises).then(function() {
-console.log("PLSDATA", data);
             data.sort(compare);
 
             var margin = {
@@ -335,7 +331,6 @@ console.log("PLSDATA", data);
 
                     var temp;
                     if (d[type] == undefined) {
-                        console.log("I got here!!");
                         temp = 0;
                     } else {
                         temp = +d[type];
@@ -347,7 +342,6 @@ console.log("PLSDATA", data);
                         y1: y0 += temp
                     };
                 })
-                console.log("rates", d.rates);
                 if (d.rates.length > 0){
                     d.total = d.rates[d.rates.length - 1].y1;
                 }

@@ -102,8 +102,10 @@ function getCrimeImage(type) {
 function getCrimeCurr(lat, lng, distance) {
     var d = new Date();
     var n = d.getTime();
+    var url= "https://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n;
+    console.log(url)
     $.ajax({
-        url: "https://api.spotcrime.com/crimes.json?lat=" + lat + "&lon=" + lng + "&radius=" + distance + "&callback=jQuery21307676314746535686_1462858455579&key=.&_=" + n,
+        url: url,
         dataType: 'jsonp',
         success: function(data) {
             for (var i in data.crimes) {

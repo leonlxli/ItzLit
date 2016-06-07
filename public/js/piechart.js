@@ -22,26 +22,19 @@
         var total = 0;
 
         Promise.all(promises).then(function(){
-          console.log("dataData", data);
-            console.log("PieData", pie_data);
 
 
         var origCount = [];
 
         for(var a=0;a<data[0].length;a++){
-          console.log("datao-o", data);
-          console.log("datacount", data[0][a].count);
           origCount.push(data[0][a].count);
-          console.log("origCount", origCount);
           total=total+parseInt(data[0][a].count); // simple logic to calculate total of data count value
-          console.log(total);
         }
 
         for( var a=0;a<data[0].length;a++){ // simple logic to calculate percentage data for the pie
           pie_data[a]={"count": (data[0][a].count/total)*100, "label": data[0][a].label};
 
           // pie_data[a] = data[0][a].count;
-          console.log("each pie",pie_data[a]);
         }
               var margin = {top: 20, right: 40, bottom: 120, left: 80},
                     width = 600 - margin.right - margin.left,
@@ -156,11 +149,8 @@ var color = d3.scale.category20();
              return color(d.data.label);})
              .on('mouseover', function(d,i) {
                 var total = d3.sum(data.map(function(d,i) {
-                    console.log("countWHAT", d[i].count);
                       return d[i].count;
                    })); 
-                console.log("counterrrrr", d.data.count);
-                console.log("totallllll", total);
                 // var percent = Math.round(1000 * d.data.count / total) / 10;
                     tooltipLabel.text(d.data.label);
                     tooltipCount.text(origCount[i]); 

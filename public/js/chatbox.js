@@ -100,26 +100,6 @@ function addPosts() {
 }
 
 
-function deletePostModal(postID) {
-    console.log("test");
-    $('#modal' + postID).openModal();
-}
-
-function deletePost(postID) {
-    $.post('/chat/delete', {
-        postID: postID,
-    }, function(dat, succ) {
-        if (dat.succ) {
-            for (var i = 0; i < data.newsfeed.length; i++) {
-                if (data.newsfeed[i]._id == postID) {
-                    data.newsfeed.splice(i, 1);
-                }
-            }
-            $("#post" + postID).remove();
-        }
-    })
-}
-
 
 function messageTemplate(template) {
 
@@ -172,11 +152,8 @@ function messageTemplate(template) {
     });
 
     socket.on('newsfeed', function(datem) {
-        console.log("socket=======");
         if ($("#newMessages").children().length == 0) {
             var dat = JSON.parse(datem);
-            console.log(data.newsfeed[0])
-            console.log(dat);
             data.newsfeed.unshift(dat.post);
             index = 0;
             limit = limit - 10;
@@ -203,10 +180,6 @@ var okBtn3 = document.getElementById("okBtn3");
 // When the user clicks on the button, open the modal
 
 // When the user clicks on <span> (x), close the modal
-
-postBtn.onclick = function() {
-    comSubPost.style.display = "none";
-}
 
 $(window).scroll(function() {
     if ($(this).scrollTop() >= 50) { // If page is scrolled more than 50px
