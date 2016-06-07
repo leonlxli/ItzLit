@@ -150,10 +150,10 @@ function setLightAndCrimeData() {
         if (distance <= numLights * 60 && distance >= numLights * 40) {
             console.log(" route "+ i+ "60,40")
 
-            lightPercent = ((numLights * 35) / (routeInfo[i].route.legs[0].distance.value)) * 100
+            lightPercent = ((numLights * 30) / (routeInfo[i].route.legs[0].distance.value)) * 100
         } else if (distance <= numLights * 40 && distance >= numLights * 20) {
             console.log(" route "+ i+ " 20,40")
-            lightPercent = ((numLights * 18) / (routeInfo[i].route.legs[0].distance.value )) * 100
+            lightPercent = ((numLights * 15) / (routeInfo[i].route.legs[0].distance.value )) * 100
         }
         else if (distance <= numLights * 20 && distance >= numLights * 10) {
             console.log(" route "+ i+ "20,10")
@@ -164,7 +164,7 @@ function setLightAndCrimeData() {
         }
         else{
             console.log(" route "+ i+ "overload")
-            lightPercent = ((numLights * 45) / (routeInfo[i].route.legs[0].distance.value)) * 100
+            lightPercent = ((numLights * 40) / (routeInfo[i].route.legs[0].distance.value)) * 100
         }
          console.log(distance)
         console.log(numLights)
