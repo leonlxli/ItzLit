@@ -111,9 +111,13 @@ div.tooltip {
     height: 100%;
 }
 
+.navbar {
+  margin-bottom: 0;
+}
+
 #destinations {
     /*text-shadow: 0px 0px 3px yellow;*/
-    
+
     letter-spacing: 2px;
     font-size: 18px;
     height: 100%;
@@ -131,7 +135,7 @@ div.tooltip {
     /* For Firefox 3.6 to 15
     background: linear-gradient(black, #1F2021);
     /* Standard syntax*/
-    
+
     background-color: black;
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/landing3.jpg');
     background-position: center;
@@ -434,7 +438,7 @@ p.app-description {
 #messages {
     /*border: 1px #a4ccd5 solid;
     border-radius: 3px;*/
-    
+
     list-style-type: none;
     padding: 0;
     padding-left: 20px;
