@@ -496,15 +496,12 @@ p.app-description {
 /*.bar {
   fill: steelblue;
 }
-
 .bar:hover {
   fill: brown;
 }
-
 .axis {
   font: 10px sans-serif;
 }
-
 .axis path,
 .axis line {
   fill: none;
@@ -514,4 +511,64 @@ p.app-description {
 
 .selectmenu {
     color: black;
+}
+.slider-size {
+    height: 700px; /* slider height */
+    /*background-size: cover !important;*/
+}
+.carousel {
+    width:100% !important; 
+    margin:0 auto !important; /* center your carousel if other than 100% */ 
+}
+
+.carousel-indicators {
+    position: absolute; !important;
+}
+
+.carousel-inner {
+    max-height: 630px !important;
+}
+
+#barChartTip {
+    height: 50px !important;
+    width: 120px !important;
+    padding: 7px 7px 7px 7px !important;
+    font-size: 16px;
+}
+
+#pieChart {                                                 
+    height: 600px;                                             
+    position: relative;                                       
+    width: 560px;   
+    margin-top: 40px;                              
+}         
+
+#pieChartTip {                                                   
+    background: #f1f0f1 !important;                                         
+    box-shadow: 0 0 5px #999999 !important;                              
+    color: #333 !important;                                           
+    opacity: 0;                                                
+    font-size: 18px !important; 
+    left: 210px!important;                                                   
+    padding: 10px!important;                                                 
+    position: absolute!important;                                            
+    text-align: center!important;                                       
+    top: 210px!important;                                                     
+    width: 150px !important;   
+    min-height: 95px !important;    
+    max-height: 120px !important;                                           
+    z-index: 10!important;            
+    vertical-align: middle !important;                                       
+} 
+
+/*div.tooltip-inner {
+    max-width: 150px !important;
+    width: auto !important;
+    max-height: 120px !important;
+}
+*/
+.label {
+    color: #333 !important;
+    font-size: 16px !important; 
+    white-space: pre-wrap !important;
 }

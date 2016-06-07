@@ -178,7 +178,7 @@
         <div id="map"></div>
         <div id="spinner" class="spinner"></div>
     </div>
-    <div id="moreInfo">
+<div id="moreInfo">
         <div class="container" style="padding-top: 5%">
             <div class="row">
                 <div class="col-sm-12 text-center">
@@ -187,33 +187,65 @@
                     <hr width="60%">
                     <p class="app-description">LET'S GET VISUAL!</p> -->
                     <hr width="60%">
-                    <select class="selectmenu" onchange="loadData()" id="crimeName" >
-                        <option selected="selected" disabled="disabled" class="hideoption">Select a crime</option>
-                        <option>Arson</option>
-                        <option>Assault</option>
-                        <option>Child Abuse</option>
-                        <option selected="selected">DUI</option>
-                        <option>Drunk in Public</option>
-                        <option>Possession of Substance</option>
-                        <option>Possession of Weapon</option>
-                        <option>Rape</option>
-                        <option>Theft</option>
-                        <option>Vandalism</option>
-                    </select>
-                    <center>
-                        <div id="barChart"></div>
-                    </center>
-                    <div id="pieChart"></div>
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+                          <!-- Indicators -->
+                          <ol class="carousel-indicators">
+                            <li data-target="#fixed" data-slide-to="0" class="active"></li>
+                            <li data-target="#fixed" data-slide-to="1"></li>
+   <!--                          <li data-target="#fixed" data-slide-to="2"></li>
+                            <li data-target="#fixed" data-slide-to="3"></li> -->
+                          </ol>
+
+                          <!-- Wrapper for slides -->
+                          <center>
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <select class="selectmenu" onchange="loadData()" id="crimeName">
+                                    <option selected="selected" disabled="disabled" class="hideoption">Select a crime</option>
+                                    <option>Arson</option>
+                                    <option>Assault</option>
+                                    <option>Child Abuse</option>
+                                    <option selected="selected">DUI</option>
+                                    <option>Drunk in Public</option>
+                                    <option>Possession of Substance</option>
+                                    <option>Possession of Weapon</option>
+                                    <option>Rape</option>
+                                    <option>Theft</option>
+                                    <option>Vandalism</option>
+                                </select>
+                                <div id="barChart" class="slider-size">
+                                </div>
+                            </div>
+
+                            <div class="item">
+                              <div id="pieChart" class="slider-size">
+                              </div>
+                            </div>
+
+                            <!-- <div class="item">
+                              
+                            </div>
+
+                            <div class="item">
+                              
+                            </div> -->
+                          </div> <!--END DIV INNER-->
+                        </center>
+
+                          <!-- Left and right controls -->
+                          <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev" >
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" >
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!--
-    <div id="d3">
-        <svg class="chart">
-        </svg>
-    </div>
--->
     <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
     <script src="/js/spin.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
