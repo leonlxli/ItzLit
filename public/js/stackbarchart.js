@@ -27,7 +27,6 @@
     }
 
     Promise.all(promises).then(function(){
-          console.log("Data", data);
 
           data.sort(compare);
 
@@ -75,10 +74,6 @@
               };
             })
             d.total = d.rates[d.rates.length - 1].y1;
-            console.log("rates",d.rates);
-            console.log("d.rates.length-1", d.rates.length-1);
-            console.log("d.rates[d.rates.length-1]", d.rates[d.rates.length-1]);
-            console.log("total", d.total);
 
             // d.rates.forEach(function (d) { // Leave these 4 lines out
             //   d.y0 /= y0;
