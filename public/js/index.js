@@ -93,7 +93,7 @@ function getCrimeImage(type) {
     } else if (type == "Theft") {
         return "../images/theft.png"
     } else if (type == "Vandalism") {
-        return "../images/Vandalism.png"
+        return "../images/vandalism.png"
     } else {
         return "../images/other.png"
     }
@@ -108,6 +108,7 @@ function getCrimeCurr(lat, lng, distance) {
         url: url,
         dataType: 'jsonp',
         success: function(data) {
+            console.log(data)
             for (var i in data.crimes) {
                 var crimeImg = getCrimeImage(data.crimes[i].type);
                 var myLatLng = {
@@ -324,7 +325,7 @@ window.initMap = function() {
         lat: 32.856130,
         lng: -117.234485
     }
-    getCrimeCurr(32.8328, -117.2713, 0.2)
+    getCrimeCurr(32.8328, -117.2713, 0.5)
     var minZoomLevel = 13;
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: minZoomLevel,
